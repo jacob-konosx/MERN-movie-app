@@ -38,12 +38,15 @@ recordRoutes.route("/restaurant/:id").get(function (req, res) {
 });
 
 // This section will help you create a new record.
-recordRoutes.route("/record/add").post(function (req, response) {
+recordRoutes.route("/add").post(function (req, response) {
 	let db_connect = dbo.getDb();
 	let myobj = {
+		address: req.body.address,
+		borough: req.body.borough,
+		cuisine: req.body.cuisine,
+		grades: req.body.grades,
 		name: req.body.name,
-		position: req.body.position,
-		level: req.body.level,
+		restaurant_id: req.body.restaurant_id,
 	};
 	db_connect.collection("restaurants").insertOne(myobj, function (err, res) {
 		if (err) throw err;
@@ -57,11 +60,21 @@ recordRoutes.route("/update/:id").post((req, response) => {
 	let myquery = { _id: ObjectId(req.params.id) };
 	let newvalues = {
 		$set: {
+			address: req.body.address,
+			borough: req.body.borough,
+			cuisine: req.body.cuisine,
+			grades: req.body.grades,
 			name: req.body.name,
-			position: req.body.position,
-			level: req.body.level,
+			restaurant_id: req.body.restaurant_id,
 		},
 	};
+	db_connect
+		.collection("restaurants")
+		.updateOne(myquery, newvalues, function (err, res) {
+			if (err) throw err;
+			console.log("1 document updated");
+			response.json(res);
+		});
 });
 
 // This section will help you delete a record
