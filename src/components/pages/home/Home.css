@@ -1,0 +1,32 @@
+.movies {
+    --repeat: auto-fit;
+}
+
+@media (min-width: calc(300px * 3)) {
+    .movies {
+        --repeat: 3;
+    }
+}
+
+.movies {
+    display: grid;
+    /* grid-template-columns: repeat(3, 300px); */
+    grid-template-columns: repeat(var(--repeat, auto-fit),
+            minmax(calc(300px * 1), 1fr));
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto;
+    max-width: 80%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    height: auto;
+}
+
+.movie {
+    text-align: left;
+    position: relative;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 1em;
+    height: 100%;
+}

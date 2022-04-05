@@ -1,0 +1,24 @@
+.bigCard{
+    max-width: 80%;
+    margin-top: 20px;
+}
+.mainContent{
+    display: flex;margin: 20px;
+    
+}
+.column{
+    flex: 50%;
+}
+.plot{
+    text-align:justify;
+    text-align-last:justify;
+}
+.extra{
+    text-align: left;
+}
+h1{
+    margin-left: 20px;
+}
+.badge{
+    margin-right: 20px;
+}

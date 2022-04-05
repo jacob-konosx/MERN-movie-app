@@ -11,12 +11,12 @@ const dbo = require("../db/conn");
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
 
-// This section will help you get a list of all the restaurants.
+// This section will help you get a list of all the  movies.
 recordRoutes.route("/").get(function (req, res) {
 	let db_connect = dbo.getDb();
 
 	db_connect
-		.collection("restaurants")
+		.collection("movies")
 		.find({})
 		.limit(50)
 		.toArray(function (err, result) {
@@ -26,15 +26,13 @@ recordRoutes.route("/").get(function (req, res) {
 });
 
 // This section will help you get a single record by id
-recordRoutes.route("/restaurant/:id").get(function (req, res) {
+recordRoutes.route("/movie/:id").get(function (req, res) {
 	let db_connect = dbo.getDb();
 	let myquery = { _id: ObjectId(req.params.id) };
-	db_connect
-		.collection("restaurants")
-		.findOne(myquery, function (err, result) {
-			if (err) throw err;
-			res.json(result);
-		});
+	db_connect.collection("movies").findOne(myquery, function (err, result) {
+		if (err) throw err;
+		res.json(result);
+	});
 });
 
 // This section will help you create a new record.
@@ -48,7 +46,7 @@ recordRoutes.route("/add").post(function (req, response) {
 		name: req.body.name,
 		restaurant_id: req.body.restaurant_id,
 	};
-	db_connect.collection("restaurants").insertOne(myobj, function (err, res) {
+	db_connect.collection("movies").insertOne(myobj, function (err, res) {
 		if (err) throw err;
 		response.json(res);
 	});
@@ -69,7 +67,7 @@ recordRoutes.route("/update/:id").post((req, response) => {
 		},
 	};
 	db_connect
-		.collection("restaurants")
+		.collection(" movies")
 		.updateOne(myquery, newvalues, function (err, res) {
 			if (err) throw err;
 			console.log("1 document updated");
@@ -81,13 +79,11 @@ recordRoutes.route("/update/:id").post((req, response) => {
 recordRoutes.route("/:id").delete((req, response) => {
 	let db_connect = dbo.getDb();
 	let myquery = { _id: ObjectId(req.params.id) };
-	db_connect
-		.collection("restaurants")
-		.deleteOne(myquery, function (err, obj) {
-			if (err) throw err;
-			console.log("1 document deleted");
-			response.json(obj);
-		});
+	db_connect.collection("movies").deleteOne(myquery, function (err, obj) {
+		if (err) throw err;
+		console.log("1 document deleted");
+		response.json(obj);
+	});
 });
 
 module.exports = recordRoutes;
