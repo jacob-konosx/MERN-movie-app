@@ -115,7 +115,8 @@ const BadgeCard = ({ props }) => {
 								Director/s: {directors.join(", ")}
 							</Text>
 							<Text size="xl" mt="xs">
-								Movie length: {convertHMS(running_time_secs)}
+								Movie length (H:M):{" "}
+								{convertHMS(running_time_secs)}
 							</Text>
 							<Text size="xl" mt="xs">
 								Release Date:{" "}

@@ -39,12 +39,9 @@ recordRoutes.route("/movie/:id").get(function (req, res) {
 recordRoutes.route("/add").post(function (req, response) {
 	let db_connect = dbo.getDb();
 	let myobj = {
-		address: req.body.address,
-		borough: req.body.borough,
-		cuisine: req.body.cuisine,
-		grades: req.body.grades,
-		name: req.body.name,
-		restaurant_id: req.body.restaurant_id,
+		info: req.body.info,
+		title: req.body.title,
+		year: req.body.year,
 	};
 	db_connect.collection("movies").insertOne(myobj, function (err, res) {
 		if (err) throw err;
@@ -58,12 +55,9 @@ recordRoutes.route("/update/:id").post((req, response) => {
 	let myquery = { _id: ObjectId(req.params.id) };
 	let newvalues = {
 		$set: {
-			address: req.body.address,
-			borough: req.body.borough,
-			cuisine: req.body.cuisine,
-			grades: req.body.grades,
-			name: req.body.name,
-			restaurant_id: req.body.restaurant_id,
+			info: req.body.info,
+			title: req.body.title,
+			year: req.body.year,
 		},
 	};
 	db_connect

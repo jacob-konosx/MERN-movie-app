@@ -3,7 +3,8 @@
     margin-top: 20px;
 }
 .mainContent{
-    display: flex;margin: 20px;
+    display: flex
+    ;margin: 20px;
     
 }
 .column{
