@@ -1,13 +1,16 @@
+import { Pagination } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BadgeCard from "../../badgecard/BadgeCard";
 import "./Home.css";
 const Home = () => {
 	const navigate = useNavigate();
-	const [movies, setMovies] = useState(null);
+	const [data, setData] = useState(null);
+	const [page, setPage] = useState(1);
+	const [pageCount, setPageCount] = useState(0);
 	useEffect(() => {
 		const fetchData = async () => {
-			const response = await fetch(`http://localhost:5000/`);
+			const response = await fetch(`http://localhost:5000/?page=${page}`);
 
 			if (!response.ok) {
 				const message = `An error has occurred: ${response.statusText}`;
@@ -22,36 +25,55 @@ const Home = () => {
 				return;
 			}
 
-			setMovies(record);
+			setData(record);
 		};
 
 		fetchData();
 
 		return;
-	}, [navigate]);
+	}, [navigate, page]);
+	useEffect(() => {
+		if (data) {
+			setPageCount(data.pageCount);
+		}
+	}, [data]);
+
 	return (
-		<div className="movies">
-			{movies &&
-				movies.map((res) => {
-					const { _id, title, info, year } = res;
-					return (
-						<div className="movie" key={_id}>
-							<BadgeCard
-								props={{
-									mode: "small",
-									title,
-									info,
-									year,
-									_id,
-								}}
-							/>
-							{/* <h1>
-								{borough} - {name} ({cuisine})
-							</h1>
-							<Button to={`/restaurant/${_id}`}>View</Button> */}
-						</div>
-					);
-				})}
+		<div>
+			<Pagination
+				style={{ position: "relative", marginTop: 20, left: "11%" }}
+				page={page}
+				onChange={setPage}
+				total={pageCount}
+			/>
+			<div className="movies">
+				{data &&
+					data.movies.map((res) => {
+						const { _id, title, info, year } = res;
+						return (
+							<div className="movie" key={_id}>
+								<BadgeCard
+									props={{
+										mode: "small",
+										title,
+										info,
+										year,
+										_id,
+									}}
+								/>
+							</div>
+						);
+					})}
+
+				{/* <Button disabled={page === 1} onClick={handlePrevious}>
+					Previous
+				</Button>
+				<Button disabled={page === pageCount} onClick={handleNext}>
+					Next
+				</Button>
+				<p>Page: {page}</p>
+				<p>Page Count: {pageCount}</p> */}
+			</div>
 		</div>
 	);
 };

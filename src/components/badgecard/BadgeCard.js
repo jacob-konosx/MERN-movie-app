@@ -61,7 +61,13 @@ const BadgeCard = ({ props }) => {
 
 	if (mode === "small") {
 		return (
-			<Card withBorder radius="md" p="md" className={classes.card}>
+			<Card
+				id="smallCard"
+				withBorder
+				radius="md"
+				p="md"
+				className={classes.card}
+			>
 				<Card.Section className={classes.section} mt="md">
 					<Group position="apart">
 						<Text size="lg" weight={500}>

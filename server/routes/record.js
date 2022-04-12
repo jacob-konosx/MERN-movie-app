@@ -12,16 +12,25 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 // This section will help you get a list of all the  movies.
-recordRoutes.route("/").get(function (req, res) {
+recordRoutes.route("/").get(async function (req, res) {
 	let db_connect = dbo.getDb();
+	const ITEMS_PER_PAGE = 9;
+
+	const page = req.query.page || 1;
+	const skip = (page - 1) * ITEMS_PER_PAGE; // 1 * 20 = 20
+
+	const count = await db_connect.collection("movies").countDocuments({});
+	const pageCount = Math.ceil(count / ITEMS_PER_PAGE); // 400 items / 20 = 20
 
 	db_connect
 		.collection("movies")
 		.find({})
-		.limit(50)
+		.sort({ _id: -1 })
+		.limit(9)
+		.skip(skip)
 		.toArray(function (err, result) {
 			if (err) throw err;
-			res.json(result);
+			res.json({ movies: result, pageCount: pageCount });
 		});
 });
 

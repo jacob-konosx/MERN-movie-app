@@ -26,38 +26,20 @@ const useStyles = createStyles((theme) => ({
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center",
-		color:
-			theme.colorScheme === "dark"
-				? theme.colors.dark[0]
-				: theme.colors.gray[7],
+		color: theme.colors.gray[7],
 
 		"&:hover": {
-			backgroundColor:
-				theme.colorScheme === "dark"
-					? theme.colors.dark[5]
-					: theme.colors.gray[0],
+			backgroundColor: theme.colors.gray[0],
 		},
 	},
 
 	active: {
 		"&, &:hover": {
-			backgroundColor:
-				theme.colorScheme === "dark"
-					? theme.fn.rgba(theme.colors[theme.primaryColor][9], 0.25)
-					: theme.colors[theme.primaryColor][0],
-			color: theme.colors[theme.primaryColor][
-				theme.colorScheme === "dark" ? 4 : 7
-			],
+			backgroundColor: theme.colors[theme.primaryColor][0],
+			color: theme.colors[theme.primaryColor][7],
 		},
 	},
 }));
-
-// interface NavbarLinkProps {
-//   icon: TablerIcon;
-//   label: string;
-//   active?: boolean;
-//   onClick?(): void;
-// }
 
 const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 	const { classes, cx } = useStyles();
