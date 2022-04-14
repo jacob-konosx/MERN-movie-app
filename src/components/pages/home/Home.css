@@ -1,5 +1,6 @@
 .movies {
     --repeat: auto-fit;
+    margin-right: 0 !important;
 }
 
 @media (min-width: calc(300px * 3)) {

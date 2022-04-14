@@ -2,6 +2,7 @@ import { Pagination } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BadgeCard from "../../badgecard/BadgeCard";
+import Search from "../../search/Search";
 import "./Home.css";
 const Home = () => {
 	const navigate = useNavigate();
@@ -21,7 +22,6 @@ const Home = () => {
 			const record = await response.json();
 			if (!record) {
 				window.alert(`Record not found`);
-				navigate("/");
 				return;
 			}
 
@@ -40,12 +40,19 @@ const Home = () => {
 
 	return (
 		<div>
-			<Pagination
-				style={{ position: "relative", marginTop: 20, left: "11%" }}
-				page={page}
-				onChange={setPage}
-				total={pageCount}
-			/>
+			<div>
+				<Search />
+				<Pagination
+					style={{
+						position: "relative",
+						marginTop: 20,
+						left: "8.5%",
+					}}
+					page={page}
+					onChange={setPage}
+					total={pageCount}
+				/>
+			</div>
 			<div className="movies">
 				{data &&
 					data.movies.map((res) => {

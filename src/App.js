@@ -35,7 +35,7 @@ function App() {
 			<NavbarMin />
 			<BrowserRouter>
 				<Routes>
-					<Route exact path="/" element={<Home />} />{" "}
+					<Route exact path="/" element={<Home />} />
 					<Route path="/create" element={<Create />} />
 					<Route path="/movie/:id" element={<Movie />} />
 					<Route path="*" exact={true} element={<NotFound />} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	Navbar,
 	Center,
@@ -14,7 +14,7 @@ import {
 	User,
 	Settings,
 	Logout,
-	SwitchHorizontal,
+	ListSearch,
 } from "tabler-icons-react";
 import logoImg from "../../media/logo.png";
 import "./NavbarMin.css";
@@ -43,6 +43,7 @@ const useStyles = createStyles((theme) => ({
 
 const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 	const { classes, cx } = useStyles();
+
 	return (
 		<Tooltip
 			label={label}
@@ -62,20 +63,19 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 
 const mockdata = [
 	{ icon: Home2, label: "Home", route: "/" },
+	{ icon: ListSearch, label: "Search", route: "/search" },
 	{ icon: SquarePlus, label: "Create", route: "/create" },
 	{ icon: User, label: "Account", route: "/account" },
 	{ icon: Settings, label: "Settings" },
 ];
 
 const NavbarMin = () => {
-	const [active, setActive] = useState(2);
 	const links = mockdata.map((link, index) => (
 		<NavbarLink
 			{...link}
 			key={link.label}
-			active={index === active}
+			active={window.location.pathname === link.route}
 			onClick={() => {
-				setActive(index);
 				window.location.href = link.route;
 			}}
 		/>
@@ -95,10 +95,6 @@ const NavbarMin = () => {
 			</Navbar.Section>
 			<Navbar.Section>
 				<Group direction="column" align="center" spacing={0}>
-					<NavbarLink
-						icon={SwitchHorizontal}
-						label="Change account"
-					/>
 					<NavbarLink icon={Logout} label="Logout" />
 				</Group>
 			</Navbar.Section>
