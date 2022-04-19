@@ -1,4 +1,4 @@
-import { Select, TextInput } from "@mantine/core";
+import { TextInput } from "@mantine/core";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";

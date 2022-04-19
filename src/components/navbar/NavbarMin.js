@@ -8,16 +8,12 @@ import {
 	Group,
 	Image,
 } from "@mantine/core";
-import {
-	Home2,
-	SquarePlus,
-	User,
-	Settings,
-	Logout,
-	ListSearch,
-} from "tabler-icons-react";
+import { Home2, SquarePlus, User, Logout, Login } from "tabler-icons-react";
 import logoImg from "../../media/logo.png";
 import "./NavbarMin.css";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 const useStyles = createStyles((theme) => ({
 	link: {
 		width: 50,
@@ -62,24 +58,38 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 };
 
 const mockdata = [
-	{ icon: Home2, label: "Home", route: "/" },
-	{ icon: ListSearch, label: "Search", route: "/search" },
-	{ icon: SquarePlus, label: "Create", route: "/create" },
-	{ icon: User, label: "Account", route: "/account" },
-	{ icon: Settings, label: "Settings" },
+	{ icon: Home2, label: "Home", route: "/", needLogin: false },
+	{ icon: SquarePlus, label: "Create", route: "/create", needLogin: true },
+	{ icon: User, label: "Account", route: "/account", needLogin: true },
 ];
-
 const NavbarMin = () => {
-	const links = mockdata.map((link, index) => (
-		<NavbarLink
-			{...link}
-			key={link.label}
-			active={window.location.pathname === link.route}
-			onClick={() => {
-				window.location.href = link.route;
-			}}
-		/>
-	));
+	const location = useLocation();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const [user, setUser] = useState(
+		JSON.parse(localStorage.getItem("loginData"))
+			? JSON.parse(localStorage.getItem("loginData"))
+			: null
+	);
+
+	// useEffect(() => {
+	// 	const token = user?.token;
+	// 	setUser(JSON.parse(localStorage.getItem("loginData")));
+	// }, []);
+
+	const links = mockdata.map((link, index) => {
+		if (link.needLogin && !JSON.parse(localStorage.getItem("loginData")))
+			return null;
+
+		return (
+			<NavbarLink
+				{...link}
+				key={link.label}
+				active={location.pathname === link.route}
+				onClick={() => navigate(link.route)}
+			/>
+		);
+	});
 
 	return (
 		<Navbar height={750} width={{ base: 80 }} p="md" className="navbar">
@@ -95,7 +105,22 @@ const NavbarMin = () => {
 			</Navbar.Section>
 			<Navbar.Section>
 				<Group direction="column" align="center" spacing={0}>
-					<NavbarLink icon={Logout} label="Logout" />
+					{JSON.parse(localStorage.getItem("loginData")) ? (
+						<NavbarLink
+							onClick={() => {
+								dispatch({ type: "LOGOUT" });
+								navigate("/");
+							}}
+							icon={Logout}
+							label="Logout"
+						/>
+					) : (
+						<NavbarLink
+							onClick={() => navigate("/auth")}
+							icon={Login}
+							label="Login"
+						/>
+					)}
 				</Group>
 			</Navbar.Section>
 		</Navbar>

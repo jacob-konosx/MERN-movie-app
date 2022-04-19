@@ -12,6 +12,7 @@ import {
 import { DatePicker, TimeInput } from "@mantine/dates";
 import "./Create.css";
 import { useNavigate } from "react-router-dom";
+import NotAuth from "../notauth/NotAuth";
 const useStyles = createStyles((theme) => ({
 	root: {
 		position: "relative",
@@ -51,7 +52,6 @@ const Create = () => {
 		const name = e.target.name;
 		const value = e.target.value;
 		setMovie({ ...movie, [name]: value });
-		console.log(length);
 	};
 	const handleList = (value, field) => {
 		setMovie((mov) => {
@@ -100,7 +100,8 @@ const Create = () => {
 			}-${movieDate.getDate()}T`;
 			const running_time_secs =
 				length.getHours() * 3600 + length.getMinutes() * 60;
-
+			const uid = JSON.parse(localStorage.getItem("loginData")).result
+				.googleId;
 			const response = await fetch("http://localhost:5000/add", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -116,6 +117,7 @@ const Create = () => {
 					},
 					title: movie.title,
 					year: movie.year,
+					uid,
 				}),
 			});
 
@@ -124,10 +126,12 @@ const Create = () => {
 				window.alert(message);
 				return;
 			}
-			console.log(await response.json());
-			//navigate("/");
+			navigate("/");
 		}
 	};
+	if (!localStorage.getItem("loginData")) {
+		return <NotAuth />;
+	}
 	return (
 		<article className="form">
 			<form>

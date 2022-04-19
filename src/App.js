@@ -1,10 +1,12 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/pages/home/Home";
 import Movie from "./components/pages/movie/Movie";
 import NavbarMin from "./components/navbar/NavbarMin";
 import NotFound from "./components/pages/notfound/NotFound";
 import Create from "./components/pages/create/Create";
+import Auth from "./components/pages/auth/Auth";
+import Account from "./components/pages/account/Account";
 
 function App() {
 	return (
@@ -31,16 +33,16 @@ function App() {
 						className="shape-fill"
 					></path>
 				</svg>
-			</div>{" "}
+			</div>
 			<NavbarMin />
-			<BrowserRouter>
-				<Routes>
-					<Route exact path="/" element={<Home />} />
-					<Route path="/create" element={<Create />} />
-					<Route path="/movie/:id" element={<Movie />} />
-					<Route path="*" exact={true} element={<NotFound />} />
-				</Routes>
-			</BrowserRouter>
+			<Routes>
+				<Route exact path="/" element={<Home />} />
+				<Route path="/create" element={<Create />} />
+				<Route path="/movie/:id" element={<Movie />} />
+				<Route path="/auth" element={<Auth />} />
+				<Route path="/account" element={<Account />} />
+				<Route path="*" exact={true} element={<NotFound />} />
+			</Routes>
 		</div>
 	);
 }
