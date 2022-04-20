@@ -1,11 +1,15 @@
-import { TextInput } from "@mantine/core";
+import { Text, TextInput } from "@mantine/core";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./Search.css";
-const Search = () => {
+const Search = ({ option }) => {
+	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [result, setResult] = useState([]);
+	const navigate = useNavigate();
 	useEffect(() => {
 		const fetchData = async () => {
 			const response = await fetch(
@@ -32,26 +36,34 @@ const Search = () => {
 		setSearchQuery(e.currentTarget.value);
 		if (e.currentTarget.value === "") setResult([]);
 	};
+
 	return (
-		<div className="search">
+		<div>
 			<TextInput
-				style={{
-					position: "relative",
-					maxWidth: "15%",
-					float: "right",
-					marginRight: 20,
-					top: 22,
-				}}
 				label="Find movie"
 				placeholder="Enter movie title"
 				value={searchQuery}
 				onChange={(e) => handleChange(e)}
 			/>
-			<div className="dropdown-content">
+			<div className={`dropdown-content`}>
 				{result.map((movie) => (
-					<a key={movie._id} href={`/movie/${movie._id}`}>
+					<Text
+						className="searchMovie"
+						key={movie._id}
+						onClick={() =>
+							option === "movieForm"
+								? dispatch({
+										type: "ADD_FORM",
+										data: {
+											title: movie.title,
+											id: movie._id,
+										},
+								  })
+								: navigate(`/movie/${movie._id}`)
+						}
+					>
 						{movie.title}
-					</a>
+					</Text>
 				))}
 			</div>
 		</div>

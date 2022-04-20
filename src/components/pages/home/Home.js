@@ -41,12 +41,14 @@ const Home = () => {
 	return (
 		<div>
 			<div>
-				<Search />
+				<div className="homeSearch">
+					<Search />
+				</div>
 				<Pagination
 					style={{
 						position: "relative",
 						marginTop: 20,
-						left: "8.5%",
+						left: "10.4%",
 					}}
 					page={page}
 					onChange={setPage}
@@ -71,15 +73,6 @@ const Home = () => {
 							</div>
 						);
 					})}
-
-				{/* <Button disabled={page === 1} onClick={handlePrevious}>
-					Previous
-				</Button>
-				<Button disabled={page === pageCount} onClick={handleNext}>
-					Next
-				</Button>
-				<p>Page: {page}</p>
-				<p>Page Count: {pageCount}</p> */}
 			</div>
 		</div>
 	);

@@ -87,6 +87,7 @@ recordRoutes.route("/search").get(async (request, response) => {
 		let db_connect = await dbo.getDb();
 
 		let result = await db_connect
+			.collection("movies")
 			.aggregate([
 				{
 					$search: {

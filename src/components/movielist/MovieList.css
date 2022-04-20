@@ -1,0 +1,6 @@
+.formTitle{
+    cursor: pointer;
+}
+.formTitle:hover {
+    color: rgb(205, 92, 92);
+}

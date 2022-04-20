@@ -3,9 +3,8 @@
     margin-top: 20px;
 }
 .mainContent{
-    display: flex
-    ;margin: 20px;
-    
+    display: flex;
+    margin: 20px;
 }
 .column{
     flex: 50%;
@@ -25,4 +24,5 @@ h1{
 }
 #smallCard{
     margin-top: 0;
+    max-width: 400px;
 }

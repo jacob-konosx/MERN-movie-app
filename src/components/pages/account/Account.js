@@ -4,6 +4,7 @@ import NotAuth from "../notauth/NotAuth";
 import { Avatar, Text, Group } from "@mantine/core";
 import { At } from "tabler-icons-react";
 import "./Account.css";
+import MovieList from "../../movielist/MovieList";
 const UserInfoIcons = ({ user }) => {
 	const { email, imageUrl, name } = user;
 	return (
@@ -57,7 +58,8 @@ const Account = () => {
 			</div>
 
 			<div className="content">
-				<h2 style={{ textAlign: "center" }}>Movies List</h2>
+				<MovieList movies={user.moviesList} />
+				{/* <h2 style={{ textAlign: "center" }}>Movies List</h2>
 				<div className="movieList">
 					{user.moviesList.map((movie) => {
 						return (
@@ -72,7 +74,7 @@ const Account = () => {
 							</div>
 						);
 					})}
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
