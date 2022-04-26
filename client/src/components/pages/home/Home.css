@@ -1,0 +1,38 @@
+.movies {
+    --repeat: auto-fit;
+    margin-right: 0 !important;
+}
+
+@media (min-width: calc(300px * 3)) {
+    .movies {
+        --repeat: 3;
+    }
+}
+
+.movies {
+    position: absolute;
+    left: 9.3%;
+    display: grid;
+    /* grid-template-columns: repeat(3, 300px); */
+    grid-template-columns: repeat(var(--repeat, auto-fit),
+            minmax(calc(300px * 1), 1fr));
+    justify-content: center;
+    align-content: center;
+    max-width: 70%;
+    margin-bottom: 20px;
+    height: auto;
+}
+
+.movie {
+    text-align: left;
+    position: relative;
+    padding: 20px;
+    border-radius: 5px;
+    height: 100%;
+}
+.homeSearch {
+    position: absolute;
+    right: 2.5%;
+    top: 4.5%;
+    width: 18%;
+}
