@@ -4,3 +4,9 @@
 .formTitle:hover {
     color: rgb(205, 92, 92);
 }
+.editForm{
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}

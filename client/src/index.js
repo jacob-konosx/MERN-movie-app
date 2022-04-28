@@ -6,14 +6,29 @@ import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from "./reducers";
 import { BrowserRouter } from "react-router-dom";
 
-const store = configureStore({ reducer: { root: rootReducer } });
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+import { PersistGate } from "redux-persist/integration/react";
+
+const persistConfig = {
+	key: "root",
+	storage: storage,
+	stateReconciler: autoMergeLevel2, // see "Merge Process" section for details.
+};
+const pReducer = persistReducer(persistConfig, rootReducer);
+
+const store = configureStore({ reducer: { root: pReducer } });
+let persistor = persistStore(store);
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 root.render(
 	<Provider store={store}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
+		<PersistGate persistor={persistor}>
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>{" "}
+		</PersistGate>
 	</Provider>
 );

@@ -11,7 +11,7 @@ import {
 import { Home2, SquarePlus, User, Logout, Login } from "tabler-icons-react";
 import logoImg from "../../media/logo.png";
 import "./NavbarMin.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 const useStyles = createStyles((theme) => ({
 	link: {
@@ -65,15 +65,10 @@ const NavbarMin = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
-	// useEffect(() => {
-	// 	const token = user?.token;
-	// 	setUser(JSON.parse(localStorage.getItem("loginData")));
-	// }, []);
+	const user = useSelector((state) => state.root.authReducer.profile);
 
 	const links = mockdata.map((link, index) => {
-		if (link.needLogin && !JSON.parse(localStorage.getItem("loginData")))
-			return null;
+		if (link.needLogin && !user) return null;
 
 		return (
 			<NavbarLink
@@ -99,7 +94,7 @@ const NavbarMin = () => {
 			</Navbar.Section>
 			<Navbar.Section>
 				<Group direction="column" align="center" spacing={0}>
-					{JSON.parse(localStorage.getItem("loginData")) ? (
+					{user ? (
 						<NavbarLink
 							onClick={() => {
 								dispatch({ type: "LOGOUT" });

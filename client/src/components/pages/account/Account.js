@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import NotAuth from "../notauth/NotAuth";
 import { Avatar, Text, Group } from "@mantine/core";
 import { At } from "tabler-icons-react";
 import "./Account.css";
 import MovieList from "../../movielist/MovieList";
-import { useDispatch, useSelector } from "react-redux";
-import { GET_USER_STORAGE } from "../../../constants/actionTypes";
+import { useSelector } from "react-redux";
 const UserInfoIcons = ({ user }) => {
 	const { email, imageUrl, name } = user;
 	return (
@@ -28,13 +27,8 @@ const UserInfoIcons = ({ user }) => {
 };
 
 const Account = () => {
-	const dispatch = useDispatch();
-	const user = useSelector((state) => state.root.authReducer.userData);
-
-	useEffect(() => {
-		dispatch({ type: GET_USER_STORAGE });
-	}, []);
-	if (!localStorage.getItem("loginData")) {
+	const user = useSelector((state) => state.root.authReducer.profile.result);
+	if (!user) {
 		return <NotAuth />;
 	}
 	return (
@@ -46,12 +40,11 @@ const Account = () => {
 					</div>
 
 					<div className="content">
-						<MovieList movies={user.moviesList} />
+						<MovieList movies={user.moviesList} id={user._id} />
 					</div>
 				</div>
 			)}
 		</>
 	);
 };
-//style={{ position: "relative", left: "45%", top: 60 }}
 export default Account;

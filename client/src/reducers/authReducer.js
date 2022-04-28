@@ -1,32 +1,25 @@
-import {
-	AUTH,
-	LOGOUT,
-	GET_USER_STORAGE,
-	SET_USER_STORAGE,
-} from "../constants/actionTypes";
+import { AUTH, LOGOUT, SET_USER_MOVIES } from "../constants/actionTypes";
 
-const authReducer = (state = { authData: null }, action) => {
+const authReducer = (state = { profile: null }, action) => {
 	switch (action.type) {
 		case AUTH:
 			localStorage.setItem(
 				"loginData",
 				JSON.stringify({ ...action?.data })
 			);
-			return { ...state, authData: action?.data };
+			return { ...state, profile: action?.data };
 		case LOGOUT:
 			localStorage.removeItem("loginData");
-			return { ...state, authData: null };
-		case GET_USER_STORAGE:
+			return { ...state, profile: null };
+		case SET_USER_MOVIES:
 			return {
 				...state,
-				userData: JSON.parse(localStorage.getItem("loginData")).result,
-			};
-		case SET_USER_STORAGE:
-			return {
-				...state,
-				userData: {
-					...state.userData,
-					[action.payload.field]: action.payload.data,
+				profile: {
+					...state.profile,
+					result: {
+						...state.profile.result,
+						[action.payload.field]: action.payload.data,
+					},
 				},
 			};
 		default:

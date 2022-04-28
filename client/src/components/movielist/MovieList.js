@@ -8,126 +8,50 @@ import {
 	ScrollArea,
 	NumberInput,
 	Select,
+	Button,
 } from "@mantine/core";
-import { Pencil, Trash, Plus } from "tabler-icons-react";
-import { useState, useEffect } from "react";
-import Search from "../search/Search";
-import { useSelector, useDispatch } from "react-redux";
+import { Pencil, Trash } from "tabler-icons-react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { addMovieList } from "../../actions/movies";
 import "./MovieList.css";
-import { SET_USER_STORAGE } from "../../constants/actionTypes";
+import MovieListForm from "../movieListForm/MovieListForm";
 const jobColors = {
 	completed: "green",
 	ptw: "orange",
 };
 
-const MovieList = ({ movies }) => {
-	const [activeForm, setActiveForm] = useState(false);
-	const rows = movies.map((item) => (
-		<>
-			<tr key={item.id}>
-				<td>
-					<Group spacing="sm">
-						<Text size="xl" weight={500}>
-							{item.title}
-						</Text>
-					</Group>
-				</td>
+const MovieList = ({ movies, id }) => {
+	const dispatch = useDispatch();
+	const [editForm, setEditForm] = useState({
+		isActive: false,
+	});
 
-				<td>
-					<Badge
-						color={jobColors[item.status.toLowerCase()]}
-						variant="outline"
-					>
-						{item.status}
-					</Badge>
-				</td>
-				<td>
-					<Text size="xl" color="gray">
-						{item.rating}/10
-					</Text>
-				</td>
-				<td>
-					<Group spacing={0} position="right">
-						<ActionIcon>
-							<Pencil size={16} />
-						</ActionIcon>
-						<ActionIcon color="red">
-							<Trash size={16} />
-						</ActionIcon>
-					</Group>
-				</td>
-			</tr>
-		</>
-	));
-	const MovieListForm = () => {
-		const dispatch = useDispatch();
-		const [status, setStatus] = useState(null);
-		const [form, setForm] = useState({
-			title: null,
-			status: null,
-			id: null,
-		});
-
-		const formData = useSelector(
-			(state) => state.root.formReducer.formData
-		);
-		useEffect(() => {
-			if (formData) {
-				setForm({ ...form, title: formData.title, id: formData.id });
-			} else {
-				setForm({
-					...form,
-					title: null,
-					id: null,
-					rating: null,
-				});
-			}
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-		}, [formData]);
-		const handleFormSubmit = async () => {
-			if (form.title && status && form.id && form.rating) {
-				const loginData = JSON.parse(localStorage.getItem("loginData"));
-				const newMovieList = [
-					...loginData.result.moviesList,
-					{
-						...form,
-						status,
-					},
-				];
-				loginData.result.moviesList = newMovieList;
-				localStorage.setItem("loginData", JSON.stringify(loginData));
-				dispatch(addMovieList(loginData.result._id, newMovieList));
-				setActiveForm(false);
-			}
+	const EditForm = () => {
+		const [status, setStatus] = useState();
+		const [rating, setRating] = useState();
+		const handleEditSubmit = () => {
+			const finalRating = rating || editForm.rating;
+			const finalStatus = status || editForm.status;
+			const finalForm = { ...editForm, rating: finalRating };
+			delete finalForm?.isActive;
+			const oldMovies = movies.filter((m) => m.id !== editForm.id);
+			dispatch(
+				addMovieList(id, [
+					...oldMovies,
+					{ ...finalForm, status: finalStatus },
+				])
+			);
+			setEditForm({ isActive: false });
 		};
 		return (
-			<div
-				style={{
-					width: "25%",
-					margin: "0 auto",
-					marginTop: "2%",
-					position: "relative",
-				}}
-			>
-				{!form.title ? (
-					<Search option={"movieForm"} />
-				) : (
-					<Text>
-						Movie:{" "}
-						<span
-							className="formTitle"
-							onClick={() => {
-								dispatch({ type: "CLEAR_SEARCH" });
-							}}
-						>
-							{form.title}
-						</span>
-					</Text>
-				)}
-
+			<div className="editForm">
 				<NumberInput
-					onChange={(val) => setForm((m) => ({ ...m, rating: val }))}
+					style={{
+						position: "relative",
+						width: "60%",
+						padding: "2%",
+					}}
 					name="rating"
 					required={true}
 					label="Rating"
@@ -135,10 +59,13 @@ const MovieList = ({ movies }) => {
 					max={10}
 					step={0.1}
 					precision={1}
-					value={form.rating}
+					value={rating || editForm.rating}
+					onChange={(val) => setRating(val)}
 				/>
 				<Select
+					style={{ width: "60%" }}
 					required={true}
+					value={status || editForm.status}
 					label="Movie Status"
 					placeholder="Choose movie status"
 					data={[
@@ -147,34 +74,63 @@ const MovieList = ({ movies }) => {
 					]}
 					onChange={setStatus}
 				/>
-				<ActionIcon
-					color="blue"
-					variant="outline"
-					onClick={() => handleFormSubmit()}
-					style={{ margin: "0 auto", marginTop: "2%" }}
-				>
-					<Plus size={20} />
-				</ActionIcon>
+				<Button style={{ left: "50%" }} onClick={handleEditSubmit}>
+					Update
+				</Button>
 			</div>
 		);
 	};
+	const rows = movies.map((item) => {
+		return (
+			<React.Fragment key={item.id}>
+				<tr>
+					<td>
+						<Group spacing="sm">
+							<Text size="xl" weight={500}>
+								{item.title}
+							</Text>
+						</Group>
+					</td>
+
+					<td>
+						<Badge
+							color={jobColors[item.status.toLowerCase()]}
+							variant="outline"
+						>
+							{item.status}
+						</Badge>
+					</td>
+					<td>
+						<Text size="xl" color="gray">
+							{item.rating}/10
+						</Text>
+					</td>
+					<td>
+						<Group spacing={0} position="right">
+							<ActionIcon
+								onClick={() =>
+									setEditForm({
+										isActive: !editForm.isActive,
+										...item,
+									})
+								}
+							>
+								<Pencil size={16} />
+							</ActionIcon>
+							<ActionIcon color="red">
+								<Trash size={16} />
+							</ActionIcon>
+						</Group>
+					</td>
+				</tr>
+				{editForm.isActive && editForm.id === item.id && <EditForm />}
+			</React.Fragment>
+		);
+	});
+
 	return (
 		<>
-			<Group position="center" style={{ marginTop: "2%" }}>
-				<Text align="center" size="xl" weight={500}>
-					Movie List
-				</Text>
-				{!activeForm && (
-					<ActionIcon
-						color="blue"
-						variant="outline"
-						onClick={() => setActiveForm(true)}
-					>
-						<Plus size={20} />
-					</ActionIcon>
-				)}
-			</Group>
-			{activeForm && <MovieListForm />}
+			<MovieListForm />
 			<ScrollArea style={{ maxWidth: "45%", margin: "0 auto" }}>
 				<Table verticalSpacing="sm">
 					<thead>

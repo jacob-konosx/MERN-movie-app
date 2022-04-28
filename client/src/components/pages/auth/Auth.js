@@ -11,7 +11,6 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./styles";
 import Input from "./Input";
-import GoogleAuth from "../../googleAuth/GoogleAuth";
 import { useNavigate } from "react-router-dom";
 import { signin, signup } from "../../../actions/auth";
 const initialState = {

@@ -7,7 +7,7 @@
     align-items: center;
 }
 
-.movieList{display: flex;
+.movieList{
 flex-direction: row;
 flex-wrap: wrap;
 justify-content: center;

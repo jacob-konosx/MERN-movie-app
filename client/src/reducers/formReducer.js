@@ -1,13 +1,13 @@
 import { ADD_FORM, CLEAR_SEARCH } from "../constants/actionTypes";
 
-const formReducer = (state = { formData: null }, action) => {
+const formReducer = (state = { isActive: false, formSearch: null }, action) => {
 	switch (action.type) {
 		case ADD_FORM:
-			return { ...state, formData: action?.data };
+			return { ...state, formSearch: action?.data };
 		case CLEAR_SEARCH:
 			return {
 				...state,
-				formData: { ...state.formData, title: null, id: null },
+				formSearch: { ...state.formData, title: null, id: null },
 			};
 		default:
 			return state;

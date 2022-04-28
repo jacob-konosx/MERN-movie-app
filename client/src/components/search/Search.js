@@ -8,6 +8,9 @@ import { searchMovies } from "../../actions/movies";
 import { CLEAR_SEARCH } from "../../constants/actionTypes";
 import "./Search.css";
 const Search = ({ option }) => {
+	const userMoviesList = useSelector(
+		(state) => state.root.authReducer.profile?.result.moviesList
+	);
 	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState("");
 	const navigate = useNavigate();
@@ -32,25 +35,38 @@ const Search = ({ option }) => {
 			/>
 			<div className={`dropdown-content`}>
 				{searchRes &&
-					searchRes.map((movie) => (
-						<Text
-							className="searchMovie"
-							key={movie._id}
-							onClick={() =>
-								option === "movieForm"
-									? dispatch({
-											type: "ADD_FORM",
-											data: {
-												title: movie.title,
-												id: movie._id,
-											},
-									  })
-									: navigate(`/movie/${movie._id}`)
-							}
-						>
-							{movie.title}
-						</Text>
-					))}
+					searchRes.map((movie) => {
+						if (option === "movieForm" && userMoviesList) {
+							const cloneMovie = userMoviesList.filter(
+								(m) => m.id === movie._id
+							);
+							if (cloneMovie.length >= 1)
+								return (
+									<React.Fragment
+										key={movie._id}
+									></React.Fragment>
+								);
+						}
+						return (
+							<Text
+								className="searchMovie"
+								key={movie._id}
+								onClick={() =>
+									option === "movieForm"
+										? dispatch({
+												type: "ADD_FORM",
+												data: {
+													title: movie.title,
+													id: movie._id,
+												},
+										  })
+										: navigate(`/movie/${movie._id}`)
+								}
+							>
+								{movie.title}
+							</Text>
+						);
+					})}
 			</div>
 		</div>
 	);

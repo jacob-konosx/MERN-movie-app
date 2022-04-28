@@ -2,7 +2,7 @@ import {
 	FETCH_ALL,
 	FETCH_ONE,
 	SEARCH,
-	SET_USER_STORAGE,
+	SET_USER_MOVIES,
 } from "../constants/actionTypes";
 
 import * as api from "../api/index.js";
@@ -47,7 +47,7 @@ export const addMovieList = (id, movieList) => async (dispatch) => {
 	try {
 		await api.addMovieList(id, movieList);
 		dispatch({
-			type: SET_USER_STORAGE,
+			type: SET_USER_MOVIES,
 			payload: { field: "moviesList", data: movieList },
 		});
 	} catch (error) {
