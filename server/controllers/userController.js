@@ -66,4 +66,19 @@ export const addMovieList = async (req, res) => {
 	res.json(moviesList);
 };
 
+export const getInfo = async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		if (id.match(/^[0-9a-fA-F]{24}$/)) {
+			const user = await UserModel.findById(id);
+			const { name, _id, imageUrl } = user;
+			res.status(200).json({ name, _id, imageUrl });
+		} else {
+			res.json({ message: "Invalid id" });
+		}
+	} catch (error) {
+		res.status(404).json({ message: error.message });
+	}
+};
 export default router;

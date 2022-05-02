@@ -4,12 +4,13 @@ import {
 	signin,
 	signup,
 	addMovieList,
-	getMovieList,
+	getInfo,
 } from "../controllers/userController.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
+router.get("/getInfo/:id", getInfo);
 router.post("/signin", signin);
 router.post("/signup", signup);
 

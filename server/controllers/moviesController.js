@@ -77,6 +77,21 @@ export const getSearch = async (req, res) => {
 	}
 };
 
+export const addReview = async (req, res) => {
+	const { id } = req.params;
+	const review = req.body.body;
+	if (!mongoose.Types.ObjectId.isValid(id))
+		return res.status(404).send(`No movie with id: ${id}`);
+
+	const response = await MovieModel.findByIdAndUpdate(
+		id,
+		{
+			$push: { reviews: review },
+		},
+		{ new: true }
+	);
+	res.json(response["reviews"]);
+};
 //Update
 
 //Delete

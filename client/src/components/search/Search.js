@@ -9,7 +9,7 @@ import { CLEAR_SEARCH } from "../../constants/actionTypes";
 import "./Search.css";
 const Search = ({ option }) => {
 	const userMoviesList = useSelector(
-		(state) => state.root.authReducer.profile?.result.moviesList
+		(state) => state.root.authReducer.profile?.result?.moviesList
 	);
 	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState("");
