@@ -26,3 +26,5 @@ export const signin = (formData) => API.post("/user/signin", formData);
 export const signup = (formData) => API.post("/user/signup", formData);
 export const addMovieList = (id, movieList) =>
 	API.post(`/user/addMovieList/${id}`, movieList);
+export const addReviewList = (id, review) =>
+	API.post(`/user/addReviewList/${id}`, review);

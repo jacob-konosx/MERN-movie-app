@@ -56,7 +56,7 @@ export const signup = async (req, res) => {
 
 export const addMovieList = async (req, res) => {
 	const { id } = req.params;
-	const moviesList = req.body;
+	const moviesList = req;
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No users with id: ${id}`);
 
@@ -81,4 +81,21 @@ export const getInfo = async (req, res) => {
 		res.status(404).json({ message: error.message });
 	}
 };
+
+export const addReview = async (req, res) => {
+	const { id } = req.params;
+	const review = req.body;
+	if (!mongoose.Types.ObjectId.isValid(id))
+		return res.status(404).send(`No movie with id: ${id}`);
+
+	const response = await UserModel.findByIdAndUpdate(
+		id,
+		{
+			$push: { reviewList: review },
+		},
+		{ new: true }
+	);
+	res.json(response["reviewList"]);
+};
+
 export default router;

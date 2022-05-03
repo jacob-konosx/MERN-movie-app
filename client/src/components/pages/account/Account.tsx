@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import NotAuth from "../notauth/NotAuth";
 import { Avatar, Text, Group } from "@mantine/core";
 import { At } from "tabler-icons-react";
 import "./Account.css";
 import MovieList from "../../movielist/MovieList";
 import { useSelector } from "react-redux";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+
 const UserInfoIcons = ({ user }) => {
 	const { email, imageUrl, name } = user;
 	return (
@@ -27,24 +33,36 @@ const UserInfoIcons = ({ user }) => {
 };
 
 const Account = () => {
+	const [value, setValue] = useState("1");
 	const user = useSelector((state) => state.root.authReducer.profile.result);
 	if (!user) {
 		return <NotAuth />;
 	}
+const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+	setValue(newValue);
+};
 	return (
-		<>
-			{user && (
 				<div className="account">
 					<div className="userInfo">
 						<UserInfoIcons user={user} />
 					</div>
 
-					<div className="content">
-						<MovieList movies={user.moviesList} id={user._id} />
-					</div>
+					<TabContext  value={value}>
+						<Box className="tab" sx={{ borderBottom: 2, borderColor: "divider" }}>
+							<TabList
+							centered
+								onChange={handleChange}
+							>
+								<Tab label="My List" value="1" />
+								<Tab label="My Reviews" value="2" />
+							</TabList>
+						</Box>
+						<TabPanel value="1">
+							<MovieList movies={user.moviesList} id={user._id} />
+						</TabPanel>
+						<TabPanel value="2">Item Two</TabPanel>
+					</TabContext>
 				</div>
-			)}
-		</>
 	);
 };
 export default Account;

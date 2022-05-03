@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
 			default: [],
 		},
 	],
-	reviewList: [{ type: { movieId: String, default: [] } }],
+	reviewList: [{ type: { movieId: String }, default: [] }],
 });
 
 var UserModel = mongoose.model("UserModel", userSchema, "users");

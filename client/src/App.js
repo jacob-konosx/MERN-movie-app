@@ -6,7 +6,7 @@ import NavbarMin from "./components/navbar/NavbarMin";
 import NotFound from "./components/pages/notfound/NotFound";
 import Create from "./components/pages/create/Create";
 import Auth from "./components/pages/auth/Auth";
-import Account from "./components/pages/account/Account";
+import Account from "./components/pages/account/Account.tsx";
 
 function App() {
 	return (

@@ -44,7 +44,7 @@ const MovieListForm = () => {
 	};
 	return (
 		<>
-			<Group position="center" style={{ marginTop: "2%" }}>
+			<Group position="center">
 				<Text align="center" size="xl" weight={500}>
 					Movie List
 				</Text>

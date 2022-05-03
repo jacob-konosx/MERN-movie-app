@@ -3,7 +3,7 @@ import {
 	FETCH_ONE,
 	SEARCH,
 	SET_MOVIE_REVIEW_USER,
-	SET_USER_MOVIES,
+	SET_USER_FIELD,
 	SET_REVIEWS,
 } from "../constants/actionTypes";
 
@@ -49,7 +49,7 @@ export const addMovieList = (id, movieList) => async (dispatch) => {
 	try {
 		await api.addMovieList(id, movieList);
 		dispatch({
-			type: SET_USER_MOVIES,
+			type: SET_USER_FIELD,
 			payload: { field: "moviesList", data: movieList },
 		});
 	} catch (error) {
