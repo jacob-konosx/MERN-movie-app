@@ -8,6 +8,7 @@ import {
 } from "../constants/actionTypes";
 
 import * as api from "../api/index.js";
+import { compose } from "@mui/system";
 
 export const getMovies = (page) => async (dispatch) => {
 	try {
@@ -22,7 +23,6 @@ export const getMovies = (page) => async (dispatch) => {
 export const getMovie = (id) => async (dispatch) => {
 	try {
 		const { data } = await api.fetchMovie(id);
-
 		dispatch({ type: FETCH_ONE, payload: data });
 	} catch (error) {
 		console.log(error);
@@ -45,9 +45,9 @@ export const createMovie = (newMovie) => async (dispatch) => {
 		console.log(error);
 	}
 };
-export const addMovieList = (id, movieList) => async (dispatch) => {
+export const updateMovieList = (id, movieList) => async (dispatch) => {
 	try {
-		await api.addMovieList(id, movieList);
+		await api.updateMovieList(id, movieList);
 		dispatch({
 			type: SET_USER_FIELD,
 			payload: { field: "moviesList", data: movieList },

@@ -3,7 +3,7 @@ import express from "express";
 import {
 	signin,
 	signup,
-	addMovieList,
+	updateMovieList,
 	getInfo,
 	addReview,
 } from "../controllers/userController.js";
@@ -15,6 +15,6 @@ router.get("/getInfo/:id", getInfo);
 router.post("/signin", signin);
 router.post("/signup", signup);
 
-router.post("/addMovieList/:id", auth, addMovieList);
-router.post("/addReviewList/:id", addReview);
+router.post("/updateMovieList/:id", auth, updateMovieList);
+router.post("/addReviewList/:id", auth, addReview);
 export default router;

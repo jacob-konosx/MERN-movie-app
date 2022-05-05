@@ -13,7 +13,7 @@ import {
 import { Pencil, Trash } from "tabler-icons-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addMovieList } from "../../actions/movies";
+import { updateMovieList } from "../../actions/movies";
 import "./MovieList.css";
 import MovieListForm from "../movieListForm/MovieListForm";
 const jobColors = {
@@ -26,6 +26,10 @@ const MovieList = ({ movies, id }) => {
 	const [editForm, setEditForm] = useState({
 		isActive: false,
 	});
+	const deleteHandler = (deletion_id) => {
+		const deletedList = movies.filter((m) => m._id !== deletion_id);
+		dispatch(updateMovieList(id, deletedList));
+	};
 
 	const EditForm = () => {
 		const [status, setStatus] = useState();
@@ -37,7 +41,7 @@ const MovieList = ({ movies, id }) => {
 			delete finalForm?.isActive;
 			const oldMovies = movies.filter((m) => m.id !== editForm.id);
 			dispatch(
-				addMovieList(id, [
+				updateMovieList(id, [
 					...oldMovies,
 					{ ...finalForm, status: finalStatus },
 				])
@@ -117,7 +121,10 @@ const MovieList = ({ movies, id }) => {
 							>
 								<Pencil size={16} />
 							</ActionIcon>
-							<ActionIcon color="red">
+							<ActionIcon
+								color="red"
+								onClick={() => deleteHandler(item._id)}
+							>
 								<Trash size={16} />
 							</ActionIcon>
 						</Group>

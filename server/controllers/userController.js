@@ -54,16 +54,17 @@ export const signup = async (req, res) => {
 	}
 };
 
-export const addMovieList = async (req, res) => {
+export const updateMovieList = async (req, res) => {
 	const { id } = req.params;
-	const moviesList = req;
+	const moviesList = req.body;
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No users with id: ${id}`);
 
 	const response = await UserModel.findByIdAndUpdate(id, {
 		moviesList: moviesList,
 	});
-	res.json(moviesList);
+
+	res.json(response);
 };
 
 export const getInfo = async (req, res) => {

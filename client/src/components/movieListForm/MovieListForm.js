@@ -2,7 +2,7 @@ import { ActionIcon, Group, NumberInput, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Plus } from "tabler-icons-react";
-import { addMovieList } from "../../actions/movies";
+import { updateMovieList } from "../../actions/movies";
 import { CLEAR_SEARCH } from "../../constants/actionTypes";
 import Search from "../search/Search";
 
@@ -37,7 +37,7 @@ const MovieListForm = () => {
 	const handleFormSubmit = async () => {
 		if (form.title && status && form.id && form.rating) {
 			const newMovieList = [...moviesList, { ...form, status }];
-			dispatch(addMovieList(_id, newMovieList));
+			dispatch(updateMovieList(_id, newMovieList));
 			dispatch({ type: CLEAR_SEARCH });
 			setActiveForm(false);
 		}
