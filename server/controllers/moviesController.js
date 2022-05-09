@@ -92,7 +92,17 @@ export const addReview = async (req, res) => {
 	);
 	res.json(response["reviews"]);
 };
-//Update
+export const deleteReview = async (req, res) => {
+	const { id } = req.params;
+	const userId = req.body.userId;
+	if (!mongoose.Types.ObjectId.isValid(id))
+		return res.status(404).send(`No movie with id: ${id}`);
+
+	const response = await MovieModel.findByIdAndUpdate(id, {
+		$pull: { reviews: { uid: userId } },
+	});
+	res.json(response);
+};
 
 //Delete
 

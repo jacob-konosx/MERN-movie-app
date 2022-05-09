@@ -74,3 +74,16 @@ export const getUserInfo = (uid, review_id) => async (dispatch) => {
 		console.log(error);
 	}
 };
+
+export const getMoviesById = (reviewList) => async (dispatch) => {
+	let movies = [];
+	try {
+		for (const rev of reviewList) {
+			const { data } = await api.fetchMovie(rev.movieId);
+			movies.push(data);
+		}
+		dispatch({ type: FETCH_ALL, payload: movies });
+	} catch (error) {
+		console.log(error);
+	}
+};

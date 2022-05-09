@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en.json";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addReview, getUserInfo } from "../../../../actions/movies";
 import {
@@ -13,9 +12,7 @@ import {
 } from "@material-ui/core";
 import "./Review.css";
 import { addUserReviewList } from "../../../../actions/auth";
-
-TimeAgo.addDefaultLocale(en);
-const timeAgo = new TimeAgo("en-US");
+import { timeAgo } from "../../../timeago/timeago";
 
 const Review = ({ id }) => {
 	const dispatch = useDispatch();

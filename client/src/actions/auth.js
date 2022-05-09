@@ -29,3 +29,15 @@ export const addUserReviewList = (id, review) => async (dispatch) => {
 		console.log(error);
 	}
 };
+export const deleteReview = (userId, movieId) => async (dispatch) => {
+	try {
+		await api.deleteReviewMovie(movieId, userId);
+		const { data } = await api.deleteReviewUser(userId, movieId);
+		dispatch({
+			type: SET_USER_FIELD,
+			payload: { field: "reviewList", data },
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};

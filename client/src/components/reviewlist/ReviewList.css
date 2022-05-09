@@ -1,0 +1,9 @@
+.userReviews{
+    position: absolute;
+    right: 25%;
+    width: 50%;
+}
+.no_reviews{
+    position: absolute;
+    right: 45%;
+}

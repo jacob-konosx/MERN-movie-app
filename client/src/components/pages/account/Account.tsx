@@ -10,6 +10,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import ReviewList from "../../reviewlist/ReviewList";
 
 const UserInfoIcons = ({ user }) => {
 	const { email, imageUrl, name } = user;
@@ -34,7 +35,7 @@ const UserInfoIcons = ({ user }) => {
 
 const Account = () => {
 	const [value, setValue] = useState("1");
-	const user = useSelector((state) => state.root.authReducer.profile.result);
+	const user = useSelector((state:any) => state.root.authReducer.profile.result);
 	if (!user) {
 		return <NotAuth />;
 	}
@@ -60,7 +61,7 @@ const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 						<TabPanel value="1">
 							<MovieList movies={user.moviesList} id={user._id} />
 						</TabPanel>
-						<TabPanel value="2">Item Two</TabPanel>
+						<TabPanel value="2"><ReviewList userReviews={user?.reviewList}/></TabPanel>
 					</TabContext>
 				</div>
 	);
