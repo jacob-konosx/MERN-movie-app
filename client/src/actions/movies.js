@@ -6,9 +6,7 @@ import {
 	SET_USER_FIELD,
 	SET_REVIEWS,
 } from "../constants/actionTypes";
-
 import * as api from "../api/index.js";
-import { compose } from "@mui/system";
 
 export const getMovies = (page) => async (dispatch) => {
 	try {
@@ -58,9 +56,7 @@ export const updateMovieList = (id, movieList) => async (dispatch) => {
 };
 export const addReview = (id, review) => async (dispatch) => {
 	try {
-		console.log(id, review);
 		const { data } = await api.addReview(id, review);
-		console.log(data);
 		dispatch({ type: SET_REVIEWS, payload: { data } });
 	} catch (error) {
 		console.log(error);

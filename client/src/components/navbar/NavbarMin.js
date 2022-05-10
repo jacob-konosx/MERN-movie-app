@@ -13,6 +13,7 @@ import logoImg from "../../media/logo.png";
 import "./NavbarMin.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { LOGOUT } from "../../constants/actionTypes";
 const useStyles = createStyles((theme) => ({
 	link: {
 		width: 50,
@@ -97,7 +98,7 @@ const NavbarMin = () => {
 					{user ? (
 						<NavbarLink
 							onClick={() => {
-								dispatch({ type: "LOGOUT" });
+								dispatch({ type: LOGOUT });
 								navigate("/");
 							}}
 							icon={Logout}

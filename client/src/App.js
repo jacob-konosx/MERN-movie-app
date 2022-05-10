@@ -7,8 +7,26 @@ import NotFound from "./components/pages/notfound/NotFound";
 import Create from "./components/pages/create/Create";
 import Auth from "./components/pages/auth/Auth";
 import Account from "./components/pages/account/Account.tsx";
+import { useDispatch } from "react-redux";
+import { API } from "./api";
+import { LOGOUT } from "./constants/actionTypes";
 
 function App() {
+	const dispatch = useDispatch();
+	//Use axios interceptor to dispatch based off response errors
+	API.interceptors.response.use(
+		function (response) {
+			// Do something with response data
+			return response;
+		},
+		function (error) {
+			if (error.response.status === 403) {
+				dispatch({ type: LOGOUT });
+				window.location.href = "/auth";
+			}
+			return Promise.reject(error);
+		}
+	);
 	return (
 		<div className="App">
 			<div className="custom-shape-divider-top-1649083949">
