@@ -65,13 +65,14 @@ const BadgeCard = ({ props }) => {
 				id="smallCard"
 				withBorder
 				radius="md"
-				p="md"
 				className={classes.card}
 			>
-				<Card.Section className={classes.section} mt="md">
+				<Card.Section className={classes.section}>
 					<Group position="apart">
-						<Text size="lg" weight={500}>
-							{title} - {year}
+						<Text className="cardBody" size="lg" weight={500}>
+							<a className="titleLink" href={`/movie/${_id}`}>
+								{title}
+							</a>
 						</Text>
 						<Badge size="sm">{rating}</Badge>
 					</Group>
@@ -80,15 +81,18 @@ const BadgeCard = ({ props }) => {
 					</Text>
 				</Card.Section>
 
-				<Group mt="xs">
-					<Button
+				<Group>
+					<Text size="m" mt="xs">
+						{genres.join(", ")}
+					</Text>
+					{/* <Button
 						component={Link}
 						to={`/movie/${_id}`}
 						radius="md"
 						style={{ flex: 1 }}
 					>
 						Show details
-					</Button>
+					</Button> */}
 				</Group>
 			</Card>
 		);

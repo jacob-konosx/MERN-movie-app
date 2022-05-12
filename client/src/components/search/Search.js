@@ -14,7 +14,9 @@ const Search = ({ option }) => {
 	const dispatch = useDispatch();
 	const [searchQuery, setSearchQuery] = useState("");
 	const navigate = useNavigate();
-	const searchRes = useSelector((state) => state.root.movieReducer.searchRes);
+	const searchRes = useSelector(
+		(state) => state.root.movieReducer?.searchRes
+	);
 
 	useEffect(() => {
 		if (searchQuery !== "") dispatch(searchMovies(searchQuery));
@@ -27,8 +29,15 @@ const Search = ({ option }) => {
 
 	return (
 		<div className="search">
+			<Text
+				weight={700}
+				size="lg"
+				variant="gradient"
+				gradient={{ from: "black", to: "white", deg: 10 }}
+			>
+				Find Movie
+			</Text>
 			<TextInput
-				label="Find movie"
 				placeholder="Enter movie title"
 				value={searchQuery}
 				onChange={(e) => handleChange(e)}

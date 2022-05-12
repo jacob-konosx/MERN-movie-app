@@ -36,7 +36,8 @@ const Home = () => {
 				/>
 			</div>
 			<div className="movies">
-				{data.movies &&
+				{data &&
+					data.movies &&
 					data.movies.map((res) => {
 						const { _id, title, info, year } = res;
 						return (

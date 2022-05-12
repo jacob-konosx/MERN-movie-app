@@ -6,6 +6,7 @@ import { getMovie } from "../../../actions/movies";
 
 import "./Movie.css";
 import Review from "./Review/Review";
+import NotAuth from "../notauth/NotAuth";
 const Movie = () => {
 	const { id } = useParams();
 	const dispatch = useDispatch();
@@ -14,7 +15,18 @@ const Movie = () => {
 	useEffect(() => {
 		dispatch(getMovie(id));
 	}, [id]);
-
+	if (!movie || movie.message) {
+		return (
+			<NotAuth
+				error={{
+					text: "Movie Not Found",
+					description:
+						"The movie ID you have entered does not correspond to an existing movie.",
+				}}
+				button={{ text: "Take me to the homepage", path: "" }}
+			/>
+		);
+	}
 	return (
 		<div className="singleMovie">
 			{movie.info && (
@@ -28,7 +40,7 @@ const Movie = () => {
 					}}
 				/>
 			)}
-			<Review id={movie._id} />
+			{movie.info && <Review id={movie._id} />}
 		</div>
 	);
 };

@@ -128,7 +128,16 @@ const Create = () => {
 		}
 	};
 	if (!localStorage.getItem("loginData")) {
-		return <NotAuth />;
+		return (
+			<NotAuth
+				error={{
+					text: "Login Required",
+					description:
+						"Authentication is required for the page you are trying to access.",
+				}}
+				button={{ text: "Take me to login page", path: "auth" }}
+			/>
+		);
 	}
 	return (
 		<article className="form">

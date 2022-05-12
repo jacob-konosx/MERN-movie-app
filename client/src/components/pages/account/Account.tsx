@@ -35,9 +35,9 @@ const UserInfoIcons = ({ user }) => {
 
 const Account = () => {
 	const [value, setValue] = useState("1");
-	const user = useSelector((state:any) => state.root.authReducer.profile.result);
+	const user = useSelector((state:any) => state.root.authReducer.profile?.result);
 	if (!user) {
-		return <NotAuth />;
+		return <NotAuth error={{text:"Login Required",description:"Authentication is required for the page you are trying to access."}} button={{text:'Take me to login page', path:'auth'}}/>;
 	}
 const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 	setValue(newValue);

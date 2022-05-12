@@ -57,26 +57,29 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-const NotAuth = () => {
+const NotAuth = ({ error, button }) => {
 	const { classes } = useStyles();
 
 	return (
 		<Container className={classes.root}>
 			<div className={classes.inner}>
 				<div className={classes.content}>
-					<Title className={classes.title}>Login Needed</Title>
+					<Title className={classes.title}>{error.text}</Title>
 					<Text
 						color="dimmed"
 						size="lg"
 						align="center"
 						className={classes.description}
 					>
-						Authentication is needed for the page you are trying to
-						open.
+						{error.description}
 					</Text>
 					<Group position="center">
-						<Button component={Link} to="/auth" size="md">
-							Take me back to login page
+						<Button
+							component={Link}
+							to={`/${button.path}`}
+							size="md"
+						>
+							{button.text}
 						</Button>
 					</Group>
 				</div>
