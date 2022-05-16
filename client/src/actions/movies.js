@@ -43,9 +43,9 @@ export const createMovie = (newMovie) => async (dispatch) => {
 		console.log(error);
 	}
 };
-export const updateMovieList = (id, movieList) => async (dispatch) => {
+export const updateMovieList = (movieList) => async (dispatch) => {
 	try {
-		await api.updateMovieList(id, movieList);
+		await api.updateMovieList(movieList);
 		dispatch({
 			type: SET_USER_FIELD,
 			payload: { field: "moviesList", data: movieList },

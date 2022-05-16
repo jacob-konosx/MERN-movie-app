@@ -12,8 +12,8 @@ import { Home2, SquarePlus, User, Logout, Login } from "tabler-icons-react";
 import logoImg from "../../media/logo.png";
 import "./NavbarMin.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
-import { LOGOUT } from "../../constants/actionTypes";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { logoutUser } from "../../actions/auth";
 const useStyles = createStyles((theme) => ({
 	link: {
 		width: 50,
@@ -84,9 +84,9 @@ const NavbarMin = () => {
 	return (
 		<Navbar height={750} width={{ base: 80 }} p="md" className="navbar">
 			<Center>
-				<a href="/">
+				<Link to="/">
 					<Image src={logoImg} />
-				</a>
+				</Link>
 			</Center>
 			<Navbar.Section grow mt={50}>
 				<Group direction="column" align="center" spacing={0}>
@@ -98,7 +98,7 @@ const NavbarMin = () => {
 					{user ? (
 						<NavbarLink
 							onClick={() => {
-								dispatch({ type: LOGOUT });
+								dispatch(logoutUser());
 								navigate("/");
 							}}
 							icon={Logout}

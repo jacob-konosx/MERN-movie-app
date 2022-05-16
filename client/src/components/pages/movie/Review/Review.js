@@ -30,7 +30,7 @@ const Review = ({ id }) => {
 				})
 			);
 			dispatch(
-				addUserReviewList(user.result._id, {
+				addUserReviewList({
 					movieId: id,
 				})
 			);

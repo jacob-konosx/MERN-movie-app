@@ -94,7 +94,7 @@ export const addReview = async (req, res) => {
 };
 export const deleteReview = async (req, res) => {
 	const { id } = req.params;
-	const userId = req.body.userId;
+	const userId = req.userId;
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No movie with id: ${id}`);
 

@@ -21,14 +21,14 @@ const jobColors = {
 	ptw: "orange",
 };
 
-const MovieList = ({ movies, id }) => {
+const MovieList = ({ movies }) => {
 	const dispatch = useDispatch();
 	const [editForm, setEditForm] = useState({
 		isActive: false,
 	});
 	const deleteHandler = (deletion_id) => {
 		const deletedList = movies.filter((m) => m._id !== deletion_id);
-		dispatch(updateMovieList(id, deletedList));
+		dispatch(updateMovieList(deletedList));
 	};
 
 	const EditForm = () => {
@@ -41,7 +41,7 @@ const MovieList = ({ movies, id }) => {
 			delete finalForm?.isActive;
 			const oldMovies = movies.filter((m) => m.id !== editForm.id);
 			dispatch(
-				updateMovieList(id, [
+				updateMovieList([
 					...oldMovies,
 					{ ...finalForm, status: finalStatus },
 				])

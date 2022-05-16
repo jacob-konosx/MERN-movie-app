@@ -3,11 +3,28 @@ import UserModel from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import "dotenv/config";
 
 const router = express.Router();
-const secret = "test";
+
+let refreshTokens = [];
+function generateAccessToken(user, secret) {
+	return jwt.sign(user, secret, {
+		expiresIn: "1h",
+	});
+}
+
+export const logout = (req, res) => {
+	refreshTokens = refreshTokens.filter(
+		(token) => token !== req.cookies.refreshToken
+	);
+	res.clearCookie("refreshToken");
+	res.sendStatus(204);
+};
 
 export const signin = async (req, res) => {
+	const accessSecret = process.env.ACCESS_TOKEN_SECRET;
+	const refreshSecret = process.env.ACCESS_TOKEN_SECRET;
 	const { email, password } = req.body;
 	try {
 		const oldUser = await UserModel.findOne({ email });
@@ -19,15 +36,51 @@ export const signin = async (req, res) => {
 		);
 		if (!isPasswordCorrect)
 			return res.status(400).json({ message: "Invalid credentials" });
-		const token = jwt.sign(
-			{ email: oldUser.email, id: oldUser._id },
-			secret,
-			{ expiresIn: "1h" }
+		const accessToken = generateAccessToken(
+			{
+				email: oldUser.email,
+				id: oldUser._id,
+			},
+			accessSecret
 		);
-		res.status(200).json({ result: oldUser, token });
+
+		const refreshToken = jwt.sign(
+			{ email: oldUser.email, id: oldUser._id },
+			refreshSecret,
+			{ expiresIn: "24h" }
+		);
+		refreshTokens.push(refreshToken);
+		res.status(200)
+			.cookie(`refreshToken`, refreshToken, {
+				secure: true,
+				httpOnly: true,
+				SameSite: "strict",
+			})
+			.json({ result: oldUser, accessToken });
 	} catch (err) {
 		res.status(500).json({ message: "Something went wrong" });
 	}
+};
+
+export const token = async (req, res) => {
+	const refreshSecret = process.env.ACCESS_TOKEN_SECRET;
+	const accessSecret = process.env.ACCESS_TOKEN_SECRET;
+
+	const refreshToken = req.cookies.refreshToken;
+	if (refreshToken == null) return res.sendStatus(401);
+	if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+
+	jwt.verify(refreshToken, refreshSecret, (err, user) => {
+		if (err) return res.sendStatus(403);
+		const accessToken = generateAccessToken(
+			{
+				email: user.email,
+				id: user.id,
+			},
+			accessSecret
+		);
+		res.json({ accessToken: accessToken });
+	});
 };
 
 export const signup = async (req, res) => {
@@ -55,7 +108,7 @@ export const signup = async (req, res) => {
 };
 
 export const updateMovieList = async (req, res) => {
-	const { id } = req.params;
+	const id = req.userId;
 	const moviesList = req.body;
 	if (!mongoose.Types.ObjectId.isValid(id))
 		return res.status(404).send(`No users with id: ${id}`);
@@ -84,10 +137,10 @@ export const getInfo = async (req, res) => {
 };
 
 export const addReview = async (req, res) => {
-	const { id } = req.params;
+	const id = req.userId;
 	const review = req.body;
 	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No movie with id: ${id}`);
+		return res.status(404).send(`No user with id: ${id}`);
 
 	const response = await UserModel.findByIdAndUpdate(
 		id,
@@ -99,10 +152,10 @@ export const addReview = async (req, res) => {
 	res.json(response["reviewList"]);
 };
 export const deleteReview = async (req, res) => {
-	const { id } = req.params;
+	const id = req.userId;
 	const movieId = req.body.movieId;
 	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No movie with id: ${id}`);
+		return res.status(404).send(`No user with id: ${id}`);
 
 	const response = await UserModel.findByIdAndUpdate(
 		id,

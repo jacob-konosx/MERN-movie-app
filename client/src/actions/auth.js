@@ -1,4 +1,4 @@
-import { AUTH, SET_USER_FIELD } from "../constants/actionTypes";
+import { AUTH, LOGOUT, SET_USER_FIELD } from "../constants/actionTypes";
 import * as api from "../api/index";
 export const signin = (form, navigate) => async (dispatch) => {
 	try {
@@ -18,9 +18,9 @@ export const signup = (form, navigate) => async (dispatch) => {
 		console.log(error);
 	}
 };
-export const addUserReviewList = (id, review) => async (dispatch) => {
+export const addUserReviewList = (review) => async (dispatch) => {
 	try {
-		const { data } = await api.addReviewList(id, review);
+		const { data } = await api.addReviewList(review);
 		dispatch({
 			type: SET_USER_FIELD,
 			payload: { field: "reviewList", data },
@@ -29,14 +29,22 @@ export const addUserReviewList = (id, review) => async (dispatch) => {
 		console.log(error);
 	}
 };
-export const deleteReview = (userId, movieId) => async (dispatch) => {
+export const deleteReview = (movieId) => async (dispatch) => {
 	try {
-		await api.deleteReviewMovie(movieId, userId);
-		const { data } = await api.deleteReviewUser(userId, movieId);
+		await api.deleteReviewMovie(movieId);
+		const { data } = await api.deleteReviewUser(movieId);
 		dispatch({
 			type: SET_USER_FIELD,
 			payload: { field: "reviewList", data },
 		});
+	} catch (error) {
+		console.log(error);
+	}
+};
+export const logoutUser = () => async (dispatch) => {
+	try {
+		await api.logout();
+		dispatch({ type: LOGOUT });
 	} catch (error) {
 		console.log(error);
 	}

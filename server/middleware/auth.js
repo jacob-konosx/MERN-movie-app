@@ -1,31 +1,20 @@
 import jwt from "jsonwebtoken";
-
-const secret = "test";
+import "dotenv/config";
 
 const auth = async (req, res, next) => {
-	try {
-		const token = req.headers.authorization.split(" ")[1];
-		const isCustomAuth = token.length < 500;
+	const secret = process.env.ACCESS_TOKEN_SECRET;
 
-		let decodedData;
+	const authHeader = req.headers.authorization;
+	const token = authHeader && authHeader.split(" ")[1];
+	if (!token) return res.status(401);
 
-		if (token && isCustomAuth) {
-			decodedData = jwt.verify(token, secret);
-
-			req.userId = decodedData?.id;
-		} else {
-			decodedData = jwt.decode(token);
-
-			req.userId = decodedData?.sub;
+	jwt.verify(token, secret, (err, user) => {
+		if (err) {
+			return res.status(403).json({ message: "Invalid token" });
 		}
-
+		req.userId = user?.id;
 		next();
-	} catch (error) {
-		console.log(error);
-		if (error instanceof jwt.TokenExpiredError) {
-			res.status(403).json({ message: "Expired token" });
-		}
-	}
+	});
 };
 
 export default auth;

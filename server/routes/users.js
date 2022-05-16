@@ -7,6 +7,8 @@ import {
 	getInfo,
 	addReview,
 	deleteReview,
+	token,
+	logout,
 } from "../controllers/userController.js";
 import auth from "../middleware/auth.js";
 
@@ -16,7 +18,9 @@ router.get("/getInfo/:id", getInfo);
 router.post("/signin", signin);
 router.post("/signup", signup);
 
-router.post("/updateMovieList/:id", auth, updateMovieList);
-router.post("/addReviewList/:id", auth, addReview);
-router.post("/deleteReview/:id", auth, deleteReview);
+router.post("/updateMovieList/", auth, updateMovieList);
+router.post("/addReviewList/", auth, addReview);
+router.post("/deleteReview/", auth, deleteReview);
+router.post("/token/", token);
+router.post("/logout/", auth, logout);
 export default router;

@@ -1,4 +1,4 @@
-import { ActionIcon, Center } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { Divider, Grid, Paper } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,8 @@ import { Trash } from "tabler-icons-react";
 import { deleteReview } from "../../actions/auth";
 import { getMoviesById } from "../../actions/movies";
 import { timeAgo } from "../timeago/timeago";
+import { Link } from "react-router-dom";
+
 import "./ReviewList.css";
 const ReviewList = ({ userReviews }) => {
 	const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const ReviewList = ({ userReviews }) => {
 	}
 
 	const deleteHandler = (movieId) => {
-		dispatch(deleteReview(user._id, movieId));
+		dispatch(deleteReview(movieId));
 	};
 	return (
 		<div className="userReviews">
@@ -53,9 +55,9 @@ const ReviewList = ({ userReviews }) => {
 												textAlign: "left",
 											}}
 										>
-											<a href={`/movie/${movie._id}`}>
+											<Link to={`/movie/${movie._id}`}>
 												{movie.title}
-											</a>
+											</Link>
 											{`- ${movie.year}`}
 										</h4>
 

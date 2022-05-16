@@ -15,7 +15,7 @@ const MovieListForm = () => {
 		status: null,
 		id: null,
 	});
-	const { _id, moviesList } = useSelector(
+	const { moviesList } = useSelector(
 		(state) => state.root.authReducer.profile.result
 	);
 	const formSearch = useSelector(
@@ -37,7 +37,7 @@ const MovieListForm = () => {
 	const handleFormSubmit = async () => {
 		if (form.title && status && form.id && form.rating) {
 			const newMovieList = [...moviesList, { ...form, status }];
-			dispatch(updateMovieList(_id, newMovieList));
+			dispatch(updateMovieList(newMovieList));
 			dispatch({ type: CLEAR_SEARCH });
 			setActiveForm(false);
 		}

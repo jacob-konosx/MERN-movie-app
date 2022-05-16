@@ -69,10 +69,10 @@ const BadgeCard = ({ props }) => {
 			>
 				<Card.Section className={classes.section}>
 					<Group position="apart">
-						<Text className="cardBody" size="lg" weight={500}>
-							<a className="titleLink" href={`/movie/${_id}`}>
+						<Text className="cardBody" size="xl" weight={500}>
+							<Link className="titleLink" to={`/movie/${_id}`}>
 								{title}
-							</a>
+							</Link>
 						</Text>
 						<Badge size="sm">{rating}</Badge>
 					</Group>

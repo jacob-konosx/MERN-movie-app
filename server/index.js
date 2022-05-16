@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-
+import cookieParser from "cookie-parser";
 import movieRoutes from "./routes/movies.js";
 import userRoutes from "./routes/users.js";
 //import userRouter from "./routes/user.js";
@@ -11,7 +11,8 @@ const app = express();
 dotenv.config({ path: "./confi.env" });
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cookieParser());
 
 app.use("/movie", movieRoutes);
 app.use("/user", userRoutes);
