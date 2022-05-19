@@ -49,3 +49,11 @@ export const logoutUser = () => async (dispatch) => {
 		console.log(error);
 	}
 };
+export const updateUser = (name, imageUrl) => async (dispatch) => {
+	try {
+		const { data } = await api.updateAccount(name, imageUrl);
+		dispatch({ type: AUTH, data: { result: data } });
+	} catch (error) {
+		console.log(error);
+	}
+};

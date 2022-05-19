@@ -16,7 +16,7 @@ const MovieListForm = () => {
 		id: null,
 	});
 	const { moviesList } = useSelector(
-		(state) => state.root.authReducer.profile.result
+		(state) => state.root.authReducer.profile
 	);
 	const formSearch = useSelector(
 		(state) => state.root.formReducer.formSearch

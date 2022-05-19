@@ -11,6 +11,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ReviewList from "../../reviewlist/ReviewList";
+import EditAccount from "../../editAccount/EditAccount";
 
 const UserInfoIcons = ({ user }) => {
 	const { email, imageUrl, name } = user;
@@ -35,7 +36,7 @@ const UserInfoIcons = ({ user }) => {
 
 const Account = () => {
 	const [value, setValue] = useState("1");
-	const user = useSelector((state:any) => state.root.authReducer.profile?.result);
+	const user = useSelector((state:any) => state.root.authReducer.profile);
 	if (!user) {
 		return <NotAuth error={{text:"Login Required",description:"Authentication is required for the page you are trying to access."}} button={{text:'Take me to login page', path:'auth'}}/>;
 	}
@@ -54,14 +55,16 @@ const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 							centered
 								onChange={handleChange}
 							>
-								<Tab label="My List" value="1" />
-								<Tab label="My Reviews" value="2" />
+								<Tab label="Movie List" value="1" />
+								<Tab label="Reviews" value="2" />
+								<Tab label="Account" value="3" />
 							</TabList>
 						</Box>
 						<TabPanel value="1">
 							<MovieList movies={user.moviesList}/>
 						</TabPanel>
 						<TabPanel value="2"><ReviewList userReviews={user?.reviewList}/></TabPanel>
+						<TabPanel value="3"><EditAccount user={{name:user?.name, imageUrl:user?.imageUrl}}/></TabPanel>
 					</TabContext>
 				</div>
 	);

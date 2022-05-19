@@ -12,7 +12,7 @@ import "./ReviewList.css";
 const ReviewList = ({ userReviews }) => {
 	const dispatch = useDispatch();
 	const movies = useSelector((state) => state.root.movieReducer);
-	const user = useSelector((state) => state.root.authReducer.profile.result);
+	const user = useSelector((state) => state.root.authReducer.profile);
 
 	useEffect(() => {
 		dispatch(getMoviesById(userReviews));

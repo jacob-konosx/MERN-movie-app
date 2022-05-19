@@ -3,11 +3,13 @@ import { AUTH, LOGOUT, SET_USER_FIELD } from "../constants/actionTypes";
 const authReducer = (state = { profile: null }, action) => {
 	switch (action.type) {
 		case AUTH:
-			localStorage.setItem(
-				"loginData",
-				JSON.stringify({ ...action?.data })
-			);
-			return { ...state, profile: action?.data };
+			if (action?.data?.accessToken) {
+				localStorage.setItem(
+					"loginData",
+					JSON.stringify({ accessToken: action?.data?.accessToken })
+				);
+			}
+			return { ...state, profile: action?.data?.result };
 		case LOGOUT:
 			localStorage.removeItem("loginData");
 			return { ...state, profile: null };
@@ -16,10 +18,7 @@ const authReducer = (state = { profile: null }, action) => {
 				...state,
 				profile: {
 					...state.profile,
-					result: {
-						...state.profile.result,
-						[action.payload.field]: action.payload.data,
-					},
+					[action.payload.field]: action.payload.data,
 				},
 			};
 		default:

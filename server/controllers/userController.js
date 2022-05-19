@@ -84,6 +84,9 @@ export const token = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
+	const accessSecret = process.env.ACCESS_TOKEN_SECRET;
+	const refreshSecret = process.env.ACCESS_TOKEN_SECRET;
+
 	const { email, password, firstName, lastName } = req.body;
 	try {
 		const oldUser = await UserModel.findOne({ email });
@@ -95,12 +98,26 @@ export const signup = async (req, res) => {
 			password: hashedPassword,
 			name: `${firstName} ${lastName}`,
 		});
-		const token = jwt.sign(
-			{ email: result.email, id: result._id },
-			secret,
-			{ expiresIn: 60 }
+		const accessToken = generateAccessToken(
+			{
+				email: result.email,
+				id: result._id,
+			},
+			accessSecret
 		);
-		res.status(201).json({ result, token });
+		const refreshToken = jwt.sign(
+			{ email: result.email, id: result._id },
+			refreshSecret,
+			{ expiresIn: "24h" }
+		);
+		refreshTokens.push(refreshToken);
+		res.status(200)
+			.cookie(`refreshToken`, refreshToken, {
+				secure: true,
+				httpOnly: true,
+				SameSite: "strict",
+			})
+			.json({ result, accessToken });
 	} catch (error) {
 		res.status(500).json({ message: "Something went wrong" });
 		console.log(error);
@@ -167,3 +184,19 @@ export const deleteReview = async (req, res) => {
 	res.json(response["reviewList"]);
 };
 export default router;
+export const update = async (req, res) => {
+	const id = req.userId;
+	const name = req.body.name;
+	const imageUrl = req.body.imageUrl;
+	if (!mongoose.Types.ObjectId.isValid(id))
+		return res.status(404).send(`No user with id: ${id}`);
+
+	const response = await UserModel.findByIdAndUpdate(
+		id,
+		{
+			$set: { name: name, imageUrl: imageUrl },
+		},
+		{ new: true }
+	);
+	res.json(response);
+};

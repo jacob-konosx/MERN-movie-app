@@ -9,6 +9,7 @@ import {
 	deleteReview,
 	token,
 	logout,
+	update,
 } from "../controllers/userController.js";
 import auth from "../middleware/auth.js";
 
@@ -22,5 +23,6 @@ router.post("/updateMovieList/", auth, updateMovieList);
 router.post("/addReviewList/", auth, addReview);
 router.post("/deleteReview/", auth, deleteReview);
 router.post("/token/", token);
-router.post("/logout/", auth, logout);
+router.post("/logout/", logout);
+router.post("/update/", auth, update);
 export default router;

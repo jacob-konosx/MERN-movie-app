@@ -55,3 +55,5 @@ export const deleteReviewUser = (movieId) =>
 	API.post(`/user/deleteReview/`, { movieId });
 export const getNewToken = (token) => API.post(`/user/token/`, { token });
 export const logout = () => API.post(`/user/logout/`);
+export const updateAccount = (name, imageUrl) =>
+	API.post(`/user/update/`, { name, imageUrl });

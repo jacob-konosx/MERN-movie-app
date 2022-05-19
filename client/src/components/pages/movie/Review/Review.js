@@ -25,7 +25,7 @@ const Review = ({ id }) => {
 		if (reviewText.length >= 1) {
 			dispatch(
 				addReview(id, {
-					uid: user.result._id,
+					uid: user._id,
 					text: reviewText,
 				})
 			);
@@ -42,7 +42,7 @@ const Review = ({ id }) => {
 			<h1 style={{ textAlign: "center" }}>Reviews</h1>
 			{user ? (
 				<>
-					{!user.result.reviewList.some((e) => e.movieId === id) ? (
+					{!user.reviewList.some((e) => e.movieId === id) ? (
 						<>
 							<TextField
 								style={{ marginBottom: "1%" }}
