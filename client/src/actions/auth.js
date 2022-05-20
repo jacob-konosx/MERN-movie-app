@@ -57,3 +57,10 @@ export const updateUser = (name, imageUrl) => async (dispatch) => {
 		console.log(error);
 	}
 };
+export const changePassword = (password) => async (dispatch) => {
+	try {
+		await api.changePass(password);
+	} catch (error) {
+		console.log(error);
+	}
+};

@@ -200,3 +200,20 @@ export const update = async (req, res) => {
 	);
 	res.json(response);
 };
+export const changePassword = async (req, res) => {
+	const userID = req.userId;
+	const { password } = req.body;
+	try {
+		const hashedPassword = await bcrypt.hash(password, 12);
+		await UserModel.findByIdAndUpdate(
+			userID,
+			{
+				$set: { password: hashedPassword },
+			},
+			{ new: true }
+		);
+	} catch (error) {
+		res.status(500).json({ message: error });
+		console.log(error);
+	}
+};

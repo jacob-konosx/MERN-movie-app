@@ -10,6 +10,7 @@ import {
 	token,
 	logout,
 	update,
+	changePassword,
 } from "../controllers/userController.js";
 import auth from "../middleware/auth.js";
 
@@ -25,4 +26,5 @@ router.post("/deleteReview/", auth, deleteReview);
 router.post("/token/", token);
 router.post("/logout/", logout);
 router.post("/update/", auth, update);
+router.post("/changePassword/", auth, changePassword);
 export default router;

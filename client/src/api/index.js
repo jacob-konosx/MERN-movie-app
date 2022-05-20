@@ -57,3 +57,5 @@ export const getNewToken = (token) => API.post(`/user/token/`, { token });
 export const logout = () => API.post(`/user/logout/`);
 export const updateAccount = (name, imageUrl) =>
 	API.post(`/user/update/`, { name, imageUrl });
+export const changePass = (password) =>
+	API.post(`/user/changePassword/`, { password });
