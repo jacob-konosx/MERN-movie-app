@@ -9,6 +9,7 @@ import { timeAgo } from "../timeago/timeago";
 import { Link } from "react-router-dom";
 
 import "./ReviewList.css";
+import NotAuth from "../pages/notauth/NotAuth";
 const ReviewList = ({ userReviews }) => {
 	const dispatch = useDispatch();
 	const movies = useSelector((state) => state.root.movieReducer);
@@ -16,9 +17,18 @@ const ReviewList = ({ userReviews }) => {
 
 	useEffect(() => {
 		dispatch(getMoviesById(userReviews));
-	}, []);
+	}, [user]);
 	if ((userReviews && userReviews.length === 0) || !userReviews) {
-		return <h3 className="no_reviews">No reviews found...</h3>;
+		return (
+			<NotAuth
+				error={{
+					text: "No reviews found",
+					description:
+						"Reviews can be added to movies from the homepage.",
+				}}
+				button={{ text: "Take me home", path: "" }}
+			/>
+		);
 	}
 
 	const deleteHandler = (movieId) => {
@@ -29,7 +39,7 @@ const ReviewList = ({ userReviews }) => {
 			<Paper
 				style={{
 					padding: "0px 20px",
-					paddingTop: "40px",
+					paddingTop: "20px",
 				}}
 			>
 				{movies.constructor === Array &&
@@ -46,10 +56,9 @@ const ReviewList = ({ userReviews }) => {
 									style={{ marginBottom: "0px" }}
 									container
 									wrap="nowrap"
-									spacing={2}
 								>
 									<Grid item xs zeroMinWidth>
-										<h4
+										<h3
 											style={{
 												margin: 0,
 												textAlign: "left",
@@ -58,8 +67,8 @@ const ReviewList = ({ userReviews }) => {
 											<Link to={`/movie/${movie._id}`}>
 												{movie.title}
 											</Link>
-											{`- ${movie.year}`}
-										</h4>
+											{` - ${movie.year}`}
+										</h3>
 
 										<p
 											style={{
@@ -71,6 +80,14 @@ const ReviewList = ({ userReviews }) => {
 										>
 											{date}
 										</p>
+
+										<p
+											style={{
+												textAlign: "left",
+											}}
+										>
+											{review.text}
+										</p>
 										<ActionIcon
 											color="red"
 											onClick={() =>
@@ -79,18 +96,11 @@ const ReviewList = ({ userReviews }) => {
 										>
 											<Trash size={16} />
 										</ActionIcon>
-										<p
-											style={{
-												textAlign: "left",
-											}}
-										>
-											{review.text}
-										</p>
 									</Grid>
 								</Grid>
 								<Divider
 									variant="fullWidth"
-									style={{ margin: "30px 0" }}
+									style={{ margin: "15px 0" }}
 								/>
 							</React.Fragment>
 						);

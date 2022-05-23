@@ -16,7 +16,7 @@ const persistConfig = {
 };
 const pReducer = persistReducer(persistConfig, rootReducer);
 
-const store = configureStore({ reducer: { root: pReducer } });
+export const store = configureStore({ reducer: { root: pReducer } });
 let persistor = persistStore(store);
 
 const rootElement = document.getElementById("root");

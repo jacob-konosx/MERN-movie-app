@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
 	root: {
-		paddingTop: 80,
+		paddingTop: 20,
 		paddingBottom: 80,
 	},
 
@@ -29,7 +29,6 @@ const useStyles = createStyles((theme) => ({
 	},
 
 	content: {
-		paddingTop: 220,
 		position: "relative",
 		zIndex: 1,
 

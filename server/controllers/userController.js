@@ -71,7 +71,7 @@ export const token = async (req, res) => {
 	if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
 
 	jwt.verify(refreshToken, refreshSecret, (err, user) => {
-		if (err) return res.sendStatus(403);
+		if (err) return res.sendStatus(406);
 		const accessToken = generateAccessToken(
 			{
 				email: user.email,

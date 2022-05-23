@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { updateMovieList } from "../../actions/movies";
 import "./MovieList.css";
 import MovieListForm from "../movieListForm/MovieListForm";
+import NotAuth from "../pages/notauth/NotAuth";
 const jobColors = {
 	completed: "green",
 	ptw: "orange",
@@ -140,15 +141,28 @@ const MovieList = ({ movies }) => {
 			<MovieListForm />
 			<ScrollArea style={{ maxWidth: "45%", margin: "0 auto" }}>
 				<Table verticalSpacing="sm">
-					<thead>
-						<tr>
-							<th>Title</th>
-							<th>Status</th>
-							<th>Rating</th>
-							<th />
-						</tr>
-					</thead>
-					<tbody>{rows}</tbody>
+					{rows.length >= 1 ? (
+						<>
+							<thead>
+								<tr>
+									<th>Title</th>
+									<th>Status</th>
+									<th>Rating</th>
+									<th />
+								</tr>
+							</thead>
+							<tbody>{rows}</tbody>
+						</>
+					) : (
+						<NotAuth
+							error={{
+								text: "No movies in list",
+								description:
+									"You can add movies to your list from the forum above or browse all movies from the homepage.",
+							}}
+							button={{ text: "Take me home", path: "" }}
+						/>
+					)}
 				</Table>
 			</ScrollArea>
 		</>

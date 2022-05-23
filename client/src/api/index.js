@@ -1,4 +1,6 @@
 import axios from "axios";
+import { store } from "..";
+import { logoutUser } from "../actions/auth";
 
 export const API = axios.create({
 	withCredentials: true,
@@ -29,6 +31,10 @@ API.interceptors.response.use(
 			const { data } = await API.post("/user/token");
 			prevRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
 			return API(prevRequest);
+		}
+		if (error?.response?.status === 406) {
+			await store.dispatch(logoutUser());
+			window.location.href = "/auth";
 		}
 		return Promise.reject(error);
 	}

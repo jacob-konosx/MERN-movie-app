@@ -64,7 +64,7 @@ const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 							<MovieList movies={user.moviesList}/>
 						</TabPanel>
 						<TabPanel value="2"><ReviewList userReviews={user?.reviewList}/></TabPanel>
-						<TabPanel value="3"><EditAccount user={{name:user?.name, imageUrl:user?.imageUrl}}/></TabPanel>
+						<TabPanel value="3"><EditAccount userData={{name:user?.name, imageUrl:user?.imageUrl}}/></TabPanel>
 					</TabContext>
 				</div>
 	);
