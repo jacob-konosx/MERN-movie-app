@@ -32,7 +32,10 @@ API.interceptors.response.use(
 			prevRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
 			return API(prevRequest);
 		}
-		if (error?.response?.status === 406) {
+		if (
+			error?.response?.status === 406 ||
+			error?.response?.status === 401
+		) {
 			await store.dispatch(logoutUser());
 			window.location.href = "/auth";
 		}

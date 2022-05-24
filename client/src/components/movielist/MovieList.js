@@ -17,6 +17,8 @@ import { updateMovieList } from "../../actions/movies";
 import "./MovieList.css";
 import MovieListForm from "../movieListForm/MovieListForm";
 import NotAuth from "../pages/notauth/NotAuth";
+import { deleteReview } from "../../actions/auth";
+import { Link } from "react-router-dom";
 const jobColors = {
 	completed: "green",
 	ptw: "orange",
@@ -28,8 +30,9 @@ const MovieList = ({ movies }) => {
 		isActive: false,
 	});
 	const deleteHandler = (deletion_id) => {
-		const deletedList = movies.filter((m) => m._id !== deletion_id);
+		const deletedList = movies.filter((m) => m.id !== deletion_id);
 		dispatch(updateMovieList(deletedList));
+		dispatch(deleteReview(deletion_id));
 	};
 
 	const EditForm = () => {
@@ -91,9 +94,11 @@ const MovieList = ({ movies }) => {
 				<tr>
 					<td>
 						<Group spacing="sm">
-							<Text size="xl" weight={500}>
-								{item.title}
-							</Text>
+							<Link to={`/movie/${item.id}`}>
+								<Text size="xl" weight={500}>
+									{item.title}
+								</Text>
+							</Link>
 						</Group>
 					</td>
 
@@ -124,7 +129,7 @@ const MovieList = ({ movies }) => {
 							</ActionIcon>
 							<ActionIcon
 								color="red"
-								onClick={() => deleteHandler(item._id)}
+								onClick={() => deleteHandler(item.id)}
 							>
 								<Trash size={16} />
 							</ActionIcon>

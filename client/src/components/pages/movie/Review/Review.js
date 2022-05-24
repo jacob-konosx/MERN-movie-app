@@ -13,6 +13,8 @@ import {
 import "./Review.css";
 import { addUserReviewList } from "../../../../actions/auth";
 import { timeAgo } from "../../../timeago/timeago";
+import NotAuth from "../../notauth/NotAuth";
+import { Badge } from "@mantine/core";
 
 const Review = ({ id }) => {
 	const dispatch = useDispatch();
@@ -39,32 +41,50 @@ const Review = ({ id }) => {
 	};
 	return (
 		<div className="reviews">
-			<h1 style={{ textAlign: "center" }}>Reviews</h1>
+			<h1 style={{ textAlign: "center", fontSize: "40px" }}>Reviews</h1>
 			{user ? (
 				<>
 					{!user.reviewList.some((e) => e.movieId === id) ? (
 						<>
-							<TextField
-								style={{ marginBottom: "1%" }}
-								placeholder="My review (1720 Character Limit)..."
-								multiline
-								fullWidth
-								minRows={4}
-								maxRows={12}
-								variant="filled"
-								inputProps={{
-									maxLength: 1721,
-								}}
-								value={reviewText}
-								onChange={(e) => setReviewText(e.target.value)}
-							/>
-							<Button
-								style={{ marginBottom: "4%" }}
-								variant="outlined"
-								onClick={handleReviewSubmit}
-							>
-								Add review
-							</Button>
+							{user.moviesList.some((e) => e.id === id) ? (
+								<>
+									<TextField
+										style={{ marginBottom: "1%" }}
+										placeholder="My review (1720 Character Limit)..."
+										multiline
+										fullWidth
+										minRows={4}
+										maxRows={12}
+										variant="filled"
+										inputProps={{
+											maxLength: 1721,
+										}}
+										value={reviewText}
+										onChange={(e) =>
+											setReviewText(e.target.value)
+										}
+									/>
+									<Button
+										style={{ marginBottom: "4%" }}
+										variant="outlined"
+										onClick={handleReviewSubmit}
+									>
+										Add review
+									</Button>
+								</>
+							) : (
+								<NotAuth
+									error={{
+										text: "Movie Required In List",
+										description:
+											"To write a review for a movie you first need to add the movie to your movie list. This can be done from the account page by clicking the cross button in the movies list tab.",
+									}}
+									button={{
+										text: "Take me to account page",
+										path: "account",
+									}}
+								/>
+							)}
 						</>
 					) : (
 						<h2 style={{ textAlign: "center" }}>
@@ -73,7 +93,17 @@ const Review = ({ id }) => {
 					)}
 				</>
 			) : (
-				<h2 style={{ textAlign: "center" }}>Login to add a review.</h2>
+				<NotAuth
+					error={{
+						text: "Login To Add a Review",
+						description:
+							"To write a review for a movie you first need to be logged in.",
+					}}
+					button={{
+						text: "Take me to login page",
+						path: "auth",
+					}}
+				/>
 			)}
 			{reviews && reviews.length >= 1 ? (
 				<div className="userReviews">
@@ -99,6 +129,13 @@ const Review = ({ id }) => {
 										wrap="nowrap"
 										spacing={2}
 									>
+										<Badge size="lg" className="userRating">
+											{
+												user.moviesList.find(
+													(e) => e.id === id
+												).rating
+											}
+										</Badge>
 										<Grid item>
 											<Avatar
 												alt={review.userData.name}
@@ -144,7 +181,7 @@ const Review = ({ id }) => {
 				</div>
 			) : (
 				<div>
-					<h3 style={{ textAlign: "center" }}>No Reviews...</h3>
+					<h2>No Reviews Found</h2>
 				</div>
 			)}
 		</div>
