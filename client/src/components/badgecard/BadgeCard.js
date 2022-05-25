@@ -48,7 +48,7 @@ function convertHMS(value) {
 const BadgeCard = ({ props }) => {
 	const theme = useMantineTheme();
 	const { classes } = useStyles(theme);
-	const { _id, mode, title, year } = props;
+	const { _id, mode, title, year, average_rating } = props;
 	const {
 		rating,
 		plot,
@@ -110,7 +110,9 @@ const BadgeCard = ({ props }) => {
 							{title} - {year}
 						</h1>
 						<Badge className="badge" size="xl">
-							Rating - {rating}
+							{(typeof average_rating === "number" &&
+								average_rating) ||
+								"-"}
 						</Badge>
 					</Group>
 					<div className="mainContent">

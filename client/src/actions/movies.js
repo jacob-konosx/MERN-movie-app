@@ -5,6 +5,7 @@ import {
 	SET_MOVIE_REVIEW_USER,
 	SET_USER_FIELD,
 	SET_REVIEWS,
+	SET_MOVIE_AVERAGE,
 } from "../constants/actionTypes";
 import * as api from "../api/index.js";
 
@@ -79,6 +80,14 @@ export const getMoviesById = (reviewList) => async (dispatch) => {
 			movies.push(data);
 		}
 		dispatch({ type: FETCH_ALL, payload: movies });
+	} catch (error) {
+		console.log(error);
+	}
+};
+export const getMoviesAverage = (id) => async (dispatch) => {
+	try {
+		const { data } = await api.getMovieAvg(id);
+		dispatch({ type: SET_MOVIE_AVERAGE, payload: data });
 	} catch (error) {
 		console.log(error);
 	}

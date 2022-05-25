@@ -131,7 +131,7 @@ const Review = ({ id }) => {
 									>
 										<Badge size="lg" className="userRating">
 											{
-												user.moviesList.find(
+												review.userData.moviesList.find(
 													(e) => e.id === id
 												).rating
 											}

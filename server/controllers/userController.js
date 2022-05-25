@@ -143,8 +143,8 @@ export const getInfo = async (req, res) => {
 	try {
 		if (id.match(/^[0-9a-fA-F]{24}$/)) {
 			const user = await UserModel.findById(id);
-			const { name, _id, imageUrl } = user;
-			res.status(200).json({ name, _id, imageUrl });
+			const { name, _id, imageUrl, moviesList } = user;
+			res.status(200).json({ name, _id, imageUrl, moviesList });
 		} else {
 			res.json({ message: "Invalid id" });
 		}
@@ -183,7 +183,6 @@ export const deleteReview = async (req, res) => {
 	);
 	res.json(response["reviewList"]);
 };
-export default router;
 export const update = async (req, res) => {
 	const id = req.userId;
 	const name = req.body.name;
@@ -212,6 +211,28 @@ export const changePassword = async (req, res) => {
 			},
 			{ new: true }
 		);
+	} catch (error) {
+		res.status(500).json({ message: error });
+		console.log(error);
+	}
+};
+export const getMovieAverage = async (req, res) => {
+	const ratings = [];
+	const { id } = req.params;
+	try {
+		const response = await UserModel.find({
+			"moviesList.id": id,
+			"moviesList.status": "Completed",
+		});
+		if (response.length === 0)
+			return res.send(`No user ratings found for movie: ${id}`);
+		response.forEach((user) => {
+			const idk = user.moviesList.filter((m) => m.id === id);
+			ratings.push(idk[0].rating);
+		});
+		const sum = ratings.reduce((a, b) => a + b, 0);
+		const avg = sum / ratings.length || 0;
+		res.status(200).json(Math.round(avg * 10) / 10);
 	} catch (error) {
 		res.status(500).json({ message: error });
 		console.log(error);

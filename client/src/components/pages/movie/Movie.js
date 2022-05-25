@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BadgeCard from "../../badgecard/BadgeCard";
-import { getMovie } from "../../../actions/movies";
+import { getMovie, getMoviesAverage } from "../../../actions/movies";
 
 import "./Movie.css";
 import Review from "./Review/Review";
@@ -13,7 +13,11 @@ const Movie = () => {
 	const movie = useSelector((state) => state.root.movieReducer);
 
 	useEffect(() => {
-		dispatch(getMovie(id));
+		const fetchData = async () => {
+			await dispatch(getMovie(id));
+			await dispatch(getMoviesAverage(id));
+		};
+		fetchData().catch(console.error);
 	}, [id]);
 	if (!movie || movie.message) {
 		return (
@@ -29,7 +33,7 @@ const Movie = () => {
 	}
 	return (
 		<div className="singleMovie">
-			{movie.info && (
+			{movie.info && movie.average_rating && (
 				<BadgeCard
 					props={{
 						mode: "big",
@@ -37,6 +41,7 @@ const Movie = () => {
 						info: movie.info,
 						year: movie.year,
 						_id: movie._id,
+						average_rating: movie.average_rating,
 					}}
 				/>
 			)}
