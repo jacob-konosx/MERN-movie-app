@@ -1,17 +1,20 @@
 import { ActionIcon } from "@mantine/core";
-import { Divider, Grid, Paper } from "@material-ui/core";
-import React, { useEffect } from "react";
+import { Divider, Grid, Paper, TextField } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Trash } from "tabler-icons-react";
+import { Edit, Trash, X } from "tabler-icons-react";
 import { deleteReview } from "../../actions/auth";
-import { getMoviesById } from "../../actions/movies";
+import { getMoviesById, updateReview } from "../../actions/movies";
 import { timeAgo } from "../timeago/timeago";
 import { Link } from "react-router-dom";
 
 import "./ReviewList.css";
 import NotAuth from "../pages/notauth/NotAuth";
+import { SET_USER_FIELD } from "../../constants/actionTypes";
 const ReviewList = ({ userReviews }) => {
 	const dispatch = useDispatch();
+	const [editingId, setEditingId] = useState("");
+	const [reviewText, setReviewText] = useState("");
 	const movies = useSelector((state) => state.root.movieReducer);
 	const user = useSelector((state) => state.root.authReducer.profile);
 
@@ -34,6 +37,18 @@ const ReviewList = ({ userReviews }) => {
 	const deleteHandler = (movieId) => {
 		dispatch(deleteReview(movieId));
 	};
+	const editHandler = (movieId) => {
+		if (reviewText.length >= 1) {
+			dispatch(updateReview(movieId, reviewText));
+			setReviewText("");
+			setEditingId("");
+			dispatch({
+				type: SET_USER_FIELD,
+				payload: { field: "_id", data: user._id },
+			});
+		}
+	};
+
 	return (
 		<div className="userReviews">
 			<Paper
@@ -80,14 +95,67 @@ const ReviewList = ({ userReviews }) => {
 										>
 											{date}
 										</p>
+										{editingId === review._id ? (
+											<>
+												<TextField
+													style={{
+														marginBottom: "1%",
+													}}
+													placeholder="My review (1720 Character Limit)..."
+													multiline
+													fullWidth
+													minRows={4}
+													maxRows={12}
+													variant="filled"
+													inputProps={{
+														maxLength: 1721,
+													}}
+													value={reviewText}
+													onChange={(e) =>
+														setReviewText(
+															e.target.value
+														)
+													}
+												/>
+												<ActionIcon
+													color="green"
+													onClick={() =>
+														editHandler(movie._id)
+													}
+												>
+													<Edit size={16} />
+												</ActionIcon>
+												<ActionIcon
+													color="red"
+													onClick={() => {
+														setEditingId("");
+														setReviewText("");
+													}}
+												>
+													<X size={16} />
+												</ActionIcon>
+											</>
+										) : (
+											<p
+												style={{
+													textAlign: "left",
+												}}
+											>
+												{review.text}
+											</p>
+										)}
 
-										<p
-											style={{
-												textAlign: "left",
-											}}
-										>
-											{review.text}
-										</p>
+										{editingId === "" && (
+											<ActionIcon
+												color="blue"
+												onClick={() => {
+													setEditingId(review._id);
+													setReviewText(review.text);
+												}}
+											>
+												<Edit size={16} />
+											</ActionIcon>
+										)}
 										<ActionIcon
 											color="red"
 											onClick={() =>

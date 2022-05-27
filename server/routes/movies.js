@@ -7,6 +7,7 @@ import {
 	getSearch,
 	addReview,
 	deleteReview,
+	updateReview,
 } from "../controllers/moviesController.js";
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.get("/:id", getMovie);
 router.post("/addReview/:id", auth, addReview);
 router.post("/deleteReview/:id", auth, deleteReview);
 router.post("/", auth, createMovie);
+router.post("/updateReview/:id", auth, updateReview);
 
 export default router;

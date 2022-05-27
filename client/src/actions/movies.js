@@ -92,3 +92,10 @@ export const getMoviesAverage = (id) => async (dispatch) => {
 		console.log(error);
 	}
 };
+export const updateReview = (movieId, reviewText) => async (dispatch) => {
+	try {
+		await api.updateRev(movieId, reviewText);
+	} catch (error) {
+		console.log(error);
+	}
+};

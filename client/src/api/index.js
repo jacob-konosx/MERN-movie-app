@@ -51,6 +51,8 @@ export const addReview = (id, review) =>
 	API.post(`/movie/addReview/${id}`, review);
 export const deleteReviewMovie = (movieId) =>
 	API.post(`/movie/deleteReview/${movieId}`);
+export const updateRev = (movieId, reviewText) =>
+	API.post(`/movie/updateReview/${movieId}`, { reviewText });
 
 export const getUserInfo = (id) => API.get(`/user/getInfo/${id}`);
 

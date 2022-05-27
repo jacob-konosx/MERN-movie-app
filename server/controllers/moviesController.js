@@ -104,6 +104,20 @@ export const deleteReview = async (req, res) => {
 	res.json(response);
 };
 
-//Delete
+export const updateReview = async (req, res) => {
+	const { id } = req.params;
+	const { reviewText } = req.body;
+	const userId = req.userId;
+	if (!mongoose.Types.ObjectId.isValid(id))
+		return res.status(404).send(`No movie with id: ${id}`);
+
+	await MovieModel.findByIdAndUpdate(
+		id,
+		{
+			$set: { "reviews.$[elem].text": reviewText },
+		},
+		{ arrayFilters: [{ "elem.uid": userId }] }
+	);
+};
 
 export default router;
