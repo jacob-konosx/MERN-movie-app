@@ -117,23 +117,27 @@ const ReviewList = ({ userReviews }) => {
 														)
 													}
 												/>
-												<ActionIcon
-													color="green"
-													onClick={() =>
-														editHandler(movie._id)
-													}
-												>
-													<Edit size={16} />
-												</ActionIcon>
-												<ActionIcon
-													color="red"
-													onClick={() => {
-														setEditingId("");
-														setReviewText("");
-													}}
-												>
-													<X size={16} />
-												</ActionIcon>
+												<div className="editing">
+													<ActionIcon
+														color="green"
+														onClick={() =>
+															editHandler(
+																movie._id
+															)
+														}
+													>
+														<Edit size={16} />
+													</ActionIcon>
+													<ActionIcon
+														color="red"
+														onClick={() => {
+															setEditingId("");
+															setReviewText("");
+														}}
+													>
+														<X size={16} />
+													</ActionIcon>
+												</div>
 											</>
 										) : (
 											<p

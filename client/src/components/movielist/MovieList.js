@@ -8,9 +8,8 @@ import {
 	ScrollArea,
 	NumberInput,
 	Select,
-	Button,
 } from "@mantine/core";
-import { Pencil, Trash } from "tabler-icons-react";
+import { Pencil, Trash, X } from "tabler-icons-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateMovieList } from "../../actions/movies";
@@ -55,11 +54,6 @@ const MovieList = ({ movies }) => {
 		return (
 			<div className="editForm">
 				<NumberInput
-					style={{
-						position: "relative",
-						width: "60%",
-						padding: "2%",
-					}}
 					name="rating"
 					required={true}
 					label="Rating"
@@ -71,7 +65,6 @@ const MovieList = ({ movies }) => {
 					onChange={(val) => setRating(val)}
 				/>
 				<Select
-					style={{ width: "60%" }}
 					required={true}
 					value={status || editForm.status}
 					label="Movie Status"
@@ -82,9 +75,14 @@ const MovieList = ({ movies }) => {
 					]}
 					onChange={setStatus}
 				/>
-				<Button style={{ left: "50%" }} onClick={handleEditSubmit}>
-					Update
-				</Button>
+				<ActionIcon
+					className="editButton"
+					variant="outline"
+					color="green"
+					onClick={handleEditSubmit}
+				>
+					<Pencil size={16} />
+				</ActionIcon>
 			</div>
 		);
 	};
@@ -93,13 +91,11 @@ const MovieList = ({ movies }) => {
 			<React.Fragment key={item.id}>
 				<tr>
 					<td>
-						<Group spacing="sm">
-							<Link to={`/movie/${item.id}`}>
-								<Text size="xl" weight={500}>
-									{item.title}
-								</Text>
-							</Link>
-						</Group>
+						<Link to={`/movie/${item.id}`}>
+							<Text size="xl" weight={500}>
+								{item.title}
+							</Text>
+						</Link>
 					</td>
 
 					<td>
@@ -117,16 +113,32 @@ const MovieList = ({ movies }) => {
 					</td>
 					<td>
 						<Group spacing={0} position="right">
-							<ActionIcon
-								onClick={() =>
-									setEditForm({
-										isActive: !editForm.isActive,
-										...item,
-									})
-								}
-							>
-								<Pencil size={16} />
-							</ActionIcon>
+							{editForm.isActive === false && (
+								<ActionIcon
+									color="blue"
+									onClick={() =>
+										setEditForm({
+											isActive: !editForm.isActive,
+											...item,
+										})
+									}
+								>
+									<Pencil size={16} />
+								</ActionIcon>
+							)}
+							{editForm.isActive === true &&
+								editForm.id === item.id && (
+									<ActionIcon
+										color="red"
+										onClick={() =>
+											setEditForm({
+												isActive: false,
+											})
+										}
+									>
+										<X size={16} />
+									</ActionIcon>
+								)}
 							<ActionIcon
 								color="red"
 								onClick={() => deleteHandler(item.id)}

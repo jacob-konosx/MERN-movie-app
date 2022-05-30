@@ -6,9 +6,10 @@
 }
 .editForm{
     position: relative;
+    left: 60%;
     justify-content: center;
     align-items: center;
-    display: flex;
+    margin-left: 3%;
 }
 
 td a{
@@ -17,4 +18,8 @@ td a{
 }
 td a:hover {
     color: rgb(39, 72, 182);
+}
+.editButton{
+    margin-top: 2%;
+    left: 45%;
 }
