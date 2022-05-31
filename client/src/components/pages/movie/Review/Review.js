@@ -46,7 +46,9 @@ const Review = ({ id }) => {
 				<>
 					{!user.reviewList.some((e) => e.movieId === id) ? (
 						<>
-							{user.moviesList.some((e) => e.id === id) ? (
+							{user.moviesList.some(
+								(e) => e.id === id && e.status === "Completed"
+							) ? (
 								<>
 									<TextField
 										style={{ marginBottom: "1%" }}
@@ -77,7 +79,7 @@ const Review = ({ id }) => {
 									error={{
 										text: "Movie Required In List",
 										description:
-											"To write a review for a movie you first need to add the movie to your movie list. This can be done from the account page by clicking the cross button in the movies list tab.",
+											"To write a review for a movie you first need to add the movie to your movie list (With status - Completed). This can be done from the account page by clicking the cross button in the movies list tab.",
 									}}
 									button={{
 										text: "Take me to account page",

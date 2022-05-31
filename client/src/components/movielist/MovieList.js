@@ -11,13 +11,17 @@ import {
 } from "@mantine/core";
 import { Pencil, Trash, X } from "tabler-icons-react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateMovieList } from "../../actions/movies";
 import "./MovieList.css";
 import MovieListForm from "../movieListForm/MovieListForm";
 import NotAuth from "../pages/notauth/NotAuth";
 import { deleteReview } from "../../actions/auth";
 import { Link } from "react-router-dom";
+
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+
 const jobColors = {
 	completed: "green",
 	ptw: "orange",
@@ -35,9 +39,46 @@ const MovieList = ({ movies }) => {
 	};
 
 	const EditForm = () => {
+		const user = useSelector((state) => state.root.authReducer.profile);
 		const [status, setStatus] = useState();
 		const [rating, setRating] = useState();
+		const confirmReview = () => {
+			confirmAlert({
+				title: "Confirm to update",
+				message:
+					'You are trying to update the status of a movie you have reviewed. Reviews can only exist for "Completed" movies. In doing this update the review will also be deleted. Continue with the update?',
+				buttons: [
+					{
+						label: "Yes",
+						onClick: () => {
+							dispatch(deleteReview(editForm.id));
+							updateList();
+						},
+					},
+					{
+						label: "No",
+						onClick: () => {
+							setEditForm({
+								isActive: false,
+							});
+						},
+					},
+				],
+			});
+		};
+
 		const handleEditSubmit = () => {
+			if (
+				user.reviewList.some((m) => m.movieId === editForm.id) &&
+				status === "Plan to Watch"
+			) {
+				confirmReview();
+				return;
+			}
+			updateList();
+		};
+
+		const updateList = () => {
 			const finalRating = rating || editForm.rating;
 			const finalStatus = status || editForm.status;
 			const finalForm = { ...editForm, rating: finalRating };
