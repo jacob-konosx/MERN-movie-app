@@ -1,7 +1,7 @@
 import { Pagination } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMovies } from "../../../actions/movies";
+import { getMovies, getRatings } from "../../../actions/movies";
 import BadgeCard from "../../badgecard/BadgeCard";
 import Search from "../../search/Search";
 import "./Home.css";
@@ -36,10 +36,9 @@ const Home = () => {
 				/>
 			</div>
 			<div className="movies">
-				{data &&
-					data.movies &&
+				{data && data.movies && data?.currentPage === page ? (
 					data.movies.map((res) => {
-						const { _id, title, info, year } = res;
+						const { _id, title, info, year, average_rating } = res;
 						return (
 							<div className="movie" key={_id}>
 								<BadgeCard
@@ -49,11 +48,17 @@ const Home = () => {
 										info,
 										year,
 										_id,
+										average_rating,
 									}}
 								/>
 							</div>
 						);
-					})}
+					})
+				) : (
+					<p className="loading">
+						<div className="loader" />
+					</p>
+				)}
 			</div>
 		</div>
 	);

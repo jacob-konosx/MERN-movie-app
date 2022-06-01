@@ -23,3 +23,8 @@ td a:hover {
     margin-top: 2%;
     left: 45%;
 }
+.reviewIcon{
+    float: left;
+    padding-top: 5%;
+    padding-right: 3%;
+}

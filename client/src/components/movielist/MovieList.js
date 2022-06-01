@@ -9,7 +9,7 @@ import {
 	NumberInput,
 	Select,
 } from "@mantine/core";
-import { Pencil, Trash, X } from "tabler-icons-react";
+import { Pencil, Trash, Writing, X } from "tabler-icons-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMovieList } from "../../actions/movies";
@@ -28,6 +28,7 @@ const jobColors = {
 };
 
 const MovieList = ({ movies }) => {
+	const user = useSelector((state) => state.root.authReducer.profile);
 	const dispatch = useDispatch();
 	const [editForm, setEditForm] = useState({
 		isActive: false,
@@ -39,7 +40,6 @@ const MovieList = ({ movies }) => {
 	};
 
 	const EditForm = () => {
-		const user = useSelector((state) => state.root.authReducer.profile);
 		const [status, setStatus] = useState();
 		const [rating, setRating] = useState();
 		const confirmReview = () => {
@@ -132,6 +132,12 @@ const MovieList = ({ movies }) => {
 			<React.Fragment key={item.id}>
 				<tr>
 					<td>
+						{user.reviewList.some((m) => m.movieId === item.id) && (
+							<div className="reviewIcon">
+								<Writing label="Reviewed" size={16} />
+							</div>
+						)}
+
 						<Link to={`/movie/${item.id}`}>
 							<Text size="xl" weight={500}>
 								{item.title}

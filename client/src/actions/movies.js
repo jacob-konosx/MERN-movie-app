@@ -11,9 +11,18 @@ import * as api from "../api/index.js";
 
 export const getMovies = (page) => async (dispatch) => {
 	try {
+		let movies = [];
 		const { data } = await api.fetchMovies(page);
 
-		dispatch({ type: FETCH_ALL, payload: data });
+		for (const movie of data.movies) {
+			const { data } = await api.getMovieAvg(movie._id);
+			movies.push({ ...movie, average_rating: data });
+		}
+
+		dispatch({
+			type: FETCH_ALL,
+			payload: { movies, pageCount: data.pageCount, currentPage: page },
+		});
 	} catch (error) {
 		console.log(error);
 	}

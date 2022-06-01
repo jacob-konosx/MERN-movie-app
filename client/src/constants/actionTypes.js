@@ -13,3 +13,4 @@ export const SET_MOVIE_REVIEW_USER = "SET_MOVIE_REVIEW_USER";
 export const SET_REVIEWS = "SET_REVIEWS";
 export const SET_USER_FIELD = "SET_USER_FIELD";
 export const SET_MOVIE_AVERAGE = "SET_MOVIE_AVERAGE";
+export const SET_RATING = "SET_RATING";

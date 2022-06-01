@@ -49,15 +49,8 @@ const BadgeCard = ({ props }) => {
 	const theme = useMantineTheme();
 	const { classes } = useStyles(theme);
 	const { _id, mode, title, year, average_rating } = props;
-	const {
-		rating,
-		plot,
-		genres,
-		actors,
-		directors,
-		running_time_secs,
-		release_date,
-	} = props.info;
+	const { plot, genres, actors, directors, running_time_secs, release_date } =
+		props.info;
 
 	if (mode === "small") {
 		return (
@@ -74,7 +67,10 @@ const BadgeCard = ({ props }) => {
 								{title}
 							</Link>
 						</Text>
-						<Badge size="sm">{rating}</Badge>
+
+						{typeof average_rating === "number" && (
+							<Badge size="sm">{average_rating}</Badge>
+						)}
 					</Group>
 					<Text size="sm" mt="xs">
 						{plot.substring(0, 200)}...
@@ -112,7 +108,7 @@ const BadgeCard = ({ props }) => {
 						<Badge className="badge" size="xl">
 							{(typeof average_rating === "number" &&
 								average_rating) ||
-								"-"}
+								"No Rating"}
 						</Badge>
 					</Group>
 					<div className="mainContent">

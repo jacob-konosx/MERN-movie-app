@@ -35,6 +35,7 @@ const movieReducer = (movies = [], action) => {
 				...movies,
 				average_rating: action.payload,
 			};
+
 		default:
 			return movies;
 	}
