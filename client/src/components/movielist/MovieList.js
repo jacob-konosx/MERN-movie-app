@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	Badge,
 	Table,
@@ -9,7 +9,14 @@ import {
 	NumberInput,
 	Select,
 } from "@mantine/core";
-import { Pencil, Trash, Writing, X } from "tabler-icons-react";
+import {
+	ArrowDown,
+	ArrowUp,
+	Pencil,
+	Trash,
+	Writing,
+	X,
+} from "tabler-icons-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMovieList } from "../../actions/movies";
@@ -21,6 +28,7 @@ import { Link } from "react-router-dom";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { SET_USER_FIELD, SORT_MOVIE_LIST } from "../../constants/actionTypes";
 
 const jobColors = {
 	completed: "green",
@@ -33,6 +41,11 @@ const MovieList = ({ movies }) => {
 	const [editForm, setEditForm] = useState({
 		isActive: false,
 	});
+	const [sort, setSort] = useState({
+		type: null,
+		mode: null,
+	});
+
 	const deleteHandler = (deletion_id) => {
 		const deletedList = movies.filter((m) => m.id !== deletion_id);
 		dispatch(updateMovieList(deletedList));
@@ -199,7 +212,56 @@ const MovieList = ({ movies }) => {
 			</React.Fragment>
 		);
 	});
+	useEffect(() => {
+		sortMovies();
+	}, [sort]);
+	const sortMovies = () => {
+		const movieList = [...movies].sort((a, b) =>
+			sort.mode === "ascending"
+				? a[sort.type] > b[sort.type]
+					? 1
+					: -1
+				: a[sort.type] < b[sort.type]
+				? 1
+				: -1
+		);
 
+		dispatch({
+			type: SET_USER_FIELD,
+			payload: { field: "moviesList", data: movieList },
+		});
+	};
+	const handleSort = (e) => {
+		sort.type === e.target.getAttribute("name")
+			? setSort({
+					...sort,
+					mode:
+						sort.mode === "descending" ? "ascending" : "descending",
+			  })
+			: setSort({
+					type: e.target.getAttribute("name"),
+					mode: "descending",
+			  });
+	};
+	const SortDisplay = ({ type }) => {
+		return (
+			<>
+				{sort.type === type ? (
+					sort.mode === "descending" ? (
+						<div className="sort">
+							<ArrowDown />
+						</div>
+					) : (
+						<div className="sort">
+							<ArrowUp />
+						</div>
+					)
+				) : (
+					<></>
+				)}
+			</>
+		);
+	};
 	return (
 		<>
 			<MovieListForm />
@@ -209,9 +271,27 @@ const MovieList = ({ movies }) => {
 						<>
 							<thead>
 								<tr>
-									<th>Title</th>
-									<th>Status</th>
-									<th>Rating</th>
+									<th>
+										<p name="title" onClick={handleSort}>
+											Title
+										</p>
+										<SortDisplay type="title" />
+									</th>
+
+									<th>
+										<p name="status" onClick={handleSort}>
+											Status
+										</p>
+										<SortDisplay type="status" />
+									</th>
+
+									<th>
+										<p name="rating" onClick={handleSort}>
+											Rating
+										</p>
+										<SortDisplay type="rating" />
+									</th>
+
 									<th />
 								</tr>
 							</thead>

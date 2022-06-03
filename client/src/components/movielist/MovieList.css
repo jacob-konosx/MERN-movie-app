@@ -25,6 +25,30 @@ td a:hover {
 }
 .reviewIcon{
     float: left;
-    padding-top: 5%;
-    padding-right: 3%;
+    margin-top: 2.5%;
+    margin-right: 2%;
+}
+.sort{
+    position: absolute;
+    margin-left: 6%;
+    top: 9%;
+}
+th p:hover {
+    color: rgb(39, 72, 182);
+    cursor: pointer;
+}
+th p {
+    font-size: medium;
+    -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Safari */
+        -khtml-user-select: none;
+        /* Konqueror HTML */
+        -moz-user-select: none;
+        /* Old versions of Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        
 }
