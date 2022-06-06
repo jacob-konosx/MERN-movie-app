@@ -55,9 +55,15 @@ const Home = () => {
 						);
 					})
 				) : (
-					<p className="loading">
-						<div className="loader" />
-					</p>
+					<div className="loader">
+						<div className="waterfall">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</div>
 				)}
 			</div>
 		</div>

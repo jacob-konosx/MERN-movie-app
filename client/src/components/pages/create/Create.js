@@ -43,7 +43,6 @@ const Create = () => {
 		title: "",
 		year: new Date().getFullYear(),
 		plot: "",
-		rating: null,
 		running_time_secs: "",
 		actors: [],
 		directors: [],
@@ -91,7 +90,6 @@ const Create = () => {
 			movie.title &&
 			movie.year &&
 			movie.plot &&
-			movie.rating &&
 			movie.actors.length > 0 &&
 			movie.directors.length > 0 &&
 			genres &&
@@ -114,7 +112,6 @@ const Create = () => {
 						directors: movie.directors,
 						genres: genres,
 						plot: movie.plot,
-						rating: movie.rating,
 						release_date: release_date,
 						running_time_secs: running_time_secs,
 					},
@@ -142,9 +139,7 @@ const Create = () => {
 	return (
 		<article className="form">
 			<form>
-				<Text size="xl" mt="xs">
-					Add a new movie
-				</Text>
+				<h1 style={{ textAlign: "center" }}>Add a new movie</h1>
 				<div className="form-control">
 					<TextInput
 						name="title"
@@ -183,22 +178,7 @@ const Create = () => {
 						value={movie.plot}
 					/>
 				</div>
-				<div className="form-control">
-					<NumberInput
-						onChange={(val) =>
-							setMovie((m) => ({ ...m, rating: val }))
-						}
-						name="rating"
-						required={true}
-						label="Rating"
-						classNames={classes}
-						min={1}
-						max={10}
-						step={0.1}
-						precision={1}
-						value={movie.rating}
-					/>
-				</div>
+
 				<div className="form-control">
 					<MultiSelect
 						onChange={setGenres}

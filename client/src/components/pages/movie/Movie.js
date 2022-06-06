@@ -33,19 +33,31 @@ const Movie = () => {
 	}
 	return (
 		<div className="singleMovie">
-			{movie.info && movie.average_rating && (
-				<BadgeCard
-					props={{
-						mode: "big",
-						title: movie.title,
-						info: movie.info,
-						year: movie.year,
-						_id: movie._id,
-						average_rating: movie.average_rating,
-					}}
-				/>
+			{movie.info && movie.average_rating ? (
+				<>
+					<BadgeCard
+						props={{
+							mode: "big",
+							title: movie.title,
+							info: movie.info,
+							year: movie.year,
+							_id: movie._id,
+							average_rating: movie.average_rating,
+						}}
+					/>
+					{movie.info && <Review id={movie._id} />}
+				</>
+			) : (
+				<div className="loader">
+					<div className="waterfall">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
 			)}
-			{movie.info && <Review id={movie._id} />}
 		</div>
 	);
 };

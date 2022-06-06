@@ -41,7 +41,6 @@ const Review = ({ id }) => {
 	};
 	return (
 		<div className="reviews">
-			<h1 style={{ textAlign: "center", fontSize: "40px" }}>Reviews</h1>
 			{user ? (
 				<>
 					{!user.reviewList.some((e) => e.movieId === id) ? (
@@ -51,7 +50,7 @@ const Review = ({ id }) => {
 							) ? (
 								<>
 									<TextField
-										style={{ marginBottom: "1%" }}
+										style={{ margin: "1% 0px" }}
 										placeholder="My review (1720 Character Limit)..."
 										multiline
 										fullWidth
@@ -107,6 +106,15 @@ const Review = ({ id }) => {
 					}}
 				/>
 			)}
+			<h1
+				style={{
+					textAlign: "center",
+					fontSize: "50px",
+					marginTop: "0px",
+				}}
+			>
+				Reviews
+			</h1>
 			{reviews && reviews.length >= 1 ? (
 				<div className="userReviews">
 					<Paper style={{ padding: "0px 20px", paddingTop: "40px" }}>
@@ -183,7 +191,7 @@ const Review = ({ id }) => {
 				</div>
 			) : (
 				<div>
-					<h2>No Reviews Found</h2>
+					<h2 style={{ textAlign: "center" }}>No Reviews Found...</h2>
 				</div>
 			)}
 		</div>
