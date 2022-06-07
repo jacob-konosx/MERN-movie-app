@@ -1,0 +1,9 @@
+{
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "icons": [],
+  "name": "MovieLog",
+  "short_name": "MovieLog",
+  "start_url": ".",
+  "theme_color": "#000000"
+}
