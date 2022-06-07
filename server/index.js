@@ -12,7 +12,7 @@ dotenv.config({ path: "./confi.env" });
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 var corsOptions = {
-	origin: "http://localhost:3000",
+	origin: ["http://localhost:3000", "https://mern-movie-log.netlify.app"],
 	credentials: true,
 };
 

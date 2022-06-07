@@ -6,10 +6,8 @@
 }
 .editForm{
     position: relative;
-    left: 60%;
-    justify-content: center;
-    align-items: center;
-    margin-left: 3%;
+    margin: 0 auto;
+    left: 50%
 }
 
 td a{
@@ -31,7 +29,7 @@ td a:hover {
 .sort{
     position: absolute;
     margin-left: 60px;
-    top: 9%;
+    top: 30px !important;
 }
 th p:hover {
     color: rgb(39, 72, 182);
