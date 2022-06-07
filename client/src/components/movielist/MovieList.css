@@ -6,9 +6,8 @@
 }
 .editForm{
     position: relative;
-    margin: 0 auto;
-    left: 50%;
-    width:263px;
+    left: 200px;
+    width: 270;
 }
 
 td a{

@@ -28,7 +28,7 @@ import { Link } from "react-router-dom";
 
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
-import { SET_USER_FIELD, SORT_MOVIE_LIST } from "../../constants/actionTypes";
+import { SET_USER_FIELD } from "../../constants/actionTypes";
 
 const jobColors = {
 	completed: "green",
