@@ -1,5 +1,19 @@
+.movieReviews {
+    position: absolute;
+    right: 25%;
+    width: 50%;
+}
 .userRating{
     position: absolute;
     right: 0;
     margin-right: 2%;
+}
+@media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    .movieReviews {
+        right: 0%;
+        position: relative;
+        width: 100%;
+    }
 }

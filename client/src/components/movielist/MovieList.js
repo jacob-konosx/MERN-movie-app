@@ -152,7 +152,11 @@ const MovieList = ({ movies }) => {
 						)}
 
 						<Link to={`/movie/${item.id}`}>
-							<Text size="xl" weight={500}>
+							<Text
+								className="movieListText"
+								size="xl"
+								weight={500}
+							>
 								{item.title}
 							</Text>
 						</Link>
@@ -167,7 +171,7 @@ const MovieList = ({ movies }) => {
 						</Badge>
 					</td>
 					<td>
-						<Text size="xl" color="gray">
+						<Text className="movieListText" size="xl" color="gray">
 							{item.rating}/10
 						</Text>
 					</td>
@@ -265,11 +269,11 @@ const MovieList = ({ movies }) => {
 	return (
 		<>
 			<MovieListForm />
-			<ScrollArea style={{ maxWidth: "45%", margin: "0 auto" }}>
+			<ScrollArea className="movieListArea">
 				<Table verticalSpacing="sm">
 					{rows.length >= 1 ? (
 						<>
-							<thead>
+							<thead align="center">
 								<tr>
 									<th>
 										<p name="title" onClick={handleSort}>
@@ -291,7 +295,6 @@ const MovieList = ({ movies }) => {
 										</p>
 										<SortDisplay type="rating" />
 									</th>
-
 									<th />
 								</tr>
 							</thead>

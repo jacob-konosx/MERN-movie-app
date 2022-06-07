@@ -16,10 +16,12 @@
     text-align: left;
 }
 h1{
+    width: 100%;
     margin-left: 20px;
 }
 .badge{
-    margin-right: 20px;
+    display: inline-block;
+    vertical-align: -18%
 }
 #smallCard{
     margin-top: 0;
@@ -31,4 +33,28 @@ h1{
 }
 .cardBody{
     margin-top: 3%;
+}
+.mainContent svg{
+    position: relative;
+    top: 4px;
+    margin-right: 2%;
+}
+@media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    .mainContent{
+        display: inline-block;
+        margin: 0px;
+    }
+    .mainContent h2 {
+        margin-top: 10px;
+    }
+    h1{
+        text-align: center;
+        margin: 0px;
+    }
+    .badge{
+    display: table;
+    margin: auto;
+    }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	createStyles,
 	MultiSelect,
@@ -49,7 +49,28 @@ const Create = () => {
 		tempActor: "",
 		tempDirector: "",
 	});
+	const [isValid, setIsValid] = useState(false);
 	const navigate = useNavigate();
+	const checkMovieValidity = () => {
+		if (
+			movie.title &&
+			movie.year &&
+			movie.plot &&
+			movie.actors.length > 0 &&
+			movie.directors.length > 0 &&
+			genres.length > 0 &&
+			movieDate &&
+			length.getMinutes() + length.getHours() !== 0
+		) {
+			setIsValid(true);
+		} else {
+			setIsValid(false);
+		}
+	};
+	useEffect(() => {
+		checkMovieValidity();
+	}, [movie, length, movieDate, genres]);
+
 	const handleChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
@@ -86,16 +107,7 @@ const Create = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		if (
-			movie.title &&
-			movie.year &&
-			movie.plot &&
-			movie.actors.length > 0 &&
-			movie.directors.length > 0 &&
-			genres &&
-			movieDate &&
-			length
-		) {
+		if (isValid) {
 			const release_date = `${movieDate.getFullYear()}-${
 				movieDate.getMonth() + 1
 			}-${movieDate.getDate()}T`;
@@ -329,7 +341,12 @@ const Create = () => {
 					</div>
 				</label>
 				<Center>
-					<Button mt="lg" size="lg" onClick={handleSubmit}>
+					<Button
+						disabled={!isValid}
+						mt="lg"
+						size="lg"
+						onClick={handleSubmit}
+					>
 						Submit
 					</Button>
 				</Center>

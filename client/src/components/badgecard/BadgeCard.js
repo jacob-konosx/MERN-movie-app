@@ -11,6 +11,7 @@ import {
 	useMantineTheme,
 } from "@mantine/core";
 import "./BadgeCard.css";
+import { CalendarTime, Camera, Clock, Movie, Star } from "tabler-icons-react";
 const useStyles = createStyles((theme) => ({
 	card: {
 		backgroundColor: theme.white,
@@ -101,33 +102,36 @@ const BadgeCard = ({ props }) => {
 				className={`${classes.card} bigCard`}
 			>
 				<Card.Section className={classes.section} mt="md">
-					<Group position="apart">
-						<h1>
-							{title} - {year}
-						</h1>
+					<h1>
+						{title}{" "}
 						<Badge className="badge" size="xl">
 							{(typeof average_rating === "number" &&
 								average_rating) ||
 								"No Rating"}
 						</Badge>
-					</Group>
+					</h1>
+
 					<div className="mainContent">
 						<div className="column extra">
+							<h2 style={{ margin: "0px" }}>Basic Info</h2>
 							<Text size="xl" mt="xs">
+								<Movie />
 								Genres: {genres.join(", ")}
 							</Text>
 							<Text size="xl" mt="xs">
+								<Star />
 								Actors: {actors.join(", ")}
 							</Text>
 							<Text size="xl" mt="xs">
+								<Camera />
 								Director/s: {directors.join(", ")}
 							</Text>
 							<Text size="xl" mt="xs">
-								Movie length (H:M):{" "}
+								<Clock /> Movie length (H:M):{" "}
 								{convertHMS(running_time_secs)}
 							</Text>
 							<Text size="xl" mt="xs">
-								Release Date:{" "}
+								<CalendarTime /> Release Date:{" "}
 								{release_date.substr(
 									0,
 									release_date.indexOf("T")
@@ -135,6 +139,7 @@ const BadgeCard = ({ props }) => {
 							</Text>
 						</div>
 						<div className="column plot">
+							<h2 style={{ margin: "0px" }}>Storyline</h2>
 							<Text size="xl" mt="xs">
 								{plot}
 							</Text>

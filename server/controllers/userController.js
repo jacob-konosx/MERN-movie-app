@@ -68,7 +68,7 @@ export const token = async (req, res) => {
 
 	const refreshToken = req.cookies.refreshToken;
 	if (refreshToken == null) return res.sendStatus(401);
-	if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+	if (!refreshTokens.includes(refreshToken)) return res.sendStatus(406);
 
 	jwt.verify(refreshToken, refreshSecret, (err, user) => {
 		if (err) return res.sendStatus(406);

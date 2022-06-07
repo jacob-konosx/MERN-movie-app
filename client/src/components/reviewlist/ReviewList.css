@@ -1,7 +1,6 @@
 .userReviews{
-    position: absolute;
-    right: 25%;
-    width: 50%;
+    margin: auto;
+    width: 40%;
 }
 .no_reviews{
     position: absolute;
@@ -12,4 +11,10 @@ h3 a{
 }
 .editing button{
     display: inline;
+}
+@media only screen and (max-width: 768px) {
+    .userReviews {
+        margin: auto;
+        width: 100%;
+    }
 }

@@ -30,7 +30,7 @@ td a:hover {
 }
 .sort{
     position: absolute;
-    margin-left: 6%;
+    margin-left: 60px;
     top: 9%;
 }
 th p:hover {
@@ -50,5 +50,33 @@ th p {
         -ms-user-select: none;
         /* Internet Explorer/Edge */
         user-select: none;
-        
+}
+.movieListArea{
+    max-width: 60%;
+    margin: 0 auto;
+}
+
+@media only screen and (max-width: 880px) {
+    .movieListArea {
+        max-width: 100%;
+        padding: 3% 0px !important;
+    }
+    .movieListText{
+        font-size: medium;
+    }
+    .editForm {
+        width: 100%;
+        left: 100%;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+    }
+    .editButton {
+        margin-top: 2%;
+        left: 38%;
+    }
+    .react-confirm-alert-body {
+            margin: auto;
+            width: 80% !important;
+    }
 }

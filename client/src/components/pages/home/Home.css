@@ -36,3 +36,30 @@
     top: 4.5%;
     width: 18%;
 }
+.homePagination{
+    position: relative;
+    margin-top: 20px;
+    left: 10.4%;
+}
+@media only screen and (max-width: 768px) {
+
+    /* For mobile phones: */
+    .homeSearch {
+        position: relative;
+        margin: 0 auto;
+        width: 90%;
+        padding-left: 5%;
+    }
+    .homePagination {
+        position: relative;
+        margin: 0 auto;
+        margin-top: 3%;
+        left: 0%;
+        padding-left: 1.5%;
+    }
+    .movies {
+        left: 15%;
+        grid-template-columns: repeat(var(--repeat, auto-fit),
+                    minmax(calc(380px * 1), 1fr));
+    }
+}

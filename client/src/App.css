@@ -54,26 +54,6 @@
     min-height: 40px;
   }
 }
-/* .custom-shape-divider-top-1649083949 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-  z-index: -1;
-}
-
-.custom-shape-divider-top-1649083949 svg {
-  position: relative;
-  display: block;
-  width: calc(100% + 1.3px);
-  height: 207px;
-}
-
-.custom-shape-divider-top-1649083949 .shape-fill {
-  fill: #2D92E0;
-} */
 @-webkit-keyframes waterfall {
   0% {
     opacity: 0;
@@ -160,4 +140,12 @@
   -webkit-animation-delay: 1.25s;
   animation-delay: 1.25s;
   margin-left: -60px;
+}
+@media only screen and (max-width: 768px) {
+  .waves{
+    top: 50px;
+  }
+  .App {
+      margin-top: 55px;
+    }
 }

@@ -14,6 +14,7 @@ import "./NavbarMin.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { logoutUser } from "../../actions/auth";
+import { useMediaQuery } from "@material-ui/core";
 const useStyles = createStyles((theme) => ({
 	link: {
 		width: 50,
@@ -67,12 +68,13 @@ const NavbarMin = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.root.authReducer.profile);
-
+	const isMobile = useMediaQuery("(max-width:768px)");
 	const links = mockdata.map((link, index) => {
 		if (link.needLogin && !user) return null;
 
 		return (
 			<NavbarLink
+				className="navIcon"
 				{...link}
 				key={link.label}
 				active={location.pathname === link.route}
@@ -80,40 +82,63 @@ const NavbarMin = () => {
 			/>
 		);
 	});
-
-	return (
-		<Navbar height={750} width={{ base: 80 }} p="md" className="navbar">
-			<Center>
-				<Link to="/">
-					<Image src={logoImg} />
-				</Link>
-			</Center>
-			<Navbar.Section grow mt={50}>
-				<Group direction="column" align="center" spacing={0}>
-					{links}
-				</Group>
-			</Navbar.Section>
-			<Navbar.Section>
-				<Group direction="column" align="center" spacing={0}>
-					{user ? (
-						<NavbarLink
-							onClick={() => {
-								dispatch(logoutUser());
-								navigate("/");
-							}}
-							icon={Logout}
-							label="Logout"
-						/>
-					) : (
-						<NavbarLink
-							onClick={() => navigate("/auth")}
-							icon={Login}
-							label="Login"
-						/>
-					)}
-				</Group>
-			</Navbar.Section>
-		</Navbar>
-	);
+	if (isMobile) {
+		return (
+			<nav>
+				{links}
+				{user ? (
+					<NavbarLink
+						onClick={() => {
+							dispatch(logoutUser());
+							navigate("/");
+						}}
+						icon={Logout}
+						label="Logout"
+					/>
+				) : (
+					<NavbarLink
+						onClick={() => navigate("/auth")}
+						icon={Login}
+						label="Login"
+					/>
+				)}
+			</nav>
+		);
+	} else {
+		return (
+			<Navbar height={750} width={{ base: 80 }} p="md" className="navbar">
+				<Center>
+					<Link to="/">
+						<Image src={logoImg} />
+					</Link>
+				</Center>
+				<Navbar.Section grow mt={50}>
+					<Group direction="column" align="center" spacing={0}>
+						{links}
+					</Group>
+				</Navbar.Section>
+				<Navbar.Section>
+					<Group direction="column" align="center" spacing={0}>
+						{user ? (
+							<NavbarLink
+								onClick={() => {
+									dispatch(logoutUser());
+									navigate("/");
+								}}
+								icon={Logout}
+								label="Logout"
+							/>
+						) : (
+							<NavbarLink
+								onClick={() => navigate("/auth")}
+								icon={Login}
+								label="Login"
+							/>
+						)}
+					</Group>
+				</Navbar.Section>
+			</Navbar>
+		);
+	}
 };
 export default NavbarMin;

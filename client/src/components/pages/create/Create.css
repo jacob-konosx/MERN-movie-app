@@ -25,5 +25,17 @@
 }
 .spanList:hover{
     color: blue;
-   font-weight: bold;
+    font-weight: bold;
+}
+@media only screen and (max-width: 768px) {
+    .form{
+        width: 320px;
+    }
+    .add-btn {
+        font-size: 18px;
+        position: absolute;
+        bottom: -5px;
+        right: 0;
+        height: 46px;
+    }
 }

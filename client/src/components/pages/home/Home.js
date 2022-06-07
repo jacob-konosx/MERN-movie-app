@@ -25,11 +25,7 @@ const Home = () => {
 					<Search />
 				</div>
 				<Pagination
-					style={{
-						position: "relative",
-						marginTop: 20,
-						left: "10.4%",
-					}}
+					className="homePagination"
 					page={page}
 					onChange={setPage}
 					total={pageCount}

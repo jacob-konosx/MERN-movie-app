@@ -60,7 +60,7 @@ const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 								<Tab label="Account" value="3" />
 							</TabList>
 						</Box>
-						<TabPanel value="1">
+						<TabPanel className="movieListArea" value="1">
 							<MovieList movies={user.moviesList}/>
 						</TabPanel>
 						<TabPanel value="2"><ReviewList userReviews={user?.reviewList}/></TabPanel>

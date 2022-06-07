@@ -116,7 +116,7 @@ const Review = ({ id }) => {
 				Reviews
 			</h1>
 			{reviews && reviews.length >= 1 ? (
-				<div className="userReviews">
+				<div className="movieReviews">
 					<Paper style={{ padding: "0px 20px", paddingTop: "40px" }}>
 						{reviews.map((review) => {
 							const date = timeAgo.format(
