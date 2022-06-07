@@ -107,6 +107,9 @@ const MovieList = ({ movies }) => {
 		};
 		return (
 			<div className="editForm">
+				<h2 style={{ textAlign: "center", fontSize: "1.8vh" }}>
+					Update {editForm.title}
+				</h2>
 				<NumberInput
 					name="rating"
 					required={true}
@@ -212,7 +215,6 @@ const MovieList = ({ movies }) => {
 						</Group>
 					</td>
 				</tr>
-				{editForm.isActive && editForm.id === item.id && <EditForm />}
 			</React.Fragment>
 		);
 	});
@@ -267,10 +269,12 @@ const MovieList = ({ movies }) => {
 		);
 	};
 	return (
-		<>
+		<div className="movieList">
+			{editForm.isActive && <EditForm />}
 			<MovieListForm />
+
 			<ScrollArea className="movieListArea">
-				<Table verticalSpacing="sm">
+				<Table>
 					{rows.length >= 1 ? (
 						<>
 							<thead align="center">
@@ -312,7 +316,7 @@ const MovieList = ({ movies }) => {
 					)}
 				</Table>
 			</ScrollArea>
-		</>
+		</div>
 	);
 };
 

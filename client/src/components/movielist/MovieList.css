@@ -5,11 +5,24 @@
     color: rgb(205, 92, 92);
 }
 .editForm{
-    position: relative;
-    left: 200px;
-    width: 270;
+    position: absolute;
+    padding: 0px 30px;
+    padding-bottom: 20px;
+    width: 25%;
+    left: 34%;
+    right: 0%;
+    background-color: white;
+    z-index: 100;
+    border: 1px solid black;
+    border-radius: 10px;
 }
-
+.movieList{
+    position: relative;
+}
+.editButton {
+    margin-top: 2%;
+    left: 45%;
+}
 td a{
     color: black;
     text-decoration: none;
@@ -17,10 +30,7 @@ td a{
 td a:hover {
     color: rgb(39, 72, 182);
 }
-.editButton{
-    margin-top: 2%;
-    left: 45%;
-}
+
 .reviewIcon{
     float: left;
     margin-top: 2.5%;
@@ -29,7 +39,7 @@ td a:hover {
 .sort{
     position: absolute;
     margin-left: 60px;
-    top: 30px !important;
+    top: 25px !important;
 }
 th p:hover {
     color: rgb(39, 72, 182);
@@ -62,19 +72,17 @@ th p {
     .movieListText{
         font-size: medium;
     }
-    .editForm {
-        width: 100%;
-        left: 100%;
-        position: relative;
-        justify-content: center;
-        align-items: center;
-    }
-    .editButton {
-        margin-top: 2%;
-        left: 38%;
-    }
     .react-confirm-alert-body {
             margin: auto;
             width: 80% !important;
+    }
+    .sort {
+        top: 35px !important;
+    }
+    .editForm {
+        width: 50%;
+        left: 18%;
+        right: 0%;
+
     }
 }
