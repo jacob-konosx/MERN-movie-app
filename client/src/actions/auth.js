@@ -1,21 +1,37 @@
-import { AUTH, LOGOUT, SET_USER_FIELD } from "../constants/actionTypes";
+import {
+	AUTH,
+	AUTH_ERROR,
+	CLEAR_ERROR,
+	LOGOUT,
+	SET_USER_FIELD,
+} from "../constants/actionTypes";
 import * as api from "../api/index";
 export const signin = (form, navigate) => async (dispatch) => {
 	try {
 		const { data } = await api.signin(form);
 		dispatch({ type: AUTH, data: data });
+		dispatch({ type: CLEAR_ERROR });
 		navigate("/");
 	} catch (error) {
 		console.log(error);
+		dispatch({
+			type: AUTH_ERROR,
+			data: error.response.status,
+		});
 	}
 };
 export const signup = (form, navigate) => async (dispatch) => {
 	try {
 		const { data } = await api.signup(form);
 		dispatch({ type: AUTH, data: data });
+		dispatch({ type: CLEAR_ERROR });
 		navigate("/");
 	} catch (error) {
 		console.log(error);
+		dispatch({
+			type: AUTH_ERROR,
+			data: error.response.status,
+		});
 	}
 };
 export const addUserReviewList = (review) => async (dispatch) => {

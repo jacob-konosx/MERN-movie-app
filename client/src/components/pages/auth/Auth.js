@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	Avatar,
 	Button,
@@ -13,6 +13,7 @@ import useStyles from "./styles";
 import Input from "./Input";
 import { useNavigate } from "react-router-dom";
 import { signin, signup } from "../../../actions/auth";
+import { CLEAR_ERROR } from "../../../constants/actionTypes";
 const initialState = {
 	firstName: "",
 	lastName: "",
@@ -28,18 +29,30 @@ const SignUp = () => {
 	const classes = useStyles();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
+	const [isValidPass, setIsValidPass] = useState();
 	const handleShowPassword = () => setShowPassword(!showPassword);
+	const authError = useSelector(
+		(state) => state.root.errorReducer?.authError
+	);
 
 	const switchMode = () => {
+		dispatch({ type: CLEAR_ERROR });
 		setForm(initialState);
 		setIsSignup((prevIsSignup) => !prevIsSignup);
 		setShowPassword(false);
 	};
-
+	const checkPass = () => {
+		if (form.password === form.confirmPassword) {
+			setIsValidPass(true);
+		} else {
+			setIsValidPass(false);
+		}
+	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (isSignup) {
-			dispatch(signup(form, navigate));
+			checkPass();
+			if (isValidPass) dispatch(signup(form, navigate));
 		} else {
 			dispatch(signin(form, navigate));
 		}
@@ -66,34 +79,49 @@ const SignUp = () => {
 									handleChange={handleChange}
 									autoFocus
 									half
+									value={form.firstName}
 								/>
 								<Input
 									name="lastName"
 									label="Last Name"
 									handleChange={handleChange}
 									half
+									value={form.lastName}
 								/>
 							</>
 						)}
 						<Input
+							isError={authError === 404 || authError === 409}
+							errorText={
+								(authError === 404 &&
+									"Couldn't find account") ||
+								(authError === 409 && "User already exists")
+							}
 							name="email"
 							label="Email Address"
 							handleChange={handleChange}
 							type="email"
+							value={form.email}
 						/>
 						<Input
+							isError={authError === 400}
+							errorText="Incorrect password"
 							name="password"
 							label="Password"
 							handleChange={handleChange}
 							type={showPassword ? "text" : "password"}
 							handleShowPassword={handleShowPassword}
+							value={form.password}
 						/>
 						{isSignup && (
 							<Input
+								isError={isValidPass === false}
+								errorText="Passwords do not match"
 								name="confirmPassword"
 								label="Repeat Password"
 								handleChange={handleChange}
 								type="password"
+								value={form.confirmPassword}
 							/>
 						)}
 					</Grid>

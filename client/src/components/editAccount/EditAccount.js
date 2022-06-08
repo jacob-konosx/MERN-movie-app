@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changePassword, logoutUser, updateUser } from "../../actions/auth";
-import Input from "../Auth/Input";
+import Input from "../pages/auth/Input";
 import "./EditAccount.css";
 const EditAccount = ({ userData }) => {
 	const navigate = useNavigate();
