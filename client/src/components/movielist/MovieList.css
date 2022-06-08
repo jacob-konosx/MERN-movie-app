@@ -12,7 +12,7 @@
     left: 34%;
     right: 0%;
     background-color: white;
-    z-index: 100;
+    z-index: 90;
     border: 1px solid black;
     border-radius: 10px;
 }
@@ -60,11 +60,11 @@ th p {
         user-select: none;
 }
 .movieListArea{
-    max-width: 60%;
+    max-width: 70%;
     margin: 0 auto;
 }
 
-@media only screen and (max-width: 880px) {
+@media only screen and (max-width: 768px) {
     .movieListArea {
         max-width: 100%;
         padding: 3% 0px !important;
@@ -73,11 +73,12 @@ th p {
         font-size: medium;
     }
     .react-confirm-alert-body {
+            z-index: 100 ;
             margin: auto;
             width: 80% !important;
     }
     .sort {
-        top: 35px !important;
+        top: 40px !important;
     }
     .editForm {
         width: 50%;

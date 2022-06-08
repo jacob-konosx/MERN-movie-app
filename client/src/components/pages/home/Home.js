@@ -19,50 +19,54 @@ const Home = () => {
 		}
 	}, [data]);
 	return (
-		<div>
-			<div>
-				<div className="homeSearch">
-					<Search />
-				</div>
-				<Pagination
-					className="homePagination"
-					page={page}
-					onChange={setPage}
-					total={pageCount}
-				/>
-			</div>
-			<div className="movies">
-				{data && data.movies && data?.currentPage === page ? (
-					data.movies.map((res) => {
-						const { _id, title, info, year, average_rating } = res;
-						return (
-							<div className="movie" key={_id}>
-								<BadgeCard
-									props={{
-										mode: "small",
-										title,
-										info,
-										year,
-										_id,
-										average_rating,
-									}}
-								/>
-							</div>
-						);
-					})
-				) : (
-					<div className="loader">
-						<div className="waterfall">
-							<div></div>
-							<div></div>
-							<div></div>
-							<div></div>
-							<div></div>
-						</div>
+		<>
+			<div className="movieSection">
+				<div className="homeHead">
+					<div className="homeSearch">
+						<Search />
 					</div>
-				)}
+					<Pagination
+						className="homePagination"
+						page={page}
+						onChange={setPage}
+						total={pageCount}
+					/>
+				</div>
+
+				<div className="movies">
+					{data && data.movies && data?.currentPage === page ? (
+						data.movies.map((res) => {
+							const { _id, title, info, year, average_rating } =
+								res;
+							return (
+								<div className="movie" key={_id}>
+									<BadgeCard
+										props={{
+											mode: "small",
+											title,
+											info,
+											year,
+											_id,
+											average_rating,
+										}}
+									/>
+								</div>
+							);
+						})
+					) : (
+						<div className="loader">
+							<div className="waterfall">
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+							</div>
+						</div>
+					)}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

@@ -1,4 +1,4 @@
-import { Text, TextInput } from "@mantine/core";
+import { Text } from "@mantine/core";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { searchMovies } from "../../actions/movies";
 import { CLEAR_SEARCH } from "../../constants/actionTypes";
+import TextField from "@mui/material/TextField";
+
 import "./Search.css";
 const Search = ({ option }) => {
 	const userMoviesList = useSelector(
@@ -29,16 +31,20 @@ const Search = ({ option }) => {
 
 	return (
 		<div className="search">
-			<Text
+			{/* <Text
 				weight={700}
 				size="lg"
 				variant="gradient"
 				gradient={{ from: "black", to: "white", deg: 10 }}
 			>
 				Find Movie
-			</Text>
-			<TextInput
-				placeholder="Enter movie title"
+			</Text> */}
+			<TextField
+				fullWidth
+				focused
+				label="Search"
+				size="small"
+				placeholder="Movie title"
 				value={searchQuery}
 				onChange={(e) => handleChange(e)}
 			/>

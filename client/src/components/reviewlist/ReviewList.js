@@ -85,6 +85,26 @@ const ReviewList = ({ userReviews }) => {
 											{` - ${movie.year}`}
 										</h3>
 
+										{editingId === "" && (
+											<ActionIcon
+												color="blue"
+												onClick={() => {
+													setEditingId(review._id);
+													setReviewText(review.text);
+												}}
+											>
+												<Edit size={16} />
+											</ActionIcon>
+										)}
+										<ActionIcon
+											color="red"
+											onClick={() =>
+												deleteHandler(movie._id)
+											}
+										>
+											<Trash size={16} />
+										</ActionIcon>
+
 										<p
 											style={{
 												fontSize: "14px",
@@ -148,26 +168,6 @@ const ReviewList = ({ userReviews }) => {
 												{review.text}
 											</p>
 										)}
-
-										{editingId === "" && (
-											<ActionIcon
-												color="blue"
-												onClick={() => {
-													setEditingId(review._id);
-													setReviewText(review.text);
-												}}
-											>
-												<Edit size={16} />
-											</ActionIcon>
-										)}
-										<ActionIcon
-											color="red"
-											onClick={() =>
-												deleteHandler(movie._id)
-											}
-										>
-											<Trash size={16} />
-										</ActionIcon>
 									</Grid>
 								</Grid>
 								<Divider

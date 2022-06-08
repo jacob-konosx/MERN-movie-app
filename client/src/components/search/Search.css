@@ -27,3 +27,7 @@
     width:100%;
     position: relative;
 }
+.search fieldset, label{
+    color: black !important;
+    border-color: black !important;
+}

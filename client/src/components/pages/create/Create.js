@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import "./Create.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import NotAuth from "../notauth/NotAuth";
 import { createMovie } from "../../../actions/movies";
@@ -34,6 +34,7 @@ const useStyles = createStyles((theme) => ({
 
 const Create = () => {
 	// You can add these classes as classNames to any Mantine input, it will work the same
+	const user = useSelector((state) => state.root.authReducer.profile);
 	const { classes } = useStyles();
 	const dispatch = useDispatch();
 	const [genres, setGenres] = useState([]);
@@ -113,8 +114,7 @@ const Create = () => {
 			}-${movieDate.getDate()}T`;
 			const running_time_secs =
 				length.getHours() * 3600 + length.getMinutes() * 60;
-			const creator = JSON.parse(localStorage.getItem("loginData")).result
-				.email;
+			const creator = user._id;
 			const newMovie = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },

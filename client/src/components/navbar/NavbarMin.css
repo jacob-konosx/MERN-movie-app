@@ -1,4 +1,7 @@
 .navbar{
+    height:80%;
+    width:75px;
+    
     position: fixed;
     top: 50%;
     -ms-transform: translateY(-50%);

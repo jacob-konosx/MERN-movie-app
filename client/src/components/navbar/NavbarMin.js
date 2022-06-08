@@ -17,8 +17,8 @@ import { logoutUser } from "../../actions/auth";
 import { useMediaQuery } from "@material-ui/core";
 const useStyles = createStyles((theme) => ({
 	link: {
-		width: 50,
-		height: 50,
+		width: 40,
+		height: 40,
 		borderRadius: theme.radius.xl,
 		display: "flex",
 		alignItems: "center",
@@ -106,7 +106,7 @@ const NavbarMin = () => {
 		);
 	} else {
 		return (
-			<Navbar height={750} width={{ base: 80 }} p="md" className="navbar">
+			<Navbar p="md" className="navbar">
 				<Center>
 					<Link to="/">
 						<Image src={logoImg} />
