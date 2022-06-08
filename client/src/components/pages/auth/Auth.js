@@ -34,7 +34,9 @@ const SignUp = () => {
 	const authError = useSelector(
 		(state) => state.root.errorReducer?.authError
 	);
-
+	useEffect(() => {
+		dispatch({ type: CLEAR_ERROR });
+	}, []);
 	const switchMode = () => {
 		dispatch({ type: CLEAR_ERROR });
 		setForm(initialState);
