@@ -108,3 +108,14 @@ export const updateReview = (movieId, reviewText) => async (dispatch) => {
 		console.log(error);
 	}
 };
+export const searchAdvMovies = (query) => async (dispatch) => {
+	try {
+		const { data } = await api.searchAdvancedMovies(query);
+		dispatch({
+			type: FETCH_ALL,
+			payload: { searchResult: data },
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};

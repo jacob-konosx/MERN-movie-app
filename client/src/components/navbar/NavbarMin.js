@@ -8,7 +8,14 @@ import {
 	Group,
 	Image,
 } from "@mantine/core";
-import { Home2, SquarePlus, User, Logout, Login } from "tabler-icons-react";
+import {
+	Home2,
+	SquarePlus,
+	User,
+	Logout,
+	Login,
+	ListSearch,
+} from "tabler-icons-react";
 import logoImg from "../../media/logo.png";
 import "./NavbarMin.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,7 +67,8 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 
 const mockdata = [
 	{ icon: Home2, label: "Home", route: "/", needLogin: false },
-	{ icon: SquarePlus, label: "Create", route: "/create", needLogin: true },
+	// { icon: SquarePlus, label: "Create", route: "/create", needLogin: true },
+	{ icon: ListSearch, label: "Search", route: "/search", needLogin: false },
 	{ icon: User, label: "Account", route: "/account", needLogin: true },
 ];
 const NavbarMin = () => {

@@ -53,6 +53,8 @@ export const deleteReviewMovie = (movieId) =>
 	API.post(`/movie/deleteReview/${movieId}`);
 export const updateRev = (movieId, reviewText) =>
 	API.post(`/movie/updateReview/${movieId}`, { reviewText });
+export const searchAdvancedMovies = (searchQuery) =>
+	API.post(`/movie/advancedSearch/`, { ...searchQuery });
 
 export const getUserInfo = (id) => API.get(`/user/getInfo/${id}`);
 

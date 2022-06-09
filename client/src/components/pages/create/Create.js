@@ -224,7 +224,7 @@ const Create = () => {
 							"Political",
 							"Romance",
 							"Satire",
-							"Science Fiction",
+							"Sci-Fi",
 							"Short",
 							"Silent",
 							"Slasher",

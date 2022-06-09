@@ -119,5 +119,77 @@ export const updateReview = async (req, res) => {
 		{ arrayFilters: [{ "elem.uid": userId }] }
 	);
 };
+export const getAdvSearch = async (req, res) => {
+	const genres = req.body?.genres;
+	const actors = req.body?.actors;
+	const directors = req.body?.directors;
+	const title = req.body?.title;
+	const year = req.body?.year;
+	let compound = {};
+	compound["must"] = [];
+	if (title !== "")
+		compound["must"].push({
+			text: {
+				query: title,
+				path: "title",
+				fuzzy: {
+					maxEdits: 1,
+				},
+			},
+		});
 
+	let query = [];
+	if (title !== "")
+		query.push({
+			$search: { compound },
+		});
+	if (year)
+		query.push({
+			$match: {
+				year: year,
+			},
+		});
+	if (genres.length > 0)
+		query.push({
+			$match: {
+				$and: [
+					{
+						"info.genres": {
+							$all: genres,
+						},
+					},
+				],
+			},
+		});
+	if (actors.length > 0)
+		query.push({
+			$match: {
+				$and: [
+					{
+						"info.actors": {
+							$all: actors,
+						},
+					},
+				],
+			},
+		});
+	if (directors.length > 0)
+		query.push({
+			$match: {
+				$and: [
+					{
+						"info.directors": {
+							$all: directors,
+						},
+					},
+				],
+			},
+		});
+	try {
+		const result = await MovieModel.aggregate(query).limit(10);
+		res.status(200).json(result);
+	} catch (error) {
+		res.status(404).json({ message: error.message });
+	}
+};
 export default router;

@@ -7,6 +7,7 @@ import Create from "./components/pages/create/Create";
 import Auth from "./components/pages/auth/Auth";
 import Account from "./components/pages/account/Account.tsx";
 import NavbarMin from "./components/navbar/NavbarMin";
+import Search from "./components/pages/search/Search";
 function App() {
 	return (
 		<div className="App">
@@ -56,7 +57,8 @@ function App() {
 			<NavbarMin />
 			<Routes>
 				<Route exact path="/" element={<Home />} />
-				<Route path="/create" element={<Create />} />
+				{/* <Route path="/create" element={<Create />} /> */}
+				<Route path="/search" element={<Search />} />
 				<Route path="/movie/:id" element={<Movie />} />
 				<Route path="/auth" element={<Auth />} />
 				<Route path="/account" element={<Account />} />

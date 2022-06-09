@@ -49,7 +49,7 @@ function convertHMS(value) {
 const BadgeCard = ({ props }) => {
 	const theme = useMantineTheme();
 	const { classes } = useStyles(theme);
-	const { _id, mode, title, year, average_rating } = props;
+	const { _id, mode, title, average_rating } = props;
 	const { plot, genres, actors, directors, running_time_secs, release_date } =
 		props.info;
 
