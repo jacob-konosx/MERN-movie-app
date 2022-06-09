@@ -3569,6 +3569,7 @@ const Search = () => {
 	const [actors, setActors] = useState([]);
 	const [directors, setDirectors] = useState([]);
 	const [isQueryValid, setIsQueryValid] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const handleChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
@@ -3591,6 +3592,7 @@ const Search = () => {
 	useEffect(() => {
 		checkValidity();
 	}, [query, genres, actors, directors]);
+
 	const handleSearch = (e) => {
 		e.preventDefault();
 		const finishedQuery = { ...query, genres, actors, directors };
@@ -3678,52 +3680,64 @@ const Search = () => {
 				</Button>
 			</div>
 
-			{searchResults && searchResults.length > 0 && (
+			{searchResults && (
 				<div>
-					<Paper
-						style={{
-							padding: "0px 20px",
-							paddingTop: "20px",
-						}}
-					>
-						{searchResults.map((movie) => {
-							return (
-								<React.Fragment key={movie._id}>
-									<Grid
-										style={{ marginBottom: "0px" }}
-										container
-										wrap="nowrap"
-									>
-										<Grid item xs zeroMinWidth>
-											<h1
-												style={{
-													textAlign: "center",
-												}}
-											>
-												<Link
-													to={`/movie/${movie._id}`}
+					{searchResults.length > 0 ? (
+						<Paper
+							style={{
+								padding: "0px 20px",
+								paddingTop: "20px",
+							}}
+						>
+							{searchResults.map((movie) => {
+								return (
+									<React.Fragment key={movie._id}>
+										<Grid
+											style={{ marginBottom: "0px" }}
+											container
+											wrap="nowrap"
+										>
+											<Grid item xs zeroMinWidth>
+												<h1
+													style={{
+														textAlign: "center",
+													}}
 												>
-													{movie.title}
-												</Link>
-											</h1>
+													<Link
+														to={`/movie/${movie._id}`}
+													>
+														{movie.title}
+													</Link>
+												</h1>
 
-											<p
-												style={{
-													textAlign: "left",
-												}}
-											>
-												{movie.info.plot}
-											</p>
+												<p
+													style={{
+														textAlign: "left",
+													}}
+												>
+													{movie.info.plot}
+												</p>
+											</Grid>
 										</Grid>
-									</Grid>
-									<Divider
-										variant="fullWidth"
-										style={{ margin: "15px 0" }}
-									/>
-								</React.Fragment>
-							);
-						})}
-					</Paper>
+										<Divider
+											variant="fullWidth"
+											style={{ margin: "15px 0" }}
+										/>
+									</React.Fragment>
+								);
+							})}
+						</Paper>
+					) : (
+						<h2
+							style={{
+								textAlign: "center",
+								display: "block",
+								marginTop: "10%",
+							}}
+						>
+							No movies found
+						</h2>
+					)}
 				</div>
 			)}
 		</div>
