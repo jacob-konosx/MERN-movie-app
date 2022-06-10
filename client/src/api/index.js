@@ -6,7 +6,7 @@ export const API = axios.create({
 	withCredentials: true,
 	baseURL: "https://mern-movielog.herokuapp.com",
 });
-
+//
 API.interceptors.request.use(
 	(config) => {
 		if (
@@ -42,10 +42,17 @@ API.interceptors.response.use(
 		return Promise.reject(error);
 	}
 );
-export const fetchMovies = (page) => API.get(`/movie?page=${page}`);
+let cancelToken;
+
+export const fetchMovies = (page) => {
+	if (typeof cancelToken != typeof undefined) {
+		cancelToken.cancel("Operation canceled due to new request.");
+	}
+	cancelToken = axios.CancelToken.source();
+	return API.get(`/movie?page=${page}`, { cancelToken: cancelToken.token });
+};
 export const fetchMovie = (id) => API.get(`/movie/${id}`);
 export const searchMovies = (query) => API.get(`/movie/search?query=${query}`);
-
 export const createMovie = (newMovie) => API.post("/movie", newMovie);
 export const addReview = (id, review) =>
 	API.post(`/movie/addReview/${id}`, review);
@@ -55,6 +62,7 @@ export const updateRev = (movieId, reviewText) =>
 	API.post(`/movie/updateReview/${movieId}`, { reviewText });
 export const searchAdvancedMovies = (searchQuery) =>
 	API.post(`/movie/advancedSearch/`, { ...searchQuery });
+export const getDirAndAct = () => API.get(`/movie/getDirectorsAndActors/`);
 
 export const getUserInfo = (id) => API.get(`/user/getInfo/${id}`);
 

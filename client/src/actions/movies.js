@@ -6,6 +6,7 @@ import {
 	SET_USER_FIELD,
 	SET_REVIEWS,
 	SET_MOVIE_AVERAGE,
+	SET_MOVIE_FIELD,
 } from "../constants/actionTypes";
 import * as api from "../api/index.js";
 
@@ -112,8 +113,22 @@ export const searchAdvMovies = (query) => async (dispatch) => {
 	try {
 		const { data } = await api.searchAdvancedMovies(query);
 		dispatch({
-			type: FETCH_ALL,
-			payload: { searchResult: data },
+			type: SET_MOVIE_FIELD,
+			payload: {
+				field: "searchResult",
+				data: { data: [...data], query },
+			},
+		});
+	} catch (error) {
+		console.log(error);
+	}
+};
+export const getDirectorsAndActors = () => async (dispatch) => {
+	try {
+		const { data } = await api.getDirAndAct();
+		dispatch({
+			type: SET_MOVIE_FIELD,
+			payload: { field: "queryData", data: { ...data } },
 		});
 	} catch (error) {
 		console.log(error);

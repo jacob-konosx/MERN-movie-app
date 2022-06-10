@@ -6,6 +6,7 @@ import {
 	SET_MOVIE_REVIEW_USER,
 	SET_REVIEWS,
 	SET_MOVIE_AVERAGE,
+	SET_MOVIE_FIELD,
 } from "../constants/actionTypes";
 
 const movieReducer = (movies = [], action) => {
@@ -35,7 +36,11 @@ const movieReducer = (movies = [], action) => {
 				...movies,
 				average_rating: action.payload,
 			};
-
+		case SET_MOVIE_FIELD:
+			return {
+				...movies,
+				[action.payload.field]: action.payload.data,
+			};
 		default:
 			return movies;
 	}

@@ -192,4 +192,55 @@ export const getAdvSearch = async (req, res) => {
 		res.status(404).json({ message: error.message });
 	}
 };
+export const getDirectorsAndActors = async (req, res) => {
+	try {
+		const actors = await MovieModel.aggregate([
+			{
+				$unwind: { path: "$info.actors" },
+			},
+			{
+				$group: {
+					_id: null,
+					actors: {
+						$addToSet: "$info.actors",
+					},
+				},
+			},
+		]);
+		const directors = await MovieModel.aggregate([
+			{
+				$unwind: { path: "$info.directors" },
+			},
+			{
+				$group: {
+					_id: null,
+					directors: {
+						$addToSet: "$info.directors",
+					},
+				},
+			},
+		]);
+		const genres = await MovieModel.aggregate([
+			{
+				$unwind: { path: "$info.genres" },
+			},
+			{
+				$group: {
+					_id: null,
+					genres: {
+						$addToSet: "$info.genres",
+					},
+				},
+			},
+		]);
+		res.status(200).json({
+			actors: actors[0].actors,
+			directors: directors[0].directors,
+			genres: genres[0].genres,
+		});
+	} catch (error) {
+		res.status(404).json({ message: error.message });
+	}
+};
+
 export default router;

@@ -6,9 +6,8 @@
 .searchYear {
     margin-left: 2%;
     width: 49%;
-    position: absolute;
-    top: 0;
-    right: 0;
+    display: inline-block;
+    vertical-align: top;
 }
 .searchGenres{
     width: 49%;
