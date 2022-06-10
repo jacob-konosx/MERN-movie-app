@@ -14,10 +14,10 @@ const defaultQuery = { title: "", year: undefined };
 const Search = () => {
 	const dispatch = useDispatch();
 	const searchResults = useSelector(
-		(state) => state.root.movieReducer?.searchResult
+		(state) => state.root.searchReducer?.searchResult
 	);
 	const queryData = useSelector(
-		(state) => state.root.movieReducer?.queryData
+		(state) => state.root.searchReducer?.queryData
 	);
 	const [query, setQuery] = useState(defaultQuery);
 	const [genres, setGenres] = useState([]);

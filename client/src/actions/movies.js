@@ -6,7 +6,7 @@ import {
 	SET_USER_FIELD,
 	SET_REVIEWS,
 	SET_MOVIE_AVERAGE,
-	SET_MOVIE_FIELD,
+	SET_SEARCH,
 } from "../constants/actionTypes";
 import * as api from "../api/index.js";
 
@@ -113,7 +113,7 @@ export const searchAdvMovies = (query) => async (dispatch) => {
 	try {
 		const { data } = await api.searchAdvancedMovies(query);
 		dispatch({
-			type: SET_MOVIE_FIELD,
+			type: SET_SEARCH,
 			payload: {
 				field: "searchResult",
 				data: { data: [...data], query },
@@ -127,7 +127,7 @@ export const getDirectorsAndActors = () => async (dispatch) => {
 	try {
 		const { data } = await api.getDirAndAct();
 		dispatch({
-			type: SET_MOVIE_FIELD,
+			type: SET_SEARCH,
 			payload: { field: "queryData", data: { ...data } },
 		});
 	} catch (error) {

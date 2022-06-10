@@ -18,3 +18,4 @@ export const SORT_MOVIE_LIST = "SORT_MOVIE_LIST";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const CLEAR_ERROR = "CLEAR_ERROR";
 export const SET_MOVIE_FIELD = "SET_MOVIE_FIELD";
+export const SET_SEARCH = "SET_SEARCH";
