@@ -6,7 +6,6 @@ export const CLEAR_SEARCH = "CLEAR_SEARCH";
 export const FORM_SUBMIT = "FORM_SUBMIT";
 
 export const FETCH_ALL = "FETCH_ALL";
-export const FETCH_ONE = "FETCH_ONE";
 export const CREATE = "CREATE";
 export const SEARCH = "SEARCH";
 export const SET_MOVIE_REVIEW_USER = "SET_MOVIE_REVIEW_USER";

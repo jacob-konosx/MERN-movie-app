@@ -1,6 +1,5 @@
 import {
 	FETCH_ALL,
-	FETCH_ONE,
 	SEARCH,
 	CLEAR_SEARCH,
 	SET_MOVIE_REVIEW_USER,
@@ -12,8 +11,6 @@ import {
 const movieReducer = (movies = [], action) => {
 	switch (action.type) {
 		case FETCH_ALL:
-			return action.payload;
-		case FETCH_ONE:
 			return action.payload;
 		case SEARCH:
 			return { ...movies, searchRes: action.payload };

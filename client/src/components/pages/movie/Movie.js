@@ -22,7 +22,7 @@ const Movie = () => {
 
 	return (
 		<div className="singleMovie">
-			{movie._id === id && movie.info && movie.average_rating ? (
+			{movie?._id && movie._id === id && movie.average_rating ? (
 				<>
 					<BadgeCard
 						props={{
