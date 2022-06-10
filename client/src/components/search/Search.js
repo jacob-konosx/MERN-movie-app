@@ -28,7 +28,12 @@ const Search = ({ option }) => {
 		setSearchQuery(e.currentTarget.value);
 		dispatch({ type: CLEAR_SEARCH });
 	};
-
+	const goSearch = (movie) => {
+		navigate(`/movie/${movie._id}`);
+		dispatch({
+			type: CLEAR_SEARCH,
+		});
+	};
 	return (
 		<div className="search">
 			{/* <Text
@@ -75,7 +80,7 @@ const Search = ({ option }) => {
 													id: movie._id,
 												},
 										  })
-										: navigate(`/movie/${movie._id}`)
+										: goSearch(movie)
 								}
 							>
 								{movie.title}
