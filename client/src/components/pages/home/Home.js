@@ -9,7 +9,7 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const [page, setPage] = useState(1);
 	const [pageCount, setPageCount] = useState(0);
-	const data = useSelector((state) => state.root.movieReducer);
+	const data = useSelector((state) => state.root.movieReducer?.homeMovies);
 	useEffect(() => {
 		dispatch(getMovies(page));
 	}, [page]);

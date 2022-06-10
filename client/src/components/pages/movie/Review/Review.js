@@ -20,7 +20,9 @@ const Review = ({ id }) => {
 	const dispatch = useDispatch();
 
 	const [reviewText, setReviewText] = useState("");
-	const reviews = useSelector((state) => state.root.movieReducer?.reviews);
+	const reviews = useSelector(
+		(state) => state.root.movieReducer.singleMovie?.reviews
+	);
 	const user = useSelector((state) => state.root.authReducer?.profile);
 
 	const handleReviewSubmit = () => {

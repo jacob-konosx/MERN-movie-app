@@ -7,6 +7,7 @@ import {
 	SET_REVIEWS,
 	SET_MOVIE_AVERAGE,
 	SET_SEARCH,
+	SET_MOVIE_FIELD,
 } from "../constants/actionTypes";
 import * as api from "../api/index.js";
 
@@ -21,8 +22,11 @@ export const getMovies = (page) => async (dispatch) => {
 		}
 
 		dispatch({
-			type: FETCH_ALL,
-			payload: { movies, pageCount: data.pageCount, currentPage: page },
+			type: SET_MOVIE_FIELD,
+			payload: {
+				field: "homeMovies",
+				data: { movies, pageCount: data.pageCount, currentPage: page },
+			},
 		});
 	} catch (error) {
 		console.log(error);
@@ -32,7 +36,20 @@ export const getMovies = (page) => async (dispatch) => {
 export const getMovie = (id) => async (dispatch) => {
 	try {
 		const { data } = await api.fetchMovie(id);
-		dispatch({ type: FETCH_ONE, payload: data });
+		if (data === null) {
+			dispatch({
+				type: SET_MOVIE_FIELD,
+				payload: {
+					field: "singleMovie",
+					data: { movieNotFound: id },
+				},
+			});
+		} else {
+			dispatch({
+				type: SET_MOVIE_FIELD,
+				payload: { field: "singleMovie", data },
+			});
+		}
 	} catch (error) {
 		console.log(error);
 	}

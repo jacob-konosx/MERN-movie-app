@@ -20,21 +20,30 @@ const movieReducer = (movies = [], action) => {
 		case CLEAR_SEARCH:
 			return { ...movies, searchRes: [] };
 		case SET_MOVIE_REVIEW_USER:
-			const reviewList = movies.reviews.map((rev) =>
+			const reviewList = movies.singleMovie.reviews.map((rev) =>
 				rev._id === action.payload.review_id
 					? { ...rev, userData: action.payload.data }
 					: rev
 			);
-			return { ...movies, reviews: reviewList };
+			return {
+				...movies,
+				singleMovie: { ...movies.singleMovie, reviews: reviewList },
+			};
 		case SET_REVIEWS:
 			return {
 				...movies,
-				reviews: action.payload.data,
+				singleMovie: {
+					...movies.singleMovie,
+					reviews: action.payload.data,
+				},
 			};
 		case SET_MOVIE_AVERAGE:
 			return {
 				...movies,
-				average_rating: action.payload,
+				singleMovie: {
+					...movies.singleMovie,
+					average_rating: action.payload,
+				},
 			};
 		case SET_MOVIE_FIELD:
 			return {

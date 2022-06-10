@@ -10,7 +10,7 @@ import NotAuth from "../notauth/NotAuth";
 const Movie = () => {
 	const { id } = useParams();
 	const dispatch = useDispatch();
-	const movie = useSelector((state) => state.root.movieReducer);
+	const movie = useSelector((state) => state.root.movieReducer?.singleMovie);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -19,21 +19,10 @@ const Movie = () => {
 		};
 		fetchData().catch(console.error);
 	}, [id]);
-	if (!movie || movie.message) {
-		return (
-			<NotAuth
-				error={{
-					text: "Movie Not Found",
-					description:
-						"The movie ID you have entered does not correspond to an existing movie.",
-				}}
-				button={{ text: "Take me to the homepage", path: "" }}
-			/>
-		);
-	}
+
 	return (
 		<div className="singleMovie">
-			{movie.info && movie.average_rating ? (
+			{movie._id === id && movie.info && movie.average_rating ? (
 				<>
 					<BadgeCard
 						props={{
@@ -48,15 +37,33 @@ const Movie = () => {
 					{movie.info && <Review id={movie._id} />}
 				</>
 			) : (
-				<div className="loader">
-					<div className="waterfall">
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-					</div>
-				</div>
+				<>
+					{movie?.movieNotFound === id || movie?.message ? (
+						<div style={{ marginTop: "10%" }}>
+							<NotAuth
+								error={{
+									text: "Movie Not Found",
+									description:
+										"The movie ID you have entered does not correspond to an existing movie.",
+								}}
+								button={{
+									text: "Take me to the homepage",
+									path: "",
+								}}
+							/>
+						</div>
+					) : (
+						<div className="loader">
+							<div className="waterfall">
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+							</div>
+						</div>
+					)}
+				</>
 			)}
 		</div>
 	);
