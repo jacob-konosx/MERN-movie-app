@@ -22,11 +22,10 @@ const Search = ({ option }) => {
 
 	useEffect(() => {
 		if (searchQuery !== "") dispatch(searchMovies(searchQuery));
-	}, [searchQuery, dispatch]);
+	}, [searchQuery]);
 
 	const handleChange = (e) => {
 		setSearchQuery(e.currentTarget.value);
-		dispatch({ type: CLEAR_SEARCH });
 	};
 	const goSearch = (movie) => {
 		navigate(`/movie/${movie._id}`);

@@ -9,6 +9,7 @@ import {
 	searchAdvMovies,
 } from "../../../actions/movies";
 import { Link } from "react-router-dom";
+import { SET_SEARCH } from "../../../constants/actionTypes";
 const defaultQuery = { title: "", year: undefined };
 
 const Search = () => {
@@ -123,7 +124,7 @@ const Search = () => {
 						/>
 					</div>
 					<div style={{ textAlign: "center" }}>
-						{isQueryValid && (
+						{(isQueryValid || searchResults) && (
 							<Text
 								onClick={() => {
 									setGenres([]);
@@ -131,6 +132,13 @@ const Search = () => {
 									setActors([]);
 									setTempQuery(null);
 									setQuery(defaultQuery);
+									dispatch({
+										type: SET_SEARCH,
+										payload: {
+											field: "searchResult",
+											data: null,
+										},
+									});
 								}}
 								className="clearBtn"
 							>

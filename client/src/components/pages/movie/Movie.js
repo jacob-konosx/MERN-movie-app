@@ -13,16 +13,12 @@ const Movie = () => {
 	const movie = useSelector((state) => state.root.movieReducer?.singleMovie);
 
 	useEffect(() => {
-		const fetchData = async () => {
-			await dispatch(getMovie(id));
-			await dispatch(getMoviesAverage(id));
-		};
-		fetchData().catch(console.error);
+		dispatch(getMovie(id));
 	}, [id]);
 
 	return (
 		<div className="singleMovie">
-			{movie?._id && movie._id === id && movie.average_rating ? (
+			{movie?._id && movie._id === id ? (
 				<>
 					<BadgeCard
 						props={{
@@ -34,11 +30,11 @@ const Movie = () => {
 							average_rating: movie.average_rating,
 						}}
 					/>
-					{movie.info && <Review id={movie._id} />}
+					<Review id={movie._id} />
 				</>
 			) : (
 				<>
-					{movie?.movieNotFound === id || movie?.message ? (
+					{movie?.movieNotFound === id ? (
 						<div style={{ marginTop: "10%" }}>
 							<NotAuth
 								error={{

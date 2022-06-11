@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 
 import MovieModel from "../models/movie.js";
+import UserModel from "../models/user.js";
+import { getMovieAverage } from "./userController.js";
 
 const router = express.Router();
 
@@ -14,10 +16,22 @@ export const getMovies = async (req, res) => {
 		const count = await MovieModel.countDocuments();
 		const pageCount = Math.ceil(count / ITEMS_PER_PAGE); // 400 items / 20 = 20
 
-		const movies = await MovieModel.find()
+		const tempMovies = await MovieModel.find()
 			.sort({ _id: -1 })
 			.limit(9)
 			.skip(skip);
+		const movies = await Promise.all(
+			tempMovies.map(async (movie) => {
+				const average_rating = await getMovieAverage(
+					movie._id.toString()
+				);
+				if (!average_rating) return movie;
+				return {
+					...movie._doc,
+					average_rating,
+				};
+			})
+		);
 		res.status(200).json({ movies, pageCount });
 	} catch (error) {
 		res.status(404).json({ message: error.message });
@@ -43,14 +57,20 @@ export const getMovie = async (req, res) => {
 	const { id } = req.params;
 
 	try {
-		if (id.match(/^[0-9a-fA-F]{24}$/)) {
-			const post = await MovieModel.findById(id);
-			res.status(200).json(post);
-		} else {
-			res.json({ message: "Invalid id" });
+		if (!mongoose.Types.ObjectId.isValid(id))
+			return res.status(404).json({ message: `No movie with id: ${id}` });
+
+		const result = await MovieModel.findById(id);
+		if (!result) {
+			return res.status(404).json({ message: `No movie with id: ${id}` });
 		}
+		const movie = {
+			...result._doc,
+			average_rating: await getMovieAverage(result._id),
+		};
+		return res.status(200).json(movie);
 	} catch (error) {
-		res.status(404).json({ message: error.message });
+		return res.status(500).json({ message: error.message });
 	}
 };
 

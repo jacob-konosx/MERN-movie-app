@@ -34,14 +34,6 @@ const movieReducer = (movies = [], action) => {
 					reviews: action.payload.data,
 				},
 			};
-		case SET_MOVIE_AVERAGE:
-			return {
-				...movies,
-				singleMovie: {
-					...movies.singleMovie,
-					average_rating: action.payload,
-				},
-			};
 		case SET_MOVIE_FIELD:
 			return {
 				...movies,

@@ -17,8 +17,6 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 
 router.get("/getInfo/:id", getInfo);
-router.get("/getMovieAverage/:id", getMovieAverage);
-
 router.post("/signin", signin);
 router.post("/signup", signup);
 

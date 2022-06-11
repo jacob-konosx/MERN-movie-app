@@ -216,25 +216,20 @@ export const changePassword = async (req, res) => {
 		console.log(error);
 	}
 };
-export const getMovieAverage = async (req, res) => {
-	const ratings = [];
-	const { id } = req.params;
+export const getMovieAverage = async (id) => {
 	try {
-		const response = await UserModel.find({
-			"moviesList.id": id,
-			"moviesList.status": "Completed",
-		});
-		if (response.length === 0)
-			return res.send(`No user ratings found for movie: ${id}`);
-		response.forEach((user) => {
-			const idk = user.moviesList.filter((m) => m.id === id);
-			ratings.push(idk[0].rating);
+		const response = await UserModel.find(
+			{ "moviesList.id": id, "moviesList.status": "Completed" },
+			{ _id: 0, moviesList: { $elemMatch: { id: id } } }
+		);
+		if (response.length === 0) return false;
+		const ratings = response.map((item) => {
+			return item.moviesList[0].rating;
 		});
 		const sum = ratings.reduce((a, b) => a + b, 0);
 		const avg = sum / ratings.length || 0;
-		res.status(200).json(Math.round(avg * 10) / 10);
+		return Math.round(avg * 10) / 10;
 	} catch (error) {
-		res.status(500).json({ message: error });
 		console.log(error);
 	}
 };

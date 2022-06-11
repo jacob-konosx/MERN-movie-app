@@ -6,7 +6,7 @@ export const API = axios.create({
 	withCredentials: true,
 	baseURL: "https://mern-movielog.herokuapp.com",
 });
-//
+//http://localhost:5000
 API.interceptors.request.use(
 	(config) => {
 		if (
@@ -80,4 +80,3 @@ export const updateAccount = (name, imageUrl) =>
 	API.post(`/user/update/`, { name, imageUrl });
 export const changePass = (password) =>
 	API.post(`/user/changePassword/`, { password });
-export const getMovieAvg = (id) => API.get(`/user/getMovieAverage/${id}`);

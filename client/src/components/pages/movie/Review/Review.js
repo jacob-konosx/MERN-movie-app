@@ -38,11 +38,19 @@ const Review = ({ id }) => {
 					movieId: id,
 				})
 			);
-			setReviewText("");
 		}
 	};
 	return (
 		<div className="reviews">
+			<h1
+				style={{
+					textAlign: "center",
+					fontSize: "50px",
+					marginTop: "2%",
+				}}
+			>
+				Reviews
+			</h1>
 			{user ? (
 				<>
 					{!user.reviewList.some((e) => e.movieId === id) ? (
@@ -53,14 +61,14 @@ const Review = ({ id }) => {
 								<>
 									<TextField
 										style={{ margin: "1% 0px" }}
-										placeholder="My review (1720 Character Limit)..."
+										placeholder="My review..."
 										multiline
 										fullWidth
 										minRows={4}
 										maxRows={12}
 										variant="filled"
 										inputProps={{
-											maxLength: 1721,
+											maxLength: 1700,
 										}}
 										value={reviewText}
 										onChange={(e) =>
@@ -68,12 +76,15 @@ const Review = ({ id }) => {
 										}
 									/>
 									<Button
-										style={{ marginBottom: "4%" }}
 										variant="outlined"
+										color="primary"
 										onClick={handleReviewSubmit}
 									>
 										Add review
 									</Button>
+									<p className="reviewCounter">
+										{reviewText.length}/1700
+									</p>
 								</>
 							) : (
 								<NotAuth
@@ -90,9 +101,9 @@ const Review = ({ id }) => {
 							)}
 						</>
 					) : (
-						<h2 style={{ textAlign: "center" }}>
-							You have already written a review.
-						</h2>
+						<h4 style={{ textAlign: "center", fontSize: "18px" }}>
+							You have already written a review
+						</h4>
 					)}
 				</>
 			) : (
@@ -108,18 +119,10 @@ const Review = ({ id }) => {
 					}}
 				/>
 			)}
-			<h1
-				style={{
-					textAlign: "center",
-					fontSize: "50px",
-					marginTop: "0px",
-				}}
-			>
-				Reviews
-			</h1>
+
 			{reviews && reviews.length >= 1 ? (
 				<div className="movieReviews">
-					<Paper style={{ padding: "0px 20px", paddingTop: "40px" }}>
+					<Paper style={{ padding: "0px 20px", paddingTop: "30px" }}>
 						{reviews.map((review) => {
 							const date = timeAgo.format(
 								Date.parse(review.createdAt)
@@ -193,7 +196,7 @@ const Review = ({ id }) => {
 				</div>
 			) : (
 				<div>
-					<h2 style={{ textAlign: "center" }}>No Reviews Found...</h2>
+					<h2 style={{ textAlign: "center" }}>No Reviews Found</h2>
 				</div>
 			)}
 		</div>

@@ -4,7 +4,6 @@ import {
 	SET_MOVIE_REVIEW_USER,
 	SET_USER_FIELD,
 	SET_REVIEWS,
-	SET_MOVIE_AVERAGE,
 	SET_SEARCH,
 	SET_MOVIE_FIELD,
 } from "../constants/actionTypes";
@@ -12,19 +11,16 @@ import * as api from "../api/index.js";
 
 export const getMovies = (page) => async (dispatch) => {
 	try {
-		let movies = [];
 		const { data } = await api.fetchMovies(page);
-
-		for (const movie of data.movies) {
-			const { data } = await api.getMovieAvg(movie._id);
-			movies.push({ ...movie, average_rating: data });
-		}
-
 		dispatch({
 			type: SET_MOVIE_FIELD,
 			payload: {
 				field: "homeMovies",
-				data: { movies, pageCount: data.pageCount, currentPage: page },
+				data: {
+					...data,
+					pageCount: data.pageCount,
+					currentPage: page,
+				},
 			},
 		});
 	} catch (error) {
@@ -35,7 +31,12 @@ export const getMovies = (page) => async (dispatch) => {
 export const getMovie = (id) => async (dispatch) => {
 	try {
 		const { data } = await api.fetchMovie(id);
-		if (data === null) {
+		dispatch({
+			type: SET_MOVIE_FIELD,
+			payload: { field: "singleMovie", data },
+		});
+	} catch (error) {
+		if (error.response.status === 404) {
 			dispatch({
 				type: SET_MOVIE_FIELD,
 				payload: {
@@ -44,13 +45,8 @@ export const getMovie = (id) => async (dispatch) => {
 				},
 			});
 		} else {
-			dispatch({
-				type: SET_MOVIE_FIELD,
-				payload: { field: "singleMovie", data },
-			});
+			console.log(error);
 		}
-	} catch (error) {
-		console.log(error);
 	}
 };
 
@@ -106,14 +102,6 @@ export const getMoviesById = (reviewList) => async (dispatch) => {
 			movies.push(data);
 		}
 		dispatch({ type: FETCH_ALL, payload: movies });
-	} catch (error) {
-		console.log(error);
-	}
-};
-export const getMoviesAverage = (id) => async (dispatch) => {
-	try {
-		const { data } = await api.getMovieAvg(id);
-		dispatch({ type: SET_MOVIE_AVERAGE, payload: data });
 	} catch (error) {
 		console.log(error);
 	}
