@@ -8,6 +8,10 @@
     right: 0;
     margin-right: 2%;
 }
+.reviews{
+    width: 90%;
+    margin: auto;
+}
 .reviewCounter{
     display: block;
     float: right;

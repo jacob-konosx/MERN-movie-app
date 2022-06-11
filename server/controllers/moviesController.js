@@ -32,9 +32,9 @@ export const getMovies = async (req, res) => {
 				};
 			})
 		);
-		res.status(200).json({ movies, pageCount });
+		return res.status(200).json({ movies, pageCount });
 	} catch (error) {
-		res.status(404).json({ message: error.message });
+		return res.status(404).json({ message: error.message });
 	}
 };
 
@@ -47,9 +47,9 @@ export const createMovie = async (req, res) => {
 	try {
 		await newMovie.save();
 
-		res.status(201).json(newMovie);
+		return res.status(201).json(newMovie);
 	} catch (error) {
-		res.status(409).json({ message: error.message });
+		return res.status(409).json({ message: error.message });
 	}
 };
 
@@ -91,9 +91,9 @@ export const getSearch = async (req, res) => {
 				},
 			},
 		]).limit(10);
-		res.status(200).json(result);
+		return res.status(200).json(result);
 	} catch (error) {
-		res.status(404).json({ message: error.message });
+		return res.status(404).json({ message: error.message });
 	}
 };
 
@@ -207,9 +207,9 @@ export const getAdvSearch = async (req, res) => {
 		});
 	try {
 		const result = await MovieModel.aggregate(query).limit(10);
-		res.status(200).json(result);
+		return res.status(200).json(result);
 	} catch (error) {
-		res.status(404).json({ message: error.message });
+		return res.status(404).json({ message: error.message });
 	}
 };
 export const getDirectorsAndActors = async (req, res) => {
@@ -253,13 +253,13 @@ export const getDirectorsAndActors = async (req, res) => {
 				},
 			},
 		]);
-		res.status(200).json({
+		return res.status(200).json({
 			actors: actors[0].actors,
 			directors: directors[0].directors,
 			genres: genres[0].genres,
 		});
 	} catch (error) {
-		res.status(404).json({ message: error.message });
+		return res.status(404).json({ message: error.message });
 	}
 };
 

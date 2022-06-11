@@ -19,7 +19,7 @@ export const logout = (req, res) => {
 		(token) => token !== req.cookies.refreshToken
 	);
 	res.clearCookie("refreshToken");
-	res.sendStatus(204);
+	return res.sendStatus(204);
 };
 
 export const signin = async (req, res) => {
@@ -50,7 +50,8 @@ export const signin = async (req, res) => {
 			{ expiresIn: "24h" }
 		);
 		refreshTokens.push(refreshToken);
-		res.status(200)
+		return res
+			.status(200)
 			.cookie(`refreshToken`, refreshToken, {
 				secure: true,
 				httpOnly: true,
@@ -58,7 +59,7 @@ export const signin = async (req, res) => {
 			})
 			.json({ result: oldUser, accessToken });
 	} catch (err) {
-		res.status(500).json({ message: "Something went wrong" });
+		return res.status(500).json({ message: "Something went wrong" });
 	}
 };
 
@@ -111,7 +112,8 @@ export const signup = async (req, res) => {
 			{ expiresIn: "24h" }
 		);
 		refreshTokens.push(refreshToken);
-		res.status(200)
+		return res
+			.status(200)
 			.cookie(`refreshToken`, refreshToken, {
 				secure: true,
 				httpOnly: true,
@@ -119,8 +121,7 @@ export const signup = async (req, res) => {
 			})
 			.json({ result, accessToken });
 	} catch (error) {
-		res.status(500).json({ message: "Something went wrong" });
-		console.log(error);
+		return res.status(500).json({ message: "Something went wrong" });
 	}
 };
 
@@ -144,12 +145,12 @@ export const getInfo = async (req, res) => {
 		if (id.match(/^[0-9a-fA-F]{24}$/)) {
 			const user = await UserModel.findById(id);
 			const { name, _id, imageUrl, moviesList } = user;
-			res.status(200).json({ name, _id, imageUrl, moviesList });
+			return res.status(200).json({ name, _id, imageUrl, moviesList });
 		} else {
 			res.json({ message: "Invalid id" });
 		}
 	} catch (error) {
-		res.status(404).json({ message: error.message });
+		return res.status(404).json({ message: error.message });
 	}
 };
 
@@ -212,8 +213,7 @@ export const changePassword = async (req, res) => {
 			{ new: true }
 		);
 	} catch (error) {
-		res.status(500).json({ message: error });
-		console.log(error);
+		return res.status(500).json({ message: error });
 	}
 };
 export const getMovieAverage = async (id) => {
