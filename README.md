@@ -1,6 +1,6 @@
 # MERN Movie Log App
 
-> This is a websise similar to IMDB where users can login, browse movies, search for them by title and other descriptors like actors, directors or the year it came out, aswell as write reviews, edit user profile, set ratings for movies and sort your own movies list by rating status and title.
+> This is a website similar to IMDB where users can log in, browse movies, search for them by title and other descriptors like actors, directors, or the year they came out, as well as write reviews, edit user profiles, set ratings for movies and sort your own movies list by rating status and title.
 > Live demo [_here_](https://mern-movie-log.netlify.app/).
 
 ## Table of Contents
