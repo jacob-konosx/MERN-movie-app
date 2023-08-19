@@ -4,7 +4,7 @@ import { logoutUser } from "../actions/auth";
 
 export const API = axios.create({
 	withCredentials: true,
-	baseURL: "https://mern-movielog.herokuapp.com",
+	baseURL: "https://mern-movie-app-api.vercel.app/",
 });
 //http://localhost:5000
 API.interceptors.request.use(

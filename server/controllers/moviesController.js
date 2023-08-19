@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 
 import MovieModel from "../models/movie.js";
-import UserModel from "../models/user.js";
 import { getMovieAverage } from "./userController.js";
 
 const router = express.Router();
@@ -55,7 +54,6 @@ export const createMovie = async (req, res) => {
 
 export const getMovie = async (req, res) => {
 	const { id } = req.params;
-
 	try {
 		if (!mongoose.Types.ObjectId.isValid(id))
 			return res.status(404).json({ message: `No movie with id: ${id}` });
