@@ -5,8 +5,6 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import "dotenv/config";
 
-const router = express.Router();
-
 let refreshTokens = [];
 function generateAccessToken(user, secret) {
 	return jwt.sign(user, secret, {
@@ -59,7 +57,9 @@ export const signin = async (req, res) => {
 			})
 			.json({ result: oldUser, accessToken });
 	} catch (err) {
-		return res.status(500).json({ message: "Something went wrong" });
+		return res
+			.status(500)
+			.json({ message: "Something went wrong", error: err });
 	}
 };
 
@@ -121,7 +121,9 @@ export const signup = async (req, res) => {
 			})
 			.json({ result, accessToken });
 	} catch (error) {
-		return res.status(500).json({ message: "Something went wrong" });
+		return res
+			.status(500)
+			.json({ message: "Something went wrong", error: error });
 	}
 };
 
