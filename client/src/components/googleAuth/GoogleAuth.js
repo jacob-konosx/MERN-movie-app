@@ -1,14 +1,14 @@
 import React from "react";
-import GoogleLogin from "react-google-login";
+//import GoogleLogin from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Icon from "./icon";
-import useStyles from "../pages/auth/styles";
 import { Button } from "@material-ui/core";
 const Auth = () => {
 	const navigate = useNavigate();
-	const classes = useStyles();
 	const dispatch = useDispatch();
+
 	const googleSuccess = async (res) => {
 		const result = res?.profileObj;
 		const token = res?.tokenId;
@@ -59,9 +59,11 @@ const Auth = () => {
 		console.log("Google sign in was unsuccessful!");
 		console.log(error);
 	};
+
 	return (
 		<div style={{ position: "relative" }}>
-			<GoogleLogin
+			<GoogleLogin onSuccess={googleSuccess} onFailure={googleFailure} />;
+			{/* <GoogleLogin
 				clientId="463318482360-obin8cipabv2aln3kmcngfu32qme8k19.apps.googleusercontent.com"
 				onSuccess={googleSuccess}
 				onFailure={googleFailure}
@@ -79,7 +81,7 @@ const Auth = () => {
 						Google Sign In
 					</Button>
 				)}
-			/>
+			/> */}
 		</div>
 	);
 };

@@ -1,4 +1,3 @@
-import { Divider, Grid, Paper, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Button, MultiSelect, NumberInput, Text } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +9,7 @@ import {
 } from "../../../actions/movies";
 import { Link } from "react-router-dom";
 import { SET_SEARCH } from "../../../constants/actionTypes";
+import { Divider, Grid, Paper, TextField } from "@mui/material";
 const defaultQuery = { title: "", year: undefined };
 
 const Search = () => {
@@ -32,7 +32,11 @@ const Search = () => {
 		setQuery({ ...query, [name]: value });
 	};
 
-	const checkValidity = () => {
+	useEffect(() => {
+		dispatch(getDirectorsAndActors());
+	}, [dispatch]);
+
+	useEffect(() => {
 		if (
 			(query.title !== "" ||
 				query.year ||
@@ -45,13 +49,6 @@ const Search = () => {
 		} else {
 			setIsQueryValid(false);
 		}
-	};
-	useEffect(() => {
-		dispatch(getDirectorsAndActors());
-	}, []);
-
-	useEffect(() => {
-		checkValidity();
 	}, [query, genres, actors, directors, tempQuery]);
 
 	const handleSearch = (e) => {

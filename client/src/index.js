@@ -9,6 +9,8 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import { PersistGate } from "redux-persist/integration/react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 const persistConfig = {
 	key: "root",
 	storage: storage,
@@ -23,11 +25,13 @@ const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
 root.render(
-	<Provider store={store}>
-		<PersistGate persistor={persistor}>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>{" "}
-		</PersistGate>
-	</Provider>
+	<GoogleOAuthProvider clientId="463318482360-obin8cipabv2aln3kmcngfu32qme8k19.apps.googleusercontent.com">
+		<Provider store={store}>
+			<PersistGate persistor={persistor}>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>{" "}
+			</PersistGate>
+		</Provider>
+	</GoogleOAuthProvider>
 );

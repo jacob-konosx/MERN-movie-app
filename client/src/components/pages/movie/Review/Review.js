@@ -2,19 +2,12 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addReview, getUserInfo } from "../../../../actions/movies";
-import {
-	Avatar,
-	Button,
-	Divider,
-	Grid,
-	Paper,
-	TextField,
-} from "@material-ui/core";
 import "./Review.css";
 import { addUserReviewList } from "../../../../actions/auth";
 import { timeAgo } from "../../../timeago/timeago";
 import NotAuth from "../../notauth/NotAuth";
 import { Badge } from "@mantine/core";
+import { Avatar, Button, Divider, Grid, Paper, TextField } from "@mui/material";
 
 const Review = ({ id }) => {
 	const dispatch = useDispatch();

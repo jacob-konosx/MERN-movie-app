@@ -1,5 +1,4 @@
 import { ActionIcon } from "@mantine/core";
-import { Divider, Grid, Paper, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Edit, Trash, X } from "tabler-icons-react";
@@ -11,6 +10,7 @@ import { Link } from "react-router-dom";
 import "./ReviewList.css";
 import NotAuth from "../pages/notauth/NotAuth";
 import { SET_USER_FIELD } from "../../constants/actionTypes";
+import { Divider, Grid, Paper, TextField } from "@mui/material";
 const ReviewList = ({ userReviews }) => {
 	const dispatch = useDispatch();
 	const [editingId, setEditingId] = useState("");
@@ -20,7 +20,8 @@ const ReviewList = ({ userReviews }) => {
 
 	useEffect(() => {
 		dispatch(getMoviesById(userReviews));
-	}, [user]);
+	}, [user, dispatch, userReviews]);
+
 	if ((userReviews && userReviews.length === 0) || !userReviews) {
 		return (
 			<NotAuth

@@ -4,9 +4,9 @@ import { logoutUser } from "../actions/auth";
 
 export const API = axios.create({
 	withCredentials: true,
-	baseURL: "https://mern-movie-app-api.vercel.app/",
+	baseURL: "http://localhost:5000",
 });
-//http://localhost:5000
+//https://mern-movie-app-api.vercel.app/
 API.interceptors.request.use(
 	(config) => {
 		if (
@@ -52,7 +52,7 @@ export const fetchMovies = (page) => {
 	return API.get(`/movie?page=${page}`, { cancelToken: cancelToken.token });
 };
 export const fetchMovie = (id) => API.get(`/movie/${id}`);
-export const searchMovies = (query) => API.get(`/movie/search?query=${query}`);
+export const searchMovies = (query) => API.get(`/movie/search?q=${query}`);
 export const createMovie = (newMovie) => API.post("/movie", newMovie);
 export const addReview = (id, review) =>
 	API.post(`/movie/addReview/${id}`, review);

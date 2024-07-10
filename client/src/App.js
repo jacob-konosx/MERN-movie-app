@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./components/pages/home/Home";
 import Movie from "./components/pages/movie/Movie";
 import NotFound from "./components/pages/notfound/NotFound";
-import Create from "./components/pages/create/Create";
 import Auth from "./components/pages/auth/Auth";
 import Account from "./components/pages/account/Account.tsx";
 import NavbarMin from "./components/navbar/NavbarMin";
@@ -13,7 +12,7 @@ function App() {
 		<div className="App">
 			<div>
 				<svg
-					class="waves"
+					className="waves"
 					xmlns="http://www.w3.org/2000/svg"
 					xmlnsXlink="http://www.w3.org/1999/xlink"
 					viewBox="0 24 150 28"
@@ -26,7 +25,7 @@ function App() {
 							d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
 						/>
 					</defs>
-					<g class="parallax">
+					<g className="parallax">
 						<use
 							xlinkHref="#gentle-wave"
 							x="48"

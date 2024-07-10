@@ -1,4 +1,5 @@
 import express from "express";
+import auth from "../middleware/auth.js";
 import {
 	signin,
 	signup,
@@ -6,25 +7,26 @@ import {
 	getInfo,
 	addReview,
 	deleteReview,
-	token,
+	refreshAccessToken,
 	logout,
 	update,
 	changePassword,
-	getMovieAverage,
 } from "../controllers/userController.js";
-import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
+// Unprotected routes
 router.get("/getInfo/:id", getInfo);
 router.post("/signin", signin);
 router.post("/signup", signup);
 
+// Protected routes
 router.post("/updateMovieList/", auth, updateMovieList);
 router.post("/addReviewList/", auth, addReview);
 router.post("/deleteReview/", auth, deleteReview);
-router.post("/token/", token);
+router.post("/token/", refreshAccessToken);
 router.post("/logout/", logout);
 router.post("/update/", auth, update);
 router.post("/changePassword/", auth, changePassword);
+
 export default router;

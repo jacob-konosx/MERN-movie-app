@@ -49,7 +49,7 @@ function convertHMS(value) {
 const BadgeCard = ({ props }) => {
 	const theme = useMantineTheme();
 	const { classes } = useStyles(theme);
-	const { _id, mode, title, average_rating } = props;
+	const { _id, mode, title, averageMovieRating } = props;
 	const { plot, genres, actors, directors, running_time_secs, release_date } =
 		props.info;
 
@@ -69,8 +69,8 @@ const BadgeCard = ({ props }) => {
 							</Link>
 						</Text>
 
-						{typeof average_rating === "number" && (
-							<Badge size="sm">{average_rating}</Badge>
+						{typeof averageMovieRating === "number" && (
+							<Badge size="sm">{averageMovieRating}</Badge>
 						)}
 					</Group>
 					<Text size="sm" mt="xs">
@@ -105,8 +105,8 @@ const BadgeCard = ({ props }) => {
 					<h1>
 						{title}{" "}
 						<Badge className="badge" size="xl">
-							{(typeof average_rating === "number" &&
-								average_rating) ||
+							{(typeof averageMovieRating === "number" &&
+								averageMovieRating) ||
 								"No Rating"}
 						</Badge>
 					</h1>

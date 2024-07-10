@@ -1,11 +1,11 @@
 import { Button } from "@mantine/core";
-import { TextField } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changePassword, logoutUser, updateUser } from "../../actions/auth";
 import Input from "../pages/auth/Input";
 import "./EditAccount.css";
+import { TextField } from "@mui/material";
 const EditAccount = ({ userData }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -24,6 +24,7 @@ const EditAccount = ({ userData }) => {
 		} else {
 			setIsValid(false);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userInfo, password]);
 
 	const handleChange = (e) => {

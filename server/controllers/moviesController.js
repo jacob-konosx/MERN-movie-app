@@ -1,151 +1,182 @@
-import express from "express";
-import mongoose from "mongoose";
-
 import MovieModel from "../models/movie.js";
-import { getMovieAverage } from "./userController.js";
-
-const router = express.Router();
+import { calculateMovieAverage } from "./userController.js";
 
 export const getMovies = async (req, res) => {
 	const ITEMS_PER_PAGE = 9;
-	const page = req.query.page || 1;
-	const skip = (page - 1) * ITEMS_PER_PAGE;
+	const currentPage = req.query.page || 1;
+	const skipCount = (currentPage - 1) * ITEMS_PER_PAGE;
 
 	try {
-		const count = await MovieModel.countDocuments();
-		const pageCount = Math.ceil(count / ITEMS_PER_PAGE); // 400 items / 20 = 20
+		const movieCount = await MovieModel.countDocuments();
+		const pageCount = Math.ceil(movieCount / ITEMS_PER_PAGE); // 400 items / 20 = 20
 
 		const tempMovies = await MovieModel.find()
 			.sort({ _id: -1 })
 			.limit(9)
-			.skip(skip);
+			.skip(skipCount);
+
 		const movies = await Promise.all(
 			tempMovies.map(async (movie) => {
-				const average_rating = await getMovieAverage(
+				const averageMovieRating = await calculateMovieAverage(
 					movie._id.toString()
 				);
-				if (!average_rating) return movie;
+				if (!averageMovieRating) return movie;
+
 				return {
 					...movie._doc,
-					average_rating,
+					averageMovieRating,
 				};
 			})
 		);
-		return res.status(200).json({ movies, pageCount });
+		if (!movies) {
+			return res.status(404).json({ message: "No movies found" });
+		}
+
+		return res.json({ movies, pageCount });
 	} catch (error) {
-		return res.status(404).json({ message: error.message });
+		return res.status(409).json({ message: "Couldn't get movies", error });
 	}
 };
 
 export const createMovie = async (req, res) => {
-	const movie = req.body.body;
-	const newMovie = new MovieModel({
-		...movie,
-	});
+	const movie = req.body;
 
 	try {
-		await newMovie.save();
+		const newMovie = new MovieModel.create({ ...movie });
+		if (!newMovie) {
+			return res.status(403).json({ message: "Couldn't create movie" });
+		}
 
 		return res.status(201).json(newMovie);
 	} catch (error) {
-		return res.status(409).json({ message: error.message });
+		return res
+			.status(409)
+			.json({ message: "Couldn't create movie", error });
 	}
 };
 
 export const getMovie = async (req, res) => {
-	const { id } = req.params;
-	try {
-		if (!mongoose.Types.ObjectId.isValid(id))
-			return res.status(404).json({ message: `No movie with id: ${id}` });
+	const movieId = req.params.id;
 
-		const result = await MovieModel.findById(id);
-		if (!result) {
-			return res.status(404).json({ message: `No movie with id: ${id}` });
-		}
+	try {
+		const movieResult = await MovieModel.findById(movieId);
+
 		const movie = {
-			...result._doc,
-			average_rating: await getMovieAverage(result._id),
+			...movieResult._doc,
+			averageMovieRating: await calculateMovieAverage(movieResult._id),
 		};
-		return res.status(200).json(movie);
+		if (!movie) {
+			return res.status(404).json({ message: "Movie not found" });
+		}
+
+		return res.json(movie);
 	} catch (error) {
-		return res.status(500).json({ message: error.message });
+		return res.status(409).json({ message: "Couldn't get movie", error });
 	}
 };
 
 export const getSearch = async (req, res) => {
 	try {
-		const result = await MovieModel.aggregate([
-			{
-				$search: {
-					index: "title",
-					autocomplete: {
-						query: `${req.query.query}`,
-						path: "title",
-						fuzzy: {
-							maxEdits: 2,
-							prefixLength: 3,
-						},
-					},
-				},
-			},
-		]).limit(10);
-		return res.status(200).json(result);
+		const result = await MovieModel.find({
+			title: { $regex: RegExp(`${req.query.q}`, "i") },
+		});
+		return res.json(result);
 	} catch (error) {
-		return res.status(404).json({ message: error.message });
+		return res
+			.status(409)
+			.json({ message: "Couldn't search for movie", error });
 	}
 };
 
 export const addReview = async (req, res) => {
-	const { id } = req.params;
+	const movieId = req.params.id;
 	const review = req.body;
-	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No movie with id: ${id}`);
 
-	const response = await MovieModel.findByIdAndUpdate(
-		id,
-		{
-			$push: { reviews: review },
-		},
-		{ new: true }
-	);
-	res.json(response["reviews"]);
+	try {
+		const response = await MovieModel.findByIdAndUpdate(
+			movieId,
+			{
+				$push: { reviews: review },
+			},
+			{ new: true }
+		);
+		if (!response) {
+			return res
+				.status(403)
+				.json({ message: "Couldn't add movie review" });
+		}
+
+		return res.json(response["reviews"]);
+	} catch (error) {
+		return res
+			.status(409)
+			.json({ message: "Couldn't add movie review", error });
+	}
 };
-export const deleteReview = async (req, res) => {
-	const { id } = req.params;
-	const userId = req.userId;
-	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No movie with id: ${id}`);
 
-	const response = await MovieModel.findByIdAndUpdate(id, {
-		$pull: { reviews: { uid: userId } },
-	});
-	res.json(response);
+export const deleteReview = async (req, res) => {
+	const movieId = req.params.id;
+	const userId = req.userId;
+
+	try {
+		const response = await MovieModel.findByIdAndUpdate(movieId, {
+			$pull: { reviews: { uid: userId } },
+		});
+		if (!response) {
+			return res
+				.status(403)
+				.json({ message: "Couldn't delete movie review" });
+		}
+
+		return res.json(response);
+	} catch (error) {
+		return res.status(409).json({
+			message: "Couldn't delete movie review",
+			error,
+		});
+	}
 };
 
 export const updateReview = async (req, res) => {
-	const { id } = req.params;
-	const { reviewText } = req.body;
+	const movieId = req.params.id;
 	const userId = req.userId;
-	if (!mongoose.Types.ObjectId.isValid(id))
-		return res.status(404).send(`No movie with id: ${id}`);
+	const reviewText = req.body.reviewText;
 
-	await MovieModel.findByIdAndUpdate(
-		id,
-		{
-			$set: { "reviews.$[elem].text": reviewText },
-		},
-		{ arrayFilters: [{ "elem.uid": userId }] }
-	);
+	try {
+		const response = await MovieModel.findByIdAndUpdate(
+			movieId,
+			{
+				$set: { "reviews.$[elem].text": reviewText },
+			},
+			{ arrayFilters: [{ "elem.uid": userId }] }
+		);
+		if (!response) {
+			return res
+				.status(403)
+				.json({ message: "Couldn't update movie review" });
+		}
+
+		return res.json(response);
+	} catch (error) {
+		return res.status(409).json({
+			message: "Couldn't update movie review",
+			error,
+		});
+	}
 };
+
 export const getAdvSearch = async (req, res) => {
 	const genres = req.body?.genres;
 	const actors = req.body?.actors;
 	const directors = req.body?.directors;
 	const title = req.body?.title;
 	const year = req.body?.year;
+
+	let query = [];
 	let compound = {};
 	compound["must"] = [];
-	if (title !== "")
+
+	if (title !== "") {
 		compound["must"].push({
 			text: {
 				query: title,
@@ -155,19 +186,20 @@ export const getAdvSearch = async (req, res) => {
 				},
 			},
 		});
-
-	let query = [];
-	if (title !== "")
+	}
+	if (title !== "") {
 		query.push({
 			$search: { compound },
 		});
-	if (year)
+	}
+	if (year) {
 		query.push({
 			$match: {
 				year: year,
 			},
 		});
-	if (genres.length > 0)
+	}
+	if (genres.length > 0) {
 		query.push({
 			$match: {
 				$and: [
@@ -179,7 +211,8 @@ export const getAdvSearch = async (req, res) => {
 				],
 			},
 		});
-	if (actors.length > 0)
+	}
+	if (actors.length > 0) {
 		query.push({
 			$match: {
 				$and: [
@@ -191,7 +224,8 @@ export const getAdvSearch = async (req, res) => {
 				],
 			},
 		});
-	if (directors.length > 0)
+	}
+	if (directors.length > 0) {
 		query.push({
 			$match: {
 				$and: [
@@ -203,13 +237,19 @@ export const getAdvSearch = async (req, res) => {
 				],
 			},
 		});
+	}
+
 	try {
 		const result = await MovieModel.aggregate(query).limit(10);
-		return res.status(200).json(result);
+		return res.json(result);
 	} catch (error) {
-		return res.status(404).json({ message: error.message });
+		return res.status(409).json({
+			message: "Couldn't advance search movies",
+			error,
+		});
 	}
 };
+
 export const getDirectorsAndActors = async (req, res) => {
 	try {
 		const actors = await MovieModel.aggregate([
@@ -225,6 +265,7 @@ export const getDirectorsAndActors = async (req, res) => {
 				},
 			},
 		]);
+
 		const directors = await MovieModel.aggregate([
 			{
 				$unwind: { path: "$info.directors" },
@@ -238,6 +279,7 @@ export const getDirectorsAndActors = async (req, res) => {
 				},
 			},
 		]);
+
 		const genres = await MovieModel.aggregate([
 			{
 				$unwind: { path: "$info.genres" },
@@ -251,14 +293,16 @@ export const getDirectorsAndActors = async (req, res) => {
 				},
 			},
 		]);
-		return res.status(200).json({
+
+		return res.json({
 			actors: actors[0].actors,
 			directors: directors[0].directors,
 			genres: genres[0].genres,
 		});
 	} catch (error) {
-		return res.status(404).json({ message: error.message });
+		return res.status(409).json({
+			message: "Couldn't get directors, actors and genres",
+			error,
+		});
 	}
 };
-
-export default router;

@@ -36,8 +36,13 @@ const Home = () => {
 				<div className="movies">
 					{data && data.movies && data?.currentPage === page ? (
 						data.movies.map((res) => {
-							const { _id, title, info, year, average_rating } =
-								res;
+							const {
+								_id,
+								title,
+								info,
+								year,
+								averageMovieRating,
+							} = res;
 							return (
 								<div className="movie" key={_id}>
 									<BadgeCard
@@ -47,7 +52,7 @@ const Home = () => {
 											info,
 											year,
 											_id,
-											average_rating,
+											averageMovieRating,
 										}}
 									/>
 								</div>

@@ -3,7 +3,6 @@ import {
 	createStyles,
 	MultiSelect,
 	TextInput,
-	Text,
 	NumberInput,
 	Textarea,
 	Button,
@@ -52,7 +51,8 @@ const Create = () => {
 	});
 	const [isValid, setIsValid] = useState(false);
 	const navigate = useNavigate();
-	const checkMovieValidity = () => {
+
+	useEffect(() => {
 		if (
 			movie.title &&
 			movie.year &&
@@ -67,9 +67,6 @@ const Create = () => {
 		} else {
 			setIsValid(false);
 		}
-	};
-	useEffect(() => {
-		checkMovieValidity();
 	}, [movie, length, movieDate, genres]);
 
 	const handleChange = (e) => {

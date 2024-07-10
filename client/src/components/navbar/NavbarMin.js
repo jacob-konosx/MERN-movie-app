@@ -10,7 +10,6 @@ import {
 } from "@mantine/core";
 import {
 	Home2,
-	SquarePlus,
 	User,
 	Logout,
 	Login,
@@ -21,7 +20,7 @@ import "./NavbarMin.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { logoutUser } from "../../actions/auth";
-import { useMediaQuery } from "@material-ui/core";
+import { useMediaQuery } from "@mui/material";
 const useStyles = createStyles((theme) => ({
 	link: {
 		width: 40,

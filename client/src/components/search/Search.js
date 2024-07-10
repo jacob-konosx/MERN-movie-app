@@ -9,6 +9,7 @@ import { CLEAR_SEARCH } from "../../constants/actionTypes";
 import TextField from "@mui/material/TextField";
 
 import "./Search.css";
+
 const Search = ({ option }) => {
 	const userMoviesList = useSelector(
 		(state) => state.root.authReducer.profile?.moviesList
@@ -22,27 +23,21 @@ const Search = ({ option }) => {
 
 	useEffect(() => {
 		if (searchQuery !== "") dispatch(searchMovies(searchQuery));
-	}, [searchQuery]);
+	}, [searchQuery, dispatch]);
 
 	const handleChange = (e) => {
 		setSearchQuery(e.currentTarget.value);
 	};
+
 	const goSearch = (movie) => {
 		navigate(`/movie/${movie._id}`);
 		dispatch({
 			type: CLEAR_SEARCH,
 		});
 	};
+
 	return (
 		<div className="search">
-			{/* <Text
-				weight={700}
-				size="lg"
-				variant="gradient"
-				gradient={{ from: "black", to: "white", deg: 10 }}
-			>
-				Find Movie
-			</Text> */}
 			<TextField
 				fullWidth
 				focused
@@ -53,7 +48,7 @@ const Search = ({ option }) => {
 				onChange={(e) => handleChange(e)}
 			/>
 			<div className={`dropdown-content`}>
-				{searchRes &&
+				{Array.isArray(searchRes) &&
 					searchRes.map((movie) => {
 						if (option === "movieForm" && userMoviesList) {
 							const cloneMovie = userMoviesList.filter(

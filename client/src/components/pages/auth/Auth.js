@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	Avatar,
-	Button,
-	Paper,
-	Grid,
-	Typography,
-	Container,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import useStyles from "./styles";
-import Input from "./Input";
 import { useNavigate } from "react-router-dom";
 import { signin, signup } from "../../../actions/auth";
 import { CLEAR_ERROR } from "../../../constants/actionTypes";
+import {
+	Avatar,
+	Button,
+	Container,
+	Grid,
+	Paper,
+	Typography,
+} from "@mui/material";
+import Input from "./Input";
 import NotAuth from "../notauth/NotAuth";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 const initialState = {
 	firstName: "",
 	lastName: "",
@@ -24,27 +24,32 @@ const initialState = {
 };
 
 const SignUp = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
 	const [form, setForm] = useState(initialState);
 	const [isSignup, setIsSignup] = useState(false);
-	const dispatch = useDispatch();
-	const classes = useStyles();
-	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
 	const [isValidPass, setIsValidPass] = useState();
-	const handleShowPassword = () => setShowPassword(!showPassword);
+
 	const authError = useSelector(
 		(state) => state.root.errorReducer?.authError
 	);
 	const user = useSelector((state) => state.root.authReducer?.profile);
+
 	useEffect(() => {
 		dispatch({ type: CLEAR_ERROR });
-	}, []);
+	}, [dispatch]);
+
+	const handleShowPassword = () => setShowPassword(!showPassword);
+
 	const switchMode = () => {
 		dispatch({ type: CLEAR_ERROR });
 		setForm(initialState);
 		setIsSignup((prevIsSignup) => !prevIsSignup);
 		setShowPassword(false);
 	};
+
 	const checkPass = () => {
 		if (form.password === form.confirmPassword) {
 			setIsValidPass(true);
@@ -52,6 +57,7 @@ const SignUp = () => {
 			setIsValidPass(false);
 		}
 	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (isSignup) {
@@ -64,17 +70,18 @@ const SignUp = () => {
 
 	const handleChange = (e) =>
 		setForm({ ...form, [e.target.name]: e.target.value });
+
 	if (!user) {
 		return (
 			<Container component="main" maxWidth="xs">
-				<Paper className={classes.paper} elevation={3}>
-					<Avatar className={classes.avatar}>
+				<Paper className="paper" elevation={3}>
+					<Avatar>
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
 						{isSignup ? "Sign up" : "Sign in"}
 					</Typography>
-					<form className={classes.form} onSubmit={handleSubmit}>
+					<form className="form" onSubmit={handleSubmit}>
 						<Grid container spacing={2}>
 							{isSignup && (
 								<>
@@ -135,7 +142,6 @@ const SignUp = () => {
 							fullWidth
 							variant="contained"
 							color="primary"
-							className={classes.submit}
 						>
 							{isSignup ? "Sign Up" : "Sign In"}
 						</Button>

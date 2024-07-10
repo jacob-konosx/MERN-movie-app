@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import BadgeCard from "../../badgecard/BadgeCard";
-import { getMovie, getMoviesAverage } from "../../../actions/movies";
-
-import "./Movie.css";
+import { getMovie } from "../../../actions/movies";
 import Review from "./Review/Review";
 import NotAuth from "../notauth/NotAuth";
+
+import "./Movie.css";
+
 const Movie = () => {
 	const { id } = useParams();
 	const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const Movie = () => {
 
 	useEffect(() => {
 		dispatch(getMovie(id));
-	}, [id]);
+	}, [id, dispatch]);
 
 	return (
 		<div className="singleMovie">
@@ -27,7 +28,7 @@ const Movie = () => {
 							info: movie.info,
 							year: movie.year,
 							_id: movie._id,
-							average_rating: movie.average_rating,
+							averageMovieRating: movie.averageMovieRating,
 						}}
 					/>
 					<Review id={movie._id} />
