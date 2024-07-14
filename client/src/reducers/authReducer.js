@@ -25,4 +25,5 @@ const authReducer = (state = { profile: null }, action) => {
 			return state;
 	}
 };
+
 export default authReducer;

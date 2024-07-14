@@ -1,20 +1,15 @@
 export const AUTH = "AUTH";
 export const LOGOUT = "LOGOUT";
 export const LOGIN = "LOGIN";
-export const ADD_FORM = "ADD_FORM";
 export const CLEAR_SEARCH = "CLEAR_SEARCH";
-export const FORM_SUBMIT = "FORM_SUBMIT";
 
 export const FETCH_ALL = "FETCH_ALL";
-export const CREATE = "CREATE";
-export const SEARCH = "SEARCH";
-export const SET_MOVIE_REVIEW_USER = "SET_MOVIE_REVIEW_USER";
+export const SET_USER_MOVIE_REVIEW = "SET_USER_MOVIE_REVIEW";
 export const SET_REVIEWS = "SET_REVIEWS";
 export const SET_USER_FIELD = "SET_USER_FIELD";
-export const SET_MOVIE_AVERAGE = "SET_MOVIE_AVERAGE";
-export const SET_RATING = "SET_RATING";
-export const SORT_MOVIE_LIST = "SORT_MOVIE_LIST";
-export const AUTH_ERROR = "AUTH_ERROR";
 export const CLEAR_ERROR = "CLEAR_ERROR";
 export const SET_MOVIE_FIELD = "SET_MOVIE_FIELD";
-export const SET_SEARCH = "SET_SEARCH";
+export const SET_ERROR_FIELD = "SET_ERROR_FIELD";
+export const SET_SEARCH_FIELD = "SET_SEARCH_FIELD";
+export const ADD_USER_MOVIE_LIST_SEARCH = "ADD_USER_MOVIE_LIST_SEARCH";
+export const QUERY_MOVIE = "QUERY_MOVIE";;

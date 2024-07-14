@@ -34,24 +34,9 @@ export const getMovies = async (req, res) => {
 
 		return res.json({ movies, pageCount });
 	} catch (error) {
-		return res.status(409).json({ message: "Couldn't get movies", error });
-	}
-};
-
-export const createMovie = async (req, res) => {
-	const movie = req.body;
-
-	try {
-		const newMovie = new MovieModel.create({ ...movie });
-		if (!newMovie) {
-			return res.status(403).json({ message: "Couldn't create movie" });
-		}
-
-		return res.status(201).json(newMovie);
-	} catch (error) {
 		return res
 			.status(409)
-			.json({ message: "Couldn't create movie", error });
+			.json({ message: "Couldn't get movies", error: error.message });
 	}
 };
 
@@ -61,17 +46,20 @@ export const getMovie = async (req, res) => {
 	try {
 		const movieResult = await MovieModel.findById(movieId);
 
+		if (!movieResult) {
+			return res.status(404).json({ message: "Movie not found" });
+		}
+
 		const movie = {
 			...movieResult._doc,
 			averageMovieRating: await calculateMovieAverage(movieResult._id),
 		};
-		if (!movie) {
-			return res.status(404).json({ message: "Movie not found" });
-		}
 
 		return res.json(movie);
 	} catch (error) {
-		return res.status(409).json({ message: "Couldn't get movie", error });
+		return res
+			.status(409)
+			.json({ message: "Couldn't get movie", error: error.message });
 	}
 };
 
@@ -79,12 +67,13 @@ export const getSearch = async (req, res) => {
 	try {
 		const result = await MovieModel.find({
 			title: { $regex: RegExp(`${req.query.q}`, "i") },
-		});
+		}).limit(10);
 		return res.json(result);
 	} catch (error) {
-		return res
-			.status(409)
-			.json({ message: "Couldn't search for movie", error });
+		return res.status(409).json({
+			message: "Couldn't search for movie",
+			error: error.message,
+		});
 	}
 };
 
@@ -108,9 +97,10 @@ export const addReview = async (req, res) => {
 
 		return res.json(response["reviews"]);
 	} catch (error) {
-		return res
-			.status(409)
-			.json({ message: "Couldn't add movie review", error });
+		return res.status(409).json({
+			message: "Couldn't add movie review",
+			error: error.message,
+		});
 	}
 };
 

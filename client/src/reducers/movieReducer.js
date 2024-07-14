@@ -1,46 +1,48 @@
 import {
 	FETCH_ALL,
-	SEARCH,
+	QUERY_MOVIE,
 	CLEAR_SEARCH,
-	SET_MOVIE_REVIEW_USER,
+	SET_USER_MOVIE_REVIEW,
 	SET_REVIEWS,
-	SET_MOVIE_AVERAGE,
 	SET_MOVIE_FIELD,
 } from "../constants/actionTypes";
 
-const movieReducer = (movies = [], action) => {
+const movieReducer = (state = { movies: null }, action) => {
 	switch (action.type) {
 		case FETCH_ALL:
-			return action.payload;
-		case SEARCH:
-			return { ...movies, searchRes: action.payload };
+			return { ...state, movies: action.payload };
+		case QUERY_MOVIE:
+			return { ...state, searchRes: action.payload };
 		case CLEAR_SEARCH:
-			return { ...movies, searchRes: [] };
-		case SET_MOVIE_REVIEW_USER:
-			const reviewList = movies.singleMovie.reviews.map((rev) =>
-				rev._id === action.payload.review_id
-					? { ...rev, userData: action.payload.data }
-					: rev
-			);
+			return { ...state, searchRes: [] };
+		case SET_USER_MOVIE_REVIEW:
+			const reviewList = state.singleMovie.reviews.map((review) => {
+				if (review._id === action.payload.review_id) {
+					return { ...review, userData: action.payload.data };
+				}
+				return review;
+			});
+
 			return {
-				...movies,
-				singleMovie: { ...movies.singleMovie, reviews: reviewList },
+				...state,
+				singleMovie: { ...state.singleMovie, reviews: reviewList },
 			};
 		case SET_REVIEWS:
 			return {
-				...movies,
+				...state,
 				singleMovie: {
-					...movies.singleMovie,
+					...state.singleMovie,
 					reviews: action.payload.data,
 				},
 			};
 		case SET_MOVIE_FIELD:
 			return {
-				...movies,
+				...state,
 				[action.payload.field]: action.payload.data,
 			};
 		default:
-			return movies;
+			return state;
 	}
 };
+
 export default movieReducer;

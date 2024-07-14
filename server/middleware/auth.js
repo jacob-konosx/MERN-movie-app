@@ -1,18 +1,11 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import mongoose from "mongoose";
+import requireValidObjectId from "./requireValidObjectId.js";
 
 const auth = async (req, res, next) => {
 	const accessSecret = process.env.ACCESS_TOKEN_SECRET;
 
-	const objectId = req.params.id;
-	const userId = req.userId;
-	if (objectId && !mongoose.Types.ObjectId.isValid(objectId)) {
-		return res.status(404).send(`Not a valid object Id: ${objectId}`);
-	}
-	if (userId && !mongoose.Types.ObjectId.isValid(userId)) {
-		return res.status(404).send(`Not a valid user Id: ${userId}`);
-	}
+	//requireValidObjectId(req, res, next);
 
 	const authHeader = req.headers.authorization;
 	const accessToken = authHeader && authHeader.split(" ")[1];
@@ -22,7 +15,7 @@ const auth = async (req, res, next) => {
 		if (err) {
 			return res.status(403).json({ message: "Invalid access token" });
 		}
-		req.userId = user?.id;
+		req.userId = user?._id;
 		next();
 	});
 };

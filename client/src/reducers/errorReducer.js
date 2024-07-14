@@ -1,11 +1,14 @@
-import { AUTH_ERROR, CLEAR_ERROR } from "../constants/actionTypes";
+import { CLEAR_ERROR, SET_ERROR_FIELD } from "../constants/actionTypes";
 
-const errorReducer = (state = { authError: null }, action) => {
+const errorReducer = (state = {}, action) => {
 	switch (action.type) {
-		case AUTH_ERROR:
-			return { ...state, authError: action?.data };
+		case SET_ERROR_FIELD:
+			return {
+				...state,
+				[action.payload.field]: action.payload.data,
+			};
 		case CLEAR_ERROR:
-			return { authError: null };
+			return {};
 		default:
 			return state;
 	}

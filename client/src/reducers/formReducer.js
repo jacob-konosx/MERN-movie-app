@@ -1,13 +1,16 @@
-import { ADD_FORM, CLEAR_SEARCH } from "../constants/actionTypes";
+import {
+	ADD_USER_MOVIE_LIST_SEARCH,
+	CLEAR_SEARCH,
+} from "../constants/actionTypes";
 
-const formReducer = (state = { isActive: false, formSearch: null }, action) => {
+const formReducer = (state = { userMovieListSearch: null }, action) => {
 	switch (action.type) {
-		case ADD_FORM:
-			return { ...state, formSearch: action?.data };
+		case ADD_USER_MOVIE_LIST_SEARCH:
+			return { ...state, userMovieListSearch: action?.data };
 		case CLEAR_SEARCH:
 			return {
 				...state,
-				formSearch: { ...state.formData, title: null, id: null },
+				userMovieListSearch: null,
 			};
 		default:
 			return state;

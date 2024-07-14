@@ -1,0 +1,54 @@
+.searchMain {
+	width: 40%;
+	margin: auto;
+	margin-top: 4%;
+}
+.searchYear {
+	margin-left: 2%;
+	width: 49%;
+	display: inline-block;
+	vertical-align: top;
+}
+.searchGenres {
+	width: 49%;
+	display: inline-block;
+}
+.searchBtn {
+	margin: 2% 0px;
+}
+.inputRow {
+	position: relative;
+}
+
+.searchMain a {
+	color: #3f51b5;
+	text-decoration: none;
+}
+.searchMain h2 {
+	text-align: center;
+	display: block;
+	margin-top: 10%;
+}
+.clearBtn {
+	color: #3f51b5;
+	position: absolute;
+}
+.clearBtn:hover {
+	cursor: pointer;
+}
+.functionButtons {
+	text-align: center;
+}
+.resultPaper {
+	padding: 0px 20px;
+	padding-top: 20px;
+}
+.resultGrid h1 {
+	text-align: center;
+}
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	.searchMain {
+		width: 90%;
+	}
+}

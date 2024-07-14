@@ -1,0 +1,58 @@
+.movieReviews {
+	position: relative;
+	margin-top: 2rem;
+}
+.userRating {
+	position: absolute;
+	right: 0;
+	margin-right: 2%;
+}
+.reviews {
+	width: 90%;
+	margin: auto;
+}
+.reviews h1 {
+	text-align: center;
+	font-size: 50px;
+	margin-top: 2rem;
+}
+.reviews h2 {
+	text-align: center;
+}
+.reviewCounter {
+	display: block;
+	float: right;
+}
+.reviewInput {
+	margin-bottom: 1rem !important;
+}
+.userReviewStatus {
+	text-align: center;
+	font-size: 18px;
+}
+.reviewGrid {
+	margin-bottom: 0px;
+}
+.reviewPaper {
+	padding: 0px 20px;
+	padding-top: 30px;
+}
+.reviewInfo h4 {
+	margin: 0;
+}
+.reviewDate {
+	font-size: 14px;
+	margin: 0px;
+	color: gray;
+}
+.reviewDivider {
+	margin: 30px 0px !important;
+}
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	.movieReviews {
+		right: 0%;
+		position: relative;
+		width: 100%;
+	}
+}

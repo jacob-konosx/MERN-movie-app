@@ -1,8 +1,8 @@
-import { SET_SEARCH } from "../constants/actionTypes";
+import { SET_SEARCH_FIELD } from "../constants/actionTypes";
 
 const searchReducer = (state = [], action) => {
 	switch (action.type) {
-		case SET_SEARCH:
+		case SET_SEARCH_FIELD:
 			return {
 				...state,
 				[action.payload.field]: action.payload.data,
@@ -11,4 +11,5 @@ const searchReducer = (state = [], action) => {
 			return state;
 	}
 };
+
 export default searchReducer;

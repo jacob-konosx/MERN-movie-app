@@ -1,0 +1,50 @@
+.userReviews {
+	margin: auto;
+	width: 50%;
+}
+.no_reviews {
+	position: absolute;
+	right: 45%;
+}
+h3 a {
+	text-decoration: none;
+}
+.userReviews button {
+	display: inline;
+}
+.userReviewsPaper {
+	padding: 0px 20px;
+	padding-top: 20px;
+}
+.userReviewsGrid h3 {
+	margin: 0px;
+	text-align: left;
+}
+.userReviewDate {
+	font-size: 14px;
+	margin: 0px;
+	text-align: left;
+	color: gray;
+}
+.userReviewInput {
+	margin-bottom: 1%;
+}
+.userReviewDivider {
+	margin: 15px 0px !important;
+}
+.editing {
+    margin: 0px;
+}
+.userReviews button {
+    margin-left: 1%;
+    text-align: center;
+}
+.editing button {
+    margin-top: 1%;
+}
+@media only screen and (max-width: 768px) {
+	.userReviews {
+		margin: auto;
+		width: 100%;
+	}
+}

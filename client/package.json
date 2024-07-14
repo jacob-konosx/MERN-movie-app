@@ -21,7 +21,6 @@
     "@mui/icons-material": "^5.16.0",
     "@mui/lab": "^5.0.0-alpha.140",
     "@mui/material": "^5.16.0",
-    "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^14.3.1",

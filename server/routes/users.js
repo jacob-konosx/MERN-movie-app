@@ -12,11 +12,12 @@ import {
 	update,
 	changePassword,
 } from "../controllers/userController.js";
+import requireValidObjectId from "../middleware/requireValidObjectId.js";
 
 const router = express.Router();
 
 // Unprotected routes
-router.get("/getInfo/:id", getInfo);
+router.get("/getInfo/:id", requireValidObjectId, getInfo);
 router.post("/signin", signin);
 router.post("/signup", signup);
 

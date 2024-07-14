@@ -2,10 +2,12 @@ import { Button } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changePassword, logoutUser, updateUser } from "../../actions/auth";
-import Input from "../pages/auth/Input";
-import "./EditAccount.css";
+import { changePassword, logout, updateUser } from "../../actions/user";
 import { TextField } from "@mui/material";
+import Input from "../../pages/auth/Input";
+
+import "./EditAccount.css";
+
 const EditAccount = ({ userData }) => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -24,7 +26,6 @@ const EditAccount = ({ userData }) => {
 		} else {
 			setIsValid(false);
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userInfo, password]);
 
 	const handleChange = (e) => {
@@ -46,7 +47,7 @@ const EditAccount = ({ userData }) => {
 		}
 		if (isPassValid()) {
 			dispatch(changePassword(password.passwordFirst, navigate));
-			dispatch(logoutUser());
+			dispatch(logout());
 			navigate("/auth");
 		}
 	};
@@ -88,7 +89,6 @@ const EditAccount = ({ userData }) => {
 			/>
 			<br />
 			<TextField
-				style={{ marginBottom: "3%" }}
 				variant="filled"
 				label="Image URL"
 				color="primary"
@@ -114,11 +114,7 @@ const EditAccount = ({ userData }) => {
 				type={showPassword ? "text" : "password"}
 				handleShowPassword={() => setShowPassword(!showPassword)}
 			/>
-			<Button
-				style={{ marginTop: "2%" }}
-				disabled={!isValid}
-				onClick={submitHandler}
-			>
+			<Button disabled={!isValid} onClick={submitHandler}>
 				Update
 			</Button>
 		</div>

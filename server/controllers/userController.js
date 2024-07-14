@@ -14,7 +14,7 @@ const generateAccessToken = (user, secret) => {
 };
 
 const generateRefreshToken = (user, secret) => {
-	const refreshToken = jwt.sign({ email: user.email, id: user._id }, secret, {
+	const refreshToken = jwt.sign(user.toJSON(), secret, {
 		expiresIn: "24h",
 	});
 	refreshTokens.push(refreshToken);
@@ -47,7 +47,14 @@ export const signin = async (req, res) => {
 			return res.status(400).json({ message: "Invalid credentials" });
 		}
 
-		const accessToken = generateAccessToken(existingUser, accessSecret);
+		// Have to separate the email and id from the user object because the user object sometimes isn't a mongoose object
+		const accessToken = generateAccessToken(
+			{
+				email: existingUser.email,
+				_id: existingUser._id,
+			},
+			accessSecret
+		);
 		const refreshToken = generateRefreshToken(existingUser, refreshSecret);
 
 		return res
@@ -58,7 +65,9 @@ export const signin = async (req, res) => {
 			})
 			.json({ result: existingUser, accessToken });
 	} catch (error) {
-		return res.status(409).json({ message: "Couldn't sign in", error });
+		return res
+			.status(409)
+			.json({ message: "Couldn't sign in", error: error.message });
 	}
 };
 
@@ -71,7 +80,13 @@ export const refreshAccessToken = async (req, res) => {
 	jwt.verify(refreshToken, refreshSecret, (err, user) => {
 		if (err) return res.sendStatus(406);
 
-		const accessToken = generateAccessToken(user, accessSecret);
+		const accessToken = generateAccessToken(
+			{
+				email: user.email,
+				_id: user._id,
+			},
+			accessSecret
+		);
 		return res.json({ accessToken: accessToken });
 	});
 };
@@ -92,7 +107,13 @@ export const signup = async (req, res) => {
 			name: `${firstName} ${lastName}`,
 		});
 
-		const accessToken = generateAccessToken(newUser, accessSecret);
+		const accessToken = generateAccessToken(
+			{
+				email: newUser.email,
+				_id: newUser._id,
+			},
+			accessSecret
+		);
 		const refreshToken = generateRefreshToken(newUser, refreshSecret);
 
 		return res
@@ -105,7 +126,7 @@ export const signup = async (req, res) => {
 	} catch (error) {
 		return res
 			.status(409)
-			.json({ message: "Couldn't sign up user", error });
+			.json({ message: "Couldn't sign up user", error: error.message });
 	}
 };
 
@@ -122,10 +143,12 @@ export const updateMovieList = async (req, res) => {
 				.status(403)
 				.json({ message: "Couldn't update movie list" });
 		}
+		return res.json(result["moviesList"]);
 	} catch (error) {
-		return res
-			.status(409)
-			.json({ message: "Couldn't update movie list", error });
+		return res.status(409).json({
+			message: "Couldn't update movie list",
+			error: error.message,
+		});
 	}
 };
 
@@ -143,7 +166,7 @@ export const getInfo = async (req, res) => {
 	} catch (error) {
 		return res
 			.status(409)
-			.json({ message: "Couldn't get user info", error });
+			.json({ message: "Couldn't get user info", error: error.message });
 	}
 };
 
@@ -164,12 +187,12 @@ export const addReview = async (req, res) => {
 				.status(403)
 				.json({ message: "Couldn't add review to user" });
 		}
-
 		return res.json(response["reviewList"]);
 	} catch (error) {
-		return res
-			.status(409)
-			.json({ message: "Couldn't add review to user", error });
+		return res.status(409).json({
+			message: "Couldn't add review to user",
+			error: error.message,
+		});
 	}
 };
 
@@ -193,9 +216,10 @@ export const deleteReview = async (req, res) => {
 
 		return res.json(response["reviewList"]);
 	} catch (error) {
-		return res
-			.status(409)
-			.json({ message: "Couldn't delete review from user", error });
+		return res.status(409).json({
+			message: "Couldn't delete review from user",
+			error: error.message,
+		});
 	}
 };
 
@@ -220,9 +244,10 @@ export const update = async (req, res) => {
 
 		return res.json(response);
 	} catch (error) {
-		return res
-			.status(409)
-			.json({ message: "Couldn't update user information", error });
+		return res.status(409).json({
+			message: "Couldn't update user information",
+			error: error.message,
+		});
 	}
 };
 
@@ -246,9 +271,10 @@ export const changePassword = async (req, res) => {
 				.json({ message: "Couldn't change user password" });
 		}
 	} catch (error) {
-		return res
-			.status(409)
-			.json({ message: "Couldn't change user password", error });
+		return res.status(409).json({
+			message: "Couldn't change user password",
+			error: error.message,
+		});
 	}
 };
 
