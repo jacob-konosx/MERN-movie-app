@@ -10,7 +10,7 @@ import userRoutes from "./routes/users.js";
 dotenv.config({ path: "./confi.env" });
 
 var corsOptions = {
-	origin: ["http://localhost:3000", "https://mern-movie-log.netlify.app"],
+	origin: ["http://localhost:3000", "https://flix.konosx.dev"],
 	credentials: true,
 };
 
