@@ -5,7 +5,7 @@ import { logout } from "../actions/user";
 export const API = axios.create({
 	withCredentials: true,
 	baseURL:
-		process.env.ENV === "PROD"
+		process.env.REACT_APP_ENV === "PROD"
 			? "https://flix-log-server.vercel.app"
 			: "http://localhost:5000",
 });

@@ -10,11 +10,11 @@ import userRoutes from "./routes/users.js";
 dotenv.config({ path: "./confi.env" });
 
 var corsOptions = {
-	origin: [
+	origin:
 		process.env.ENV === "PROD"
 			? "https://flix.konosx.dev"
 			: "http://localhost:3000",
-	],
+
 	credentials: true,
 };
 

@@ -2,8 +2,8 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "icons": [],
-  "name": "MovieLog",
-  "short_name": "MovieLog",
+  "name": "FlixLog",
+  "short_name": "FlixLog",
   "start_url": ".",
   "theme_color": "#000000"
 }
