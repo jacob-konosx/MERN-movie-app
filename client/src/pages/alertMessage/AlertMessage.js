@@ -14,6 +14,7 @@ import { Divider } from "@mui/material";
 const useStyles = createStyles((theme) => ({
 	root: {
 		paddingTop: 0,
+		textAlign: "center",
 	},
 
 	inner: {
