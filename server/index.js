@@ -10,7 +10,11 @@ import userRoutes from "./routes/users.js";
 dotenv.config({ path: "./confi.env" });
 
 var corsOptions = {
-	origin: ["http://localhost:3000", "https://flix.konosx.dev"],
+	origin: [
+		process.env.ENV === "PROD"
+			? "https://flix.konosx.dev"
+			: "http://localhost:3000",
+	],
 	credentials: true,
 };
 
@@ -26,7 +30,7 @@ app.use("/movie", movieRoutes);
 app.use("/user", userRoutes);
 
 const CONNECTION_URL = process.env.ATLAS_URI;
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 try {
 	mongoose.set("strictQuery", false);

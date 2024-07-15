@@ -4,9 +4,11 @@ import { logout } from "../actions/user";
 
 export const API = axios.create({
 	withCredentials: true,
-	baseURL: "http://localhost:5000",
+	baseURL:
+		process.env.ENV === "PROD"
+			? "https://flix-log-server.vercel.app"
+			: "http://localhost:5000",
 });
-//https://mern-movie-app-api.vercel.app/
 
 API.interceptors.request.use(
 	(config) => {
