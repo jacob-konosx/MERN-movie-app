@@ -17,16 +17,37 @@ const EditAccount = ({ userData }) => {
 		passwordFirst: "",
 		passwordRepeat: "",
 	});
-	const [isValid, setIsValid] = useState(false);
+	const [isInfoValid, setIsInfoValid] = useState(false);
+	const [isPassValid, setIsPassValid] = useState(false);
+
 	const [showPassword, setShowPassword] = useState(false);
 
 	useEffect(() => {
-		if (isInfoValid() || isPassValid()) {
-			setIsValid(true);
+		if (
+			userInfo.name !== "" &&
+			/^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(
+				userInfo.imageUrl
+			) &&
+			(userInfo.name !== userData.name ||
+				userInfo.imageUrl !== userData.imageUrl)
+		) {
+			setIsInfoValid(true);
 		} else {
-			setIsValid(false);
+			setIsInfoValid(false);
 		}
-	}, [userInfo, password]);
+	}, [userInfo, userData]);
+
+	useEffect(() => {
+		if (
+			password.passwordFirst !== "" &&
+			password.passwordRepeat !== "" &&
+			password.passwordFirst === password.passwordRepeat
+		) {
+			setIsPassValid(true);
+		} else {
+			setIsPassValid(false);
+		}
+	}, [password]);
 
 	const handleChange = (e) => {
 		const name = e.target.name;
@@ -38,47 +59,25 @@ const EditAccount = ({ userData }) => {
 		setPassword({ ...password, [e.target.name]: e.target.value });
 	};
 
-	const submitHandler = async () => {
-		if (isInfoValid()) {
-			await dispatch(updateUser(userInfo.name, userInfo.imageUrl));
+	const submitHandler = () => {
+		if (isInfoValid) {
+			dispatch(updateUser(userInfo.name, userInfo.imageUrl));
 			setUserInfo((old) => {
 				return { ...old, update: !old.update };
 			});
 		}
-		if (isPassValid()) {
+		if (isPassValid) {
 			dispatch(changePassword(password.passwordFirst, navigate));
 			dispatch(logout());
 			navigate("/auth");
 		}
 	};
 
-	const isPassValid = () => {
-		if (
-			password.passwordFirst !== "" &&
-			password.passwordRepeat !== "" &&
-			password.passwordFirst === password.passwordRepeat
-		)
-			return true;
-		return false;
-	};
-	const isInfoValid = () => {
-		if (
-			userInfo.name !== "" &&
-			isImage(userInfo.imageUrl) &&
-			(userInfo.name !== userData.name ||
-				userInfo.imageUrl !== userData.imageUrl)
-		)
-			return true;
-		return false;
-	};
-	const isImage = (url) => {
-		return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
-	};
-
 	return (
 		<div className="editAccount">
 			<h3>Account Info</h3>
 			<TextField
+				className="editAccountInput"
 				variant="filled"
 				label="Name"
 				color="primary"
@@ -87,8 +86,9 @@ const EditAccount = ({ userData }) => {
 				name="name"
 				onChange={handleChange}
 			/>
-			<br />
+
 			<TextField
+				className="editAccountInput"
 				variant="filled"
 				label="Image URL"
 				color="primary"
@@ -97,8 +97,8 @@ const EditAccount = ({ userData }) => {
 				name="imageUrl"
 				onChange={handleChange}
 			/>
+
 			<h3>Password</h3>
-			<br />
 			<Input
 				name="passwordFirst"
 				label="Password"
@@ -106,7 +106,6 @@ const EditAccount = ({ userData }) => {
 				type={showPassword ? "text" : "password"}
 				handleShowPassword={() => setShowPassword(!showPassword)}
 			/>
-			<br />
 			<Input
 				name="passwordRepeat"
 				label="Repeat Password"
@@ -114,7 +113,11 @@ const EditAccount = ({ userData }) => {
 				type={showPassword ? "text" : "password"}
 				handleShowPassword={() => setShowPassword(!showPassword)}
 			/>
-			<Button disabled={!isValid} onClick={submitHandler}>
+
+			<Button
+				disabled={!isInfoValid && !isPassValid}
+				onClick={submitHandler}
+			>
 				Update
 			</Button>
 		</div>

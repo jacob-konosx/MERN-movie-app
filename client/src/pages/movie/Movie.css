@@ -4,11 +4,10 @@
     margin-top: 2%;
 }
 @media only screen and (max-width: 768px) {
-
     /* For mobile phones: */
     .singleMovie {
         margin: 0 auto;
         max-width: 95%;
-        margin-top: 2%;
+        margin-top: 3%;
     }
 }

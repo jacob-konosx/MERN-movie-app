@@ -6,6 +6,7 @@ import MovieCard from "../../components/movieCard/MovieCard";
 import MovieSearchField from "../../components/movieSearchField/MovieSearchField";
 
 import "./Home.css";
+import Loader from "../../components/loader/Loader";
 
 const Home = () => {
 	const dispatch = useDispatch();
@@ -17,6 +18,10 @@ const Home = () => {
 	useEffect(() => {
 		dispatch(getMovies(page));
 	}, [page, dispatch]);
+
+	if (!movieData) {
+		return <Loader />;
+	}
 
 	return (
 		<div className="movieSection">
@@ -47,15 +52,7 @@ const Home = () => {
 					})}
 				</div>
 			) : (
-				<div className="loader">
-					<div className="waterfall">
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-					</div>
-				</div>
+				<Loader />
 			)}
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button, MultiSelect, NumberInput, Text } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,6 +11,7 @@ import { Divider, Grid, Paper, TextField } from "@mui/material";
 import _ from "lodash";
 
 import "./Search.css";
+import Loader from "../../components/loader/Loader";
 
 const defaultQuery = { title: "", year: undefined };
 
@@ -165,7 +166,7 @@ const Search = () => {
 						{searchResults.data.length > 0 ? (
 							<Paper className="resultPaper">
 								{searchResults.data.map((movie) => (
-									<>
+									<Fragment key={movie._id}>
 										<Grid
 											className="resultGrid"
 											container
@@ -185,7 +186,7 @@ const Search = () => {
 											</Grid>
 										</Grid>
 										<Divider variant="fullWidth" />
-									</>
+									</Fragment>
 								))}
 							</Paper>
 						) : (
@@ -196,15 +197,7 @@ const Search = () => {
 			</div>
 		);
 	} else {
-		<div className="loader">
-			<div className="waterfall">
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-				<div></div>
-			</div>
-		</div>;
+		<Loader />;
 	}
 };
 

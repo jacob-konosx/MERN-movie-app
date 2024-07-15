@@ -25,7 +25,7 @@ import { confirmAlert } from "react-confirm-alert";
 import UserMovieListForm from "../userMovieListForm/UserMovieListForm";
 import AlertMessage from "../../pages/alertMessage/AlertMessage";
 
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import "react-confirm-alert/src/react-confirm-alert.css";
 import "./UserMovieList.css";
 
 const movieColors = {

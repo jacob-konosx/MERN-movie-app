@@ -8,6 +8,7 @@ import BadgeCard from "../../components/movieCard/MovieCard";
 
 import "./Movie.css";
 import { CLEAR_ERROR } from "../../constants/actionTypes";
+import Loader from "../../components/loader/Loader";
 
 const Movie = () => {
 	const { id } = useParams();
@@ -41,6 +42,10 @@ const Movie = () => {
 		);
 	}
 
+	if (!movie) {
+		return <Loader />;
+	}
+
 	return (
 		<div className="singleMovie">
 			{movie._id === id ? (
@@ -54,15 +59,7 @@ const Movie = () => {
 					<Review movieId={movie._id} />
 				</>
 			) : (
-				<div className="loader">
-					<div className="waterfall">
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-						<div></div>
-					</div>
-				</div>
+				<Loader />
 			)}
 		</div>
 	);

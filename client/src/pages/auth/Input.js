@@ -16,6 +16,7 @@ const Input = ({
 }) => (
 	<Grid item xs={12} sm={half ? 6 : 12}>
 		<TextField
+			className="editAccountInput"
 			value={value}
 			error={isError}
 			helperText={isError && errorText}

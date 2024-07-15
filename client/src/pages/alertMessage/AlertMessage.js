@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router-dom";
 
 import "./AlertMessage.css";
+import { Divider } from "@mui/material";
 
 const useStyles = createStyles((theme) => ({
 	root: {
@@ -37,17 +38,6 @@ const useStyles = createStyles((theme) => ({
 		},
 	},
 
-	title: {
-		fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-		textAlign: "center",
-		fontWeight: 900,
-		fontSize: 38,
-
-		[theme.fn.smallerThan("sm")]: {
-			fontSize: 32,
-		},
-	},
-
 	description: {
 		maxWidth: 540,
 		margin: "auto",
@@ -63,7 +53,7 @@ const AlertMessage = ({ alert, button }) => {
 		<Container className={classes.root}>
 			<div className={classes.inner}>
 				<div className={classes.content}>
-					<Title className={classes.title}>{alert.text}</Title>
+					<Title className="alertText">{alert.text}</Title>
 					<Text
 						color="dimmed"
 						size="lg"
@@ -83,6 +73,7 @@ const AlertMessage = ({ alert, button }) => {
 					</Group>
 				</div>
 			</div>
+			<Divider variant="fullWidth" className="userReviewDivider" />
 		</Container>
 	);
 };

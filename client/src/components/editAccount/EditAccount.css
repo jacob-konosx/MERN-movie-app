@@ -1,15 +1,15 @@
 .editAccount {
-        position: absolute;
-        right: 34%;
-        width: 30%;
-    }
-#nameField{
-    margin-top: 2% !important;
+	position: absolute;
+	right: 34%;
+	width: 30%;
+}
+.editAccountInput {
+	margin-bottom: 1rem !important;
 }
 @media only screen and (max-width: 768px) {
-.editAccount {
-        position: relative;
-        right: 0%;
-        width: 100%;
-    }
+	.editAccount {
+		position: relative;
+		right: 0%;
+		width: 100%;
+	}
 }

@@ -8,12 +8,14 @@ import {
 	Image,
 } from "@mantine/core";
 import { Home2, User, Logout, Login, ListSearch } from "tabler-icons-react";
-import logoImg from "../../media/logo.png";
-import "./NavigationBar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { logout } from "../../actions/user";
 import { useMediaQuery } from "@mui/material";
+import logoImg from "../../media/logo.png";
+
+import "./NavigationBar.css";
+
 const useStyles = createStyles((theme) => ({
 	link: {
 		width: 40,
@@ -59,17 +61,18 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 
 const mockdata = [
 	{ icon: Home2, label: "Home", route: "/", needLogin: false },
-	// { icon: SquarePlus, label: "Create", route: "/create", needLogin: true },
 	{ icon: ListSearch, label: "Search", route: "/search", needLogin: false },
 	{ icon: User, label: "Account", route: "/account", needLogin: true },
 ];
+
 const NavigationBar = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.root.authReducer.profile);
 	const isMobile = useMediaQuery("(max-width:768px)");
-	const links = mockdata.map((link, index) => {
+
+	const links = mockdata.map((link) => {
 		if (link.needLogin && !user) return null;
 
 		return (

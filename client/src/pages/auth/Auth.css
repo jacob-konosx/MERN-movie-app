@@ -1,0 +1,14 @@
+.authPaper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 2rem;
+	margin-top: 5rem;
+}
+.authPaper form {
+	margin-top: 1rem;
+	width: 100%;
+}
+.authPaper .avatar {
+	margin: 0.3rem;
+}

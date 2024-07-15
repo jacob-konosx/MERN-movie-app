@@ -52,6 +52,7 @@
     .bigCard h1{
         text-align: center;
         margin: 0px;
+        margin-top: 1rem;
     }
     .badge{
     display: table;

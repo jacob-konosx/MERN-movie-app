@@ -15,6 +15,8 @@ import Input from "./Input";
 import AlertMessage from "../alertMessage/AlertMessage";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
+import "./Auth.css";
+
 const initialForm = {
 	firstName: "",
 	lastName: "",
@@ -79,14 +81,14 @@ const Auth = () => {
 	if (!user) {
 		return (
 			<Container component="main" maxWidth="xs">
-				<Paper className="paper" elevation={3}>
-					<Avatar>
+				<Paper className="authPaper" elevation={3}>
+					<Avatar className="avatar">
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
 						{isSignup ? "Sign up" : "Sign in"}
 					</Typography>
-					<form className="form" onSubmit={handleSubmit}>
+					<form onSubmit={handleSubmit}>
 						<Grid container spacing={2}>
 							{isSignup && (
 								<>
