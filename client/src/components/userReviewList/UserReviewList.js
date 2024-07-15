@@ -37,7 +37,11 @@ const ReviewList = ({ reviewList }) => {
 		}
 	};
 
-	if ((reviewList && reviewList.length === 0) || !reviewList) {
+	if (
+		(reviewList && reviewList.length === 0) ||
+		!reviewList ||
+		!reviewedMovies
+	) {
 		return (
 			<AlertMessage
 				alert={{
@@ -143,7 +147,10 @@ const ReviewList = ({ reviewList }) => {
 									)}
 								</Grid>
 							</Grid>
-							<Divider variant="fullWidth" className="userReviewDivider"/>
+							<Divider
+								variant="fullWidth"
+								className="userReviewDivider"
+							/>
 						</Fragment>
 					);
 				})}

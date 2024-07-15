@@ -121,27 +121,29 @@ const UserMovieListForm = ({ moviesList }) => {
 						onChange={setMovieCompletionStatus}
 					/>
 
-					{isFormValid ? (
-						<ActionIcon
-							color="blue"
-							variant="outline"
-							onClick={() => handleFormSubmit()}
-						>
-							<Plus size={20} />
-						</ActionIcon>
-					) : (
-						<ActionIcon
-							color="blue"
-							variant="outline"
-							onClick={() => {
-								setActiveForm(false);
-								setForm(defaultForm);
-								setMovieCompletionStatus(null);
-							}}
-						>
-							<Minus size={20} />
-						</ActionIcon>
-					)}
+					<div className="movieFormButton">
+						{isFormValid ? (
+							<ActionIcon
+								color="blue"
+								variant="outline"
+								onClick={() => handleFormSubmit()}
+							>
+								<Plus size={20} />
+							</ActionIcon>
+						) : (
+							<ActionIcon
+								color="blue"
+								variant="outline"
+								onClick={() => {
+									setActiveForm(false);
+									setForm(defaultForm);
+									setMovieCompletionStatus(null);
+								}}
+							>
+								<Minus size={20} />
+							</ActionIcon>
+						)}
+					</div>
 				</div>
 			)}
 		</>
