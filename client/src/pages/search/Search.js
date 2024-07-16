@@ -6,12 +6,12 @@ import {
 	searchAdvancedMovie,
 } from "../../actions/movie";
 import { Link } from "react-router-dom";
-import { SET_SEARCH_FIELD } from "../../constants/actionTypes";
+import { SET_ADVANCED_SEARCH_FIELD } from "../../constants/actionTypes";
 import { Divider, Grid, Paper, TextField } from "@mui/material";
 import _ from "lodash";
+import Loader from "../../components/loader/Loader";
 
 import "./Search.css";
-import Loader from "../../components/loader/Loader";
 
 const defaultQuery = { title: "", year: undefined };
 
@@ -26,10 +26,10 @@ const Search = () => {
 	const [tempQuery, setTempQuery] = useState(null);
 
 	const searchResults = useSelector(
-		(state) => state.root.searchReducer?.searchResult
+		(state) => state.root.advancedSearchReducer?.searchResult
 	);
-	const formInfo = useSelector(
-		(state) => state.root.searchReducer?.queryData
+	const queryData = useSelector(
+		(state) => state.root.advancedSearchReducer?.queryData
 	);
 
 	const handleChange = (e) => {
@@ -67,7 +67,7 @@ const Search = () => {
 		}
 	};
 
-	if (formInfo) {
+	if (queryData) {
 		return (
 			<div className="searchMain">
 				<h1>Advanced Search</h1>
@@ -89,7 +89,7 @@ const Search = () => {
 						onChange={setGenres}
 						name="genres"
 						searchable
-						data={formInfo.genres}
+						data={queryData.genres}
 						placeholder="Choose Genres"
 						label="Genres"
 						value={genres}
@@ -111,7 +111,7 @@ const Search = () => {
 						onChange={setActors}
 						name="actors"
 						searchable
-						data={formInfo.actors}
+						data={queryData.actors}
 						placeholder="Searching displays more actors"
 						label="Actors"
 						value={actors}
@@ -122,7 +122,7 @@ const Search = () => {
 						onChange={setDirectors}
 						name="directors"
 						searchable
-						data={formInfo.directors}
+						data={queryData.directors}
 						placeholder="Searching displays more directors"
 						label="Directors"
 						value={directors}
@@ -140,7 +140,7 @@ const Search = () => {
 								setTempQuery(null);
 								setQuery(defaultQuery);
 								dispatch({
-									type: SET_SEARCH_FIELD,
+									type: SET_ADVANCED_SEARCH_FIELD,
 									payload: {
 										field: "searchResult",
 										data: null,

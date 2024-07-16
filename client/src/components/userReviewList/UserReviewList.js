@@ -7,12 +7,12 @@ import {
 	updateReviewText,
 	deleteReview,
 } from "../../actions/movie";
-import { timeAgo } from "../timeago/timeago";
 import { Link } from "react-router-dom";
 import { Divider, Grid, Paper, TextField } from "@mui/material";
 import AlertMessage from "../../pages/alertMessage/AlertMessage";
 
 import "./UserReviewList.css";
+import { timeAgo } from "../../lib/timeago";
 
 const ReviewList = ({ reviewList }) => {
 	const dispatch = useDispatch();
@@ -20,9 +20,9 @@ const ReviewList = ({ reviewList }) => {
 	const [reviewText, setReviewText] = useState("");
 
 	const reviewedMovies = useSelector(
-		(state) => state.root.movieReducer.movies
+		(state) => state.root.movieReducer.reviewedMovies
 	);
-	const user = useSelector((state) => state.root.authReducer.profile);
+	const user = useSelector((state) => state.root.userReducer.profile);
 
 	useEffect(() => {
 		dispatch(getMoviesById(reviewList));

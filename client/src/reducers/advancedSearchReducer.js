@@ -1,8 +1,8 @@
-import { SET_SEARCH_FIELD } from "../constants/actionTypes";
+import { SET_ADVANCED_SEARCH_FIELD } from "../constants/actionTypes";
 
 const searchReducer = (state = [], action) => {
 	switch (action.type) {
-		case SET_SEARCH_FIELD:
+		case SET_ADVANCED_SEARCH_FIELD:
 			return {
 				...state,
 				[action.payload.field]: action.payload.data,

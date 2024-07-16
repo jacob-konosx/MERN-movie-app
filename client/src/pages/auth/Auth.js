@@ -34,7 +34,7 @@ const Auth = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [isPasswordValid, setIsPasswordValid] = useState(true);
 
-	const user = useSelector((state) => state.root.authReducer?.profile);
+	const user = useSelector((state) => state.root.userReducer?.profile);
 	const signinError = useSelector(
 		(state) => state.root.errorReducer?.signinError
 	);

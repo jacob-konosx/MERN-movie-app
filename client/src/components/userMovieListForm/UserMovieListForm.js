@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Minus, Plus } from "tabler-icons-react";
 import { updateMovieList } from "../../actions/movie";
+import { SET_USER_MOVIE_FORM_FIELD } from "../../constants/actionTypes";
 import MovieSearchField from "../movieSearchField/MovieSearchField";
 
 import "./UserMovieListForm.css";
@@ -22,23 +23,23 @@ const UserMovieListForm = ({ moviesList }) => {
 	const [form, setForm] = useState(defaultForm);
 	const [isFormValid, setIsFormValid] = useState(false);
 
-	const userMovieListSearch = useSelector(
-		(state) => state.root.formReducer.userMovieListSearch
+	const userMovieFormSearch = useSelector(
+		(state) => state.root.userFormReducer.userMovieFormSearch
 	);
 
 	useEffect(() => {
-		if (userMovieListSearch) {
+		if (userMovieFormSearch) {
 			setForm((form) => {
 				return {
 					...form,
-					title: userMovieListSearch.title,
-					id: userMovieListSearch.id,
+					title: userMovieFormSearch.title,
+					id: userMovieFormSearch.id,
 				};
 			});
 		} else {
 			setForm(defaultForm);
 		}
-	}, [userMovieListSearch]);
+	}, [userMovieFormSearch]);
 
 	useEffect(() => {
 		if (movieCompletionStatus && form.title && form.id && form.rating) {
@@ -88,7 +89,13 @@ const UserMovieListForm = ({ moviesList }) => {
 							<span
 								className="formTitle"
 								onClick={() => {
-									dispatch({ type: "CLEAR_SEARCH" });
+									dispatch({
+										type: SET_USER_MOVIE_FORM_FIELD,
+										payload: {
+											field: "userMovieFormSearch",
+											data: null,
+										},
+									});
 								}}
 							>
 								{form.title}

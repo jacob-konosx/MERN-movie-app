@@ -11,6 +11,7 @@ import Loader from "../../components/loader/Loader";
 const Home = () => {
 	const dispatch = useDispatch();
 	const [page, setPage] = useState(1);
+
 	const movieData = useSelector(
 		(state) => state.root.movieReducer?.homeMovies
 	);

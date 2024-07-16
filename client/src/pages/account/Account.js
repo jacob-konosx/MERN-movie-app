@@ -17,7 +17,7 @@ import "./Account.css";
 const Account = () => {
 	// Needs to be named value for TabContext
 	const [value, setValue] = useState("1");
-	const user = useSelector((state) => state.root.authReducer.profile);
+	const user = useSelector((state) => state.root.userReducer.profile);
 
 	if (!user) {
 		return (

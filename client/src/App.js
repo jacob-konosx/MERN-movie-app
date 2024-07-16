@@ -9,18 +9,16 @@ import Layout from "./components/layout/Layout";
 
 const App = () => {
 	return (
-		<>
-			<Routes>
-				<Route element={<Layout />} path="/">
-					<Route index element={<Home />} />
-					<Route path="search" element={<Search />} />
-					<Route path="movie/:id" element={<Movie />} />
-					<Route path="auth" element={<Auth />} />
-					<Route path="account" element={<Account />} />
-					<Route path="*" exact={true} element={<NotFound />} />
-				</Route>
-			</Routes>
-		</>
+		<Routes>
+			<Route element={<Layout />} path="/">
+				<Route index element={<Home />} />
+				<Route path="search" element={<Search />} />
+				<Route path="movie/:id" element={<Movie />} />
+				<Route path="auth" element={<Auth />} />
+				<Route path="account" element={<Account />} />
+				<Route path="*" exact={true} element={<NotFound />} />
+			</Route>
+		</Routes>
 	);
 };
 

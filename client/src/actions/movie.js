@@ -1,10 +1,8 @@
 import {
-	FETCH_ALL,
-	QUERY_MOVIE,
-	SET_USER_MOVIE_REVIEW,
-	SET_USER_FIELD,
-	SET_REVIEWS,
-	SET_SEARCH_FIELD,
+	SET_MOVIE_REVIEW_USER_INFO,
+	SET_USER_PROFILE_FIELD,
+	SET_MOVIE_REVIEWS,
+	SET_ADVANCED_SEARCH_FIELD,
 	SET_MOVIE_FIELD,
 	SET_ERROR_FIELD,
 } from "../constants/actionTypes.js";
@@ -59,7 +57,10 @@ export const searchMovie = (query) => async (dispatch) => {
 	try {
 		const { data } = await api.searchMovie(query);
 
-		dispatch({ type: QUERY_MOVIE, payload: data });
+		dispatch({
+			type: SET_MOVIE_FIELD,
+			payload: { field: "searchResult", data },
+		});
 	} catch (error) {
 		console.log(error);
 		dispatch({
@@ -89,7 +90,7 @@ export const updateMovieList = (movieList) => async (dispatch) => {
 	try {
 		await api.updateMovieList(movieList);
 		dispatch({
-			type: SET_USER_FIELD,
+			type: SET_USER_PROFILE_FIELD,
 			payload: { field: "moviesList", data: movieList },
 		});
 	} catch (error) {
@@ -113,11 +114,11 @@ export const addReview =
 			const userResponse = await api.addUserReview(userReview);
 
 			dispatch({
-				type: SET_REVIEWS,
+				type: SET_MOVIE_REVIEWS,
 				payload: { data: movieResponse.data },
 			});
 			dispatch({
-				type: SET_USER_FIELD,
+				type: SET_USER_PROFILE_FIELD,
 				payload: { field: "reviewList", data: userResponse.data },
 			});
 		} catch (error) {
@@ -136,7 +137,7 @@ export const getUserInfoAndSetToReview =
 		try {
 			const { data } = await api.getUserInfo(uid);
 			dispatch({
-				type: SET_USER_MOVIE_REVIEW,
+				type: SET_MOVIE_REVIEW_USER_INFO,
 				payload: { data, review_id },
 			});
 		} catch (error) {
@@ -158,7 +159,10 @@ export const getMoviesById = (reviewList) => async (dispatch) => {
 			const { data } = await api.getMovie(rev.movieId);
 			movies.push(data);
 		}
-		dispatch({ type: FETCH_ALL, payload: movies });
+		dispatch({
+			type: SET_MOVIE_FIELD,
+			payload: { field: "reviewedMovies", data: movies },
+		});
 	} catch (error) {
 		console.log(error);
 		dispatch({
@@ -188,10 +192,10 @@ export const searchAdvancedMovie = (query) => async (dispatch) => {
 	try {
 		const { data } = await api.searchAdvancedMovie(query);
 		dispatch({
-			type: SET_SEARCH_FIELD,
+			type: SET_ADVANCED_SEARCH_FIELD,
 			payload: {
 				field: "searchResult",
-				data: { data: [...data], query },
+				data: { data: [...data] },
 			},
 		});
 	} catch (error) {
@@ -209,7 +213,7 @@ export const getDirectorsAndActors = () => async (dispatch) => {
 	try {
 		const { data } = await api.getDirectorsAndActors();
 		dispatch({
-			type: SET_SEARCH_FIELD,
+			type: SET_ADVANCED_SEARCH_FIELD,
 			payload: { field: "queryData", data: { ...data } },
 		});
 	} catch (error) {
@@ -228,7 +232,7 @@ export const deleteReview = (movieId) => async (dispatch) => {
 		await api.deleteMovieReview(movieId);
 		const { data } = await api.deleteUserReview(movieId);
 		dispatch({
-			type: SET_USER_FIELD,
+			type: SET_USER_PROFILE_FIELD,
 			payload: { field: "reviewList", data },
 		});
 	} catch (error) {

@@ -1,14 +1,14 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import authReducer from "./authReducer";
-import formReducer from "./formReducer";
+import userReducer from "./userReducer";
+import userFormReducer from "./userFormReducer";
 import movieReducer from "./movieReducer";
 import errorReducer from "./errorReducer";
-import searchReducer from "./searchReducer";
+import advancedSearchReducer from "./advancedSearchReducer";
 
 export const rootReducer = combineReducers({
-	authReducer,
-	formReducer,
+	userReducer,
+	userFormReducer,
 	movieReducer,
 	errorReducer,
-	searchReducer,
+	advancedSearchReducer,
 });

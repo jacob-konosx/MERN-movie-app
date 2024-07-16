@@ -1,21 +1,22 @@
 import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addReview, getUserInfoAndSetToReview } from "../../../actions/movie";
-import { timeAgo } from "../../../components/timeago/timeago";
 import { Badge } from "@mantine/core";
 import { Avatar, Button, Divider, Grid, Paper, TextField } from "@mui/material";
 import AlertMessage from "../../alertMessage/AlertMessage";
 
 import "./Review.css";
+import { timeAgo } from "../../../lib/timeago";
 
 const Review = ({ movieId }) => {
 	const dispatch = useDispatch();
 
 	const [reviewText, setReviewText] = useState("");
+
 	const reviews = useSelector(
 		(state) => state.root.movieReducer.singleMovie?.reviews
 	);
-	const user = useSelector((state) => state.root.authReducer?.profile);
+	const user = useSelector((state) => state.root.userReducer?.profile);
 
 	const handleReviewSubmit = () => {
 		if (reviewText.length >= 1) {

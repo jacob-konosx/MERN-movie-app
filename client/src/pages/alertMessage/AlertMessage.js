@@ -7,9 +7,9 @@ import {
 	Group,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
+import { Divider } from "@mui/material";
 
 import "./AlertMessage.css";
-import { Divider } from "@mui/material";
 
 const useStyles = createStyles((theme) => ({
 	root: {

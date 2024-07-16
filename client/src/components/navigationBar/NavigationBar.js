@@ -69,7 +69,7 @@ const NavigationBar = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const user = useSelector((state) => state.root.authReducer.profile);
+	const user = useSelector((state) => state.root.userReducer.profile);
 	const isMobile = useMediaQuery("(max-width:768px)");
 
 	const links = mockdata.map((link) => {
