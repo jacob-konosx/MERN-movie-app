@@ -15,7 +15,7 @@ const defaultForm = {
 	rating: 0,
 };
 
-const AddUserMovieList = () => {
+const AddUserMovieList = ({ moviesList }) => {
 	const dispatch = useDispatch();
 
 	const [activeForm, setActiveForm] = useState(false);
@@ -29,7 +29,10 @@ const AddUserMovieList = () => {
 		movieForm.status && movieForm.title && movieForm.id && movieForm.rating;
 
 	useEffect(() => {
-		if (userMovieFormSearch) {
+		if (
+			userMovieFormSearch &&
+			!moviesList.some((m) => m.id === userMovieFormSearch.id)
+		) {
 			setMovieForm((form) => ({
 				...form,
 				title: userMovieFormSearch.title,
@@ -38,7 +41,7 @@ const AddUserMovieList = () => {
 		} else {
 			setMovieForm(defaultForm);
 		}
-	}, [userMovieFormSearch]);
+	}, [userMovieFormSearch, moviesList]);
 
 	const handleAddMovie = async (e) => {
 		e.preventDefault();

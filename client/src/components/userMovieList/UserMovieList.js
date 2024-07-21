@@ -175,7 +175,7 @@ const UserMovieList = ({ user }) => {
 				/>
 			)}
 
-			<AddUserMovieList />
+			<AddUserMovieList moviesList={moviesList} />
 
 			<ScrollArea className="movieListArea">
 				<Table>
