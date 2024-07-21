@@ -16,4 +16,4 @@ export const SET_ERROR_FIELD = "SET_ERROR_FIELD";
 export const SET_ADVANCED_SEARCH_FIELD = "SET_ADVANCED_SEARCH_FIELD";
 
 // User movie form reducer action types
-export const SET_USER_MOVIE_FORM_FIELD = "SET_USER_MOVIE_FORM_FIELD";
+export const SET_USER_MOVIE_FORM_SEARCH = "SET_USER_MOVIE_FORM_SEARCH";

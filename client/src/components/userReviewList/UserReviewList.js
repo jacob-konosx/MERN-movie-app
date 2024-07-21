@@ -10,38 +10,35 @@ import {
 import { Link } from "react-router-dom";
 import { Divider, Grid, Paper, TextField } from "@mui/material";
 import AlertMessage from "../../pages/alertMessage/AlertMessage";
-
-import "./UserReviewList.css";
 import { timeAgo } from "../../lib/timeago";
 
-const ReviewList = ({ reviewList }) => {
+import "./UserReviewList.css";
+
+const ReviewList = ({ user }) => {
+	const { reviewList } = user;
+
 	const dispatch = useDispatch();
-	const [editingId, setEditingId] = useState("");
-	const [reviewText, setReviewText] = useState("");
+	const [editingId, setEditingId] = useState(null);
+	const [reviewText, setReviewText] = useState(null);
 
 	const reviewedMovies = useSelector(
 		(state) => state.root.movieReducer.reviewedMovies
 	);
-	const user = useSelector((state) => state.root.userReducer.profile);
 
 	useEffect(() => {
 		dispatch(getMoviesById(reviewList));
-	}, [user, dispatch, reviewList]);
+	}, [dispatch, reviewList]);
 
 	const editHandler = (movieId) => {
 		if (reviewText.length > 0) {
 			dispatch(updateReviewText(movieId, reviewText));
+			setReviewText(null);
+			setEditingId(null);
 			dispatch(getMoviesById(reviewList));
-			setReviewText("");
-			setEditingId("");
 		}
 	};
 
-	if (
-		(reviewList && reviewList.length === 0) ||
-		!reviewList ||
-		!reviewedMovies
-	) {
+	if (reviewList.length === 0) {
 		return (
 			<AlertMessage
 				alert={{
@@ -79,7 +76,7 @@ const ReviewList = ({ reviewList }) => {
 										{` - ${movie.year}`}
 									</h3>
 
-									{editingId === "" && (
+									{!editingId && (
 										<ActionIcon
 											color="blue"
 											onClick={() => {
@@ -122,6 +119,7 @@ const ReviewList = ({ reviewList }) => {
 													)
 												}
 											/>
+
 											<div className="editing">
 												<ActionIcon
 													color="green"
@@ -134,8 +132,8 @@ const ReviewList = ({ reviewList }) => {
 												<ActionIcon
 													color="red"
 													onClick={() => {
-														setEditingId("");
-														setReviewText("");
+														setEditingId(null);
+														setReviewText(null);
 													}}
 												>
 													<X size={16} />

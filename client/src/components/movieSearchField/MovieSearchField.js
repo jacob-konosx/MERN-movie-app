@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { searchMovie } from "../../actions/movie";
 import {
 	SET_MOVIE_FIELD,
-	SET_USER_MOVIE_FORM_FIELD,
+	SET_USER_MOVIE_FORM_SEARCH,
 } from "../../constants/actionTypes";
 import TextField from "@mui/material/TextField";
 
@@ -39,10 +39,6 @@ const MovieSearchField = ({ option }) => {
 		}
 	}, [searchQuery, dispatch]);
 
-	const handleChange = (e) => {
-		setSearchQuery(e.currentTarget.value);
-	};
-
 	const goSearch = (movie) => {
 		navigate(`/movie/${movie._id}`);
 		dispatch({
@@ -60,12 +56,12 @@ const MovieSearchField = ({ option }) => {
 				size="small"
 				placeholder="Movie title"
 				value={searchQuery}
-				onChange={(e) => handleChange(e)}
+				onChange={(e) => setSearchQuery(e.target.value)}
 			/>
 			<div className={`dropdown-content`}>
 				{Array.isArray(searchResult) &&
 					searchResult.map((movie) => {
-						// If the movie is already in the user's list, don't show it
+						// If search is account movieList and the movie is already in the user's list, don't show it
 						if (option === "userMovieList" && userMoviesList) {
 							if (
 								userMoviesList.some((m) => m.id === movie._id)
@@ -81,9 +77,8 @@ const MovieSearchField = ({ option }) => {
 								onClick={() =>
 									option === "userMovieList"
 										? dispatch({
-												type: SET_USER_MOVIE_FORM_FIELD,
+												type: SET_USER_MOVIE_FORM_SEARCH,
 												payload: {
-													field: "userMovieFormSearch",
 													data: {
 														title: movie.title,
 														id: movie._id,

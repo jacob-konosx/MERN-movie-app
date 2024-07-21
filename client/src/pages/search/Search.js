@@ -13,192 +13,174 @@ import Loader from "../../components/loader/Loader";
 
 import "./Search.css";
 
-const defaultQuery = { title: "", year: undefined };
+const defaultQuery = {
+	title: "",
+	year: undefined,
+	genres: [],
+	actors: [],
+	directors: [],
+};
 
 const Search = () => {
 	const dispatch = useDispatch();
 
 	const [query, setQuery] = useState(defaultQuery);
-	const [genres, setGenres] = useState([]);
-	const [actors, setActors] = useState([]);
-	const [directors, setDirectors] = useState([]);
-	const [isQueryValid, setIsQueryValid] = useState(false);
-	const [tempQuery, setTempQuery] = useState(null);
+	const [previousQuery, setPreviousQuery] = useState(null);
 
-	const searchResults = useSelector(
+	const searchResult = useSelector(
 		(state) => state.root.advancedSearchReducer?.searchResult
 	);
 	const queryData = useSelector(
 		(state) => state.root.advancedSearchReducer?.queryData
 	);
 
-	const handleChange = (e) => {
-		const name = e.target.name;
-		const value = e.target.value;
-		setQuery({ ...query, [name]: value });
-	};
+	const isQueryValid =
+		(query.title !== "" ||
+			query.year ||
+			query.genres.length > 0 ||
+			query.actors.length > 0 ||
+			query.directors.length > 0) &&
+		!_.isEqual(previousQuery, { ...query });
 
 	useEffect(() => {
 		dispatch(getDirectorsAndActors());
 	}, [dispatch]);
 
-	useEffect(() => {
-		if (
-			(query.title !== "" ||
-				query.year ||
-				genres.length > 0 ||
-				actors.length > 0 ||
-				directors.length > 0) &&
-			!_.isEqual(tempQuery, { ...query, genres, actors, directors })
-		) {
-			setIsQueryValid(true);
-		} else {
-			setIsQueryValid(false);
-		}
-	}, [query, genres, actors, directors, tempQuery]);
-
 	const handleSearch = (e) => {
 		e.preventDefault();
-		const finishedQuery = { ...query, genres, actors, directors };
 
 		if (isQueryValid) {
-			dispatch(searchAdvancedMovie(finishedQuery));
-			setTempQuery(finishedQuery);
+			dispatch(searchAdvancedMovie(query));
+			setPreviousQuery(query);
 		}
 	};
 
-	if (queryData) {
-		return (
-			<div className="searchMain">
-				<h1>Advanced Search</h1>
+	if (!queryData) {
+		return <Loader />;
+	}
 
-				<TextField
-					fullWidth
-					focused
-					label="Search"
-					size="small"
-					name="title"
-					placeholder="Movie title"
-					value={query.title}
-					onChange={(e) => handleChange(e)}
+	return (
+		<div className="searchMain">
+			<h1>Advanced Search</h1>
+
+			<TextField
+				fullWidth
+				focused
+				label="Search"
+				size="small"
+				name="title"
+				placeholder="Movie title"
+				value={query.title}
+				onChange={(e) => setQuery({ ...query, title: e.target.value })}
+			/>
+
+			<div className="inputRow">
+				<MultiSelect
+					className="searchGenres"
+					onChange={(val) => setQuery({ ...query, genres: val })}
+					name="genres"
+					searchable
+					data={queryData.genres}
+					placeholder="Choose Genres"
+					label="Genres"
+					value={query.genres}
 				/>
+				<NumberInput
+					className="searchYear"
+					label="Year"
+					value={query.year}
+					max={new Date().getFullYear()}
+					step={1}
+					onChange={(val) => setQuery({ ...query, year: val })}
+					name="year"
+				/>
+			</div>
 
-				<div className="inputRow">
-					<MultiSelect
-						className="searchGenres"
-						onChange={setGenres}
-						name="genres"
-						searchable
-						data={queryData.genres}
-						placeholder="Choose Genres"
-						label="Genres"
-						value={genres}
-					/>
-					<NumberInput
-						className="searchYear"
-						label="Year"
-						value={query.year}
-						max={new Date().getFullYear()}
-						step={1}
-						onChange={(val) => setQuery({ ...query, year: val })}
-					/>
-				</div>
+			<div className="inputRow">
+				<MultiSelect
+					limit={200}
+					className="searchGenres"
+					onChange={(val) => setQuery({ ...query, actors: val })}
+					name="actors"
+					searchable
+					data={queryData.actors}
+					placeholder="Searching displays more actors"
+					label="Actors"
+					value={query.actors}
+				/>
+				<MultiSelect
+					limit={200}
+					className="searchYear"
+					onChange={(val) => setQuery({ ...query, directors: val })}
+					name="directors"
+					searchable
+					data={queryData.directors}
+					placeholder="Searching displays more directors"
+					label="Directors"
+					value={query.directors}
+				/>
+			</div>
 
-				<div className="inputRow">
-					<MultiSelect
-						limit={200}
-						className="searchGenres"
-						onChange={setActors}
-						name="actors"
-						searchable
-						data={queryData.actors}
-						placeholder="Searching displays more actors"
-						label="Actors"
-						value={actors}
-					/>
-					<MultiSelect
-						limit={200}
-						className="searchYear"
-						onChange={setDirectors}
-						name="directors"
-						searchable
-						data={queryData.directors}
-						placeholder="Searching displays more directors"
-						label="Directors"
-						value={directors}
-					/>
-				</div>
-
-				<div className="functionButtons">
-					{isQueryValid && (
-						<Text
-							className="clearBtn"
-							onClick={() => {
-								setGenres([]);
-								setDirectors([]);
-								setActors([]);
-								setTempQuery(null);
-								setQuery(defaultQuery);
-								dispatch({
-									type: SET_ADVANCED_SEARCH_FIELD,
-									payload: {
-										field: "searchResult",
-										data: null,
-									},
-								});
-							}}
-						>
-							Clear
-						</Text>
-					)}
-
-					<Button
-						disabled={!isQueryValid}
-						className="searchBtn"
-						onClick={(e) => handleSearch(e)}
+			<div className="functionButtons">
+				{isQueryValid && (
+					<Text
+						className="clearBtn"
+						onClick={() => {
+							setPreviousQuery(null);
+							setQuery(defaultQuery);
+							dispatch({
+								type: SET_ADVANCED_SEARCH_FIELD,
+								payload: {
+									field: "searchResult",
+									data: null,
+								},
+							});
+						}}
 					>
-						Search
-					</Button>
-				</div>
+						Clear
+					</Text>
+				)}
 
-				{searchResults && (
-					<div>
-						{searchResults.data.length > 0 ? (
-							<Paper className="resultPaper">
-								{searchResults.data.map((movie) => (
-									<Fragment key={movie._id}>
-										<Grid
-											className="resultGrid"
-											container
-											wrap="nowrap"
-											key={movie._id}
-										>
-											<Grid item xs zeroMinWidth>
-												<h1>
-													<Link
-														to={`/movie/${movie._id}`}
-													>
-														{movie.title}
-													</Link>
-												</h1>
+				<Button
+					disabled={!isQueryValid}
+					className="searchBtn"
+					onClick={(e) => handleSearch(e)}
+				>
+					Search
+				</Button>
+			</div>
 
-												<p>{movie.info.plot}</p>
-											</Grid>
-										</Grid>
-										<Divider variant="fullWidth" />
-									</Fragment>
-								))}
-							</Paper>
-						) : (
-							<h2>No movies found</h2>
-						)}
-					</div>
+			<div>
+				{searchResult.length > 0 ? (
+					<Paper className="resultPaper">
+						{searchResult.map((movie) => (
+							<Fragment key={movie._id}>
+								<Grid
+									className="resultGrid"
+									container
+									wrap="nowrap"
+									key={movie._id}
+								>
+									<Grid item xs zeroMinWidth>
+										<h1>
+											<Link to={`/movie/${movie._id}`}>
+												{movie.title}
+											</Link>
+										</h1>
+
+										<p>{movie.info.plot}</p>
+									</Grid>
+								</Grid>
+								<Divider variant="fullWidth" />
+							</Fragment>
+						))}
+					</Paper>
+				) : (
+					<h2>No movies found</h2>
 				)}
 			</div>
-		);
-	} else {
-		<Loader />;
-	}
+		</div>
+	);
 };
 
 export default Search;

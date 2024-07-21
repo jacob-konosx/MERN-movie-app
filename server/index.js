@@ -2,18 +2,16 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import movieRoutes from "./routes/movies.js";
 import userRoutes from "./routes/users.js";
-
-dotenv.config({ path: "./confi.env" });
+import "dotenv/config";
 
 var corsOptions = {
 	origin:
 		process.env.ENV === "PROD"
-			? "https://flix.konosx.dev"
-			: "http://localhost:3000",
+			? process.env.PROD_ORIGIN
+			: process.env.DEV_ORIGIN,
 
 	credentials: true,
 };
@@ -30,7 +28,7 @@ app.use("/movie", movieRoutes);
 app.use("/user", userRoutes);
 
 const CONNECTION_URL = process.env.ATLAS_URI;
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 try {
 	mongoose.set("strictQuery", false);

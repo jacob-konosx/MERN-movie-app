@@ -47,11 +47,13 @@ const useStyles = createStyles((theme) => ({
 	},
 }));
 
-const AlertMessage = ({ alert, button }) => {
+const AlertMessage = ({ alert, button, source }) => {
 	const { classes } = useStyles();
 
 	return (
-		<Container className={classes.root}>
+		<Container
+			className={`${classes.root} ${source === "soloPage" && "soloPage"}`}
+		>
 			<div className={classes.inner}>
 				<div className={classes.content}>
 					<Title className="alertText">{alert.text}</Title>

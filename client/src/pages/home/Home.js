@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMovies } from "../../actions/movie";
 import MovieCard from "../../components/movieCard/MovieCard";
 import MovieSearchField from "../../components/movieSearchField/MovieSearchField";
+import Loader from "../../components/loader/Loader";
 
 import "./Home.css";
-import Loader from "../../components/loader/Loader";
 
 const Home = () => {
 	const dispatch = useDispatch();
@@ -37,6 +37,7 @@ const Home = () => {
 					total={movieData.pageCount}
 				/>
 			</div>
+
 			{movieData?.currentPage === page ? (
 				<div className="movies">
 					{movieData.movies.map((res) => {

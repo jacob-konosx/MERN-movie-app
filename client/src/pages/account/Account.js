@@ -22,6 +22,7 @@ const Account = () => {
 	if (!user) {
 		return (
 			<AlertMessage
+				source="soloPage"
 				alert={{
 					text: "Login Required",
 					description:
@@ -32,9 +33,6 @@ const Account = () => {
 		);
 	}
 
-	const handleChange = (event, newValue) => {
-		setValue(newValue);
-	};
 	return (
 		<div className="account">
 			<div className="userInfo">
@@ -58,7 +56,10 @@ const Account = () => {
 					className="tab"
 					sx={{ borderBottom: 2, borderColor: "divider" }}
 				>
-					<TabList centered onChange={handleChange}>
+					<TabList
+						centered
+						onChange={(event, newValue) => setValue(newValue)}
+					>
 						<Tab label="Movie List" value="1" />
 						<Tab label="Reviews" value="2" />
 						<Tab label="Account" value="3" />
@@ -70,16 +71,11 @@ const Account = () => {
 				</TabPanel>
 
 				<TabPanel value="2">
-					<UserReviewList reviewList={user.reviewList} />
+					<UserReviewList user={user} />
 				</TabPanel>
 
 				<TabPanel value="3">
-					<EditAccount
-						userData={{
-							name: user?.name,
-							imageUrl: user?.imageUrl,
-						}}
-					/>
+					<EditAccount user={user} />
 				</TabPanel>
 			</TabContext>
 		</div>

@@ -59,7 +59,7 @@ const NavbarLink = ({ icon: Icon, label, active, onClick }) => {
 	);
 };
 
-const mockdata = [
+const navigationData = [
 	{ icon: Home2, label: "Home", route: "/", needLogin: false },
 	{ icon: ListSearch, label: "Search", route: "/search", needLogin: false },
 	{ icon: User, label: "Account", route: "/account", needLogin: true },
@@ -72,7 +72,7 @@ const NavigationBar = () => {
 	const user = useSelector((state) => state.root.userReducer.profile);
 	const isMobile = useMediaQuery("(max-width:768px)");
 
-	const links = mockdata.map((link) => {
+	const links = navigationData.map((link) => {
 		if (link.needLogin && !user) return null;
 
 		return (
@@ -85,6 +85,7 @@ const NavigationBar = () => {
 			/>
 		);
 	});
+
 	if (isMobile) {
 		return (
 			<nav>
@@ -107,41 +108,43 @@ const NavigationBar = () => {
 				)}
 			</nav>
 		);
-	} else {
-		return (
-			<Navbar p="md" className="navbar">
-				<Center>
-					<Link to="/">
-						<Image src={logoImg} />
-					</Link>
-				</Center>
-				<Navbar.Section grow mt={50}>
-					<Group direction="column" align="center" spacing={0}>
-						{links}
-					</Group>
-				</Navbar.Section>
-				<Navbar.Section>
-					<Group direction="column" align="center" spacing={0}>
-						{user ? (
-							<NavbarLink
-								onClick={() => {
-									dispatch(logout());
-									navigate("/");
-								}}
-								icon={Logout}
-								label="Logout"
-							/>
-						) : (
-							<NavbarLink
-								onClick={() => navigate("/auth")}
-								icon={Login}
-								label="Login"
-							/>
-						)}
-					</Group>
-				</Navbar.Section>
-			</Navbar>
-		);
 	}
+
+	return (
+		<Navbar p="md" className="navbar">
+			<Center>
+				<Link to="/">
+					<Image src={logoImg} />
+				</Link>
+			</Center>
+
+			<Navbar.Section grow mt={50}>
+				<Group direction="column" align="center" spacing={0}>
+					{links}
+				</Group>
+			</Navbar.Section>
+
+			<Navbar.Section>
+				<Group direction="column" align="center" spacing={0}>
+					{user ? (
+						<NavbarLink
+							onClick={() => {
+								dispatch(logout());
+								navigate("/");
+							}}
+							icon={Logout}
+							label="Logout"
+						/>
+					) : (
+						<NavbarLink
+							onClick={() => navigate("/auth")}
+							icon={Login}
+							label="Login"
+						/>
+					)}
+				</Group>
+			</Navbar.Section>
+		</Navbar>
+	);
 };
 export default NavigationBar;

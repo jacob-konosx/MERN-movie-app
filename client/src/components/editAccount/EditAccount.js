@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changePassword, logout, updateUser } from "../../actions/user";
@@ -8,66 +8,45 @@ import Input from "../../pages/auth/Input";
 
 import "./EditAccount.css";
 
-const EditAccount = ({ userData }) => {
+const EditAccount = ({ user }) => {
+	const { name, imageUrl } = user;
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const [userInfo, setUserInfo] = useState({ ...userData, update: false });
-	const [password, setPassword] = useState({
-		passwordFirst: "",
-		passwordRepeat: "",
+	const [userInfo, setUserInfo] = useState(user);
+	const [passwords, setPasswords] = useState({
+		firstPassword: "",
+		secondPassword: "",
 	});
-	const [isInfoValid, setIsInfoValid] = useState(false);
-	const [isPassValid, setIsPassValid] = useState(false);
-
 	const [showPassword, setShowPassword] = useState(false);
 
-	useEffect(() => {
-		if (
-			userInfo.name !== "" &&
-			/^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(
-				userInfo.imageUrl
-			) &&
-			(userInfo.name !== userData.name ||
-				userInfo.imageUrl !== userData.imageUrl)
-		) {
-			setIsInfoValid(true);
-		} else {
-			setIsInfoValid(false);
-		}
-	}, [userInfo, userData]);
+	const isInfoValid =
+		userInfo.name !== "" &&
+		/^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(
+			userInfo.imageUrl
+		) &&
+		(userInfo.name !== name || userInfo.imageUrl !== imageUrl);
 
-	useEffect(() => {
-		if (
-			password.passwordFirst !== "" &&
-			password.passwordRepeat !== "" &&
-			password.passwordFirst === password.passwordRepeat
-		) {
-			setIsPassValid(true);
-		} else {
-			setIsPassValid(false);
-		}
-	}, [password]);
+	const isPassValid =
+		passwords.firstPassword !== "" &&
+		passwords.secondPassword !== "" &&
+		passwords.firstPassword === passwords.secondPassword;
 
-	const handleChange = (e) => {
-		const name = e.target.name;
-		const value = e.target.value;
-		setUserInfo({ ...userInfo, [name]: value });
+	const handleUserInfoChange = (e) => {
+		setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
 	};
 
-	const handlePass = (e) => {
-		setPassword({ ...password, [e.target.name]: e.target.value });
+	const handlePasswordChange = (e) => {
+		setPasswords({ ...passwords, [e.target.name]: e.target.value });
 	};
 
 	const submitHandler = () => {
 		if (isInfoValid) {
 			dispatch(updateUser(userInfo.name, userInfo.imageUrl));
-			setUserInfo((old) => {
-				return { ...old, update: !old.update };
-			});
 		}
 		if (isPassValid) {
-			dispatch(changePassword(password.passwordFirst, navigate));
+			dispatch(changePassword(passwords.firstPassword));
 			dispatch(logout());
 			navigate("/auth");
 		}
@@ -84,7 +63,7 @@ const EditAccount = ({ userData }) => {
 				fullWidth
 				value={userInfo.name}
 				name="name"
-				onChange={handleChange}
+				onChange={handleUserInfoChange}
 			/>
 
 			<TextField
@@ -95,21 +74,21 @@ const EditAccount = ({ userData }) => {
 				value={userInfo.imageUrl}
 				fullWidth
 				name="imageUrl"
-				onChange={handleChange}
+				onChange={handleUserInfoChange}
 			/>
 
 			<h3>Password</h3>
 			<Input
-				name="passwordFirst"
+				name="firstPassword"
 				label="Password"
-				handleChange={handlePass}
+				handleChange={handlePasswordChange}
 				type={showPassword ? "text" : "password"}
 				handleShowPassword={() => setShowPassword(!showPassword)}
 			/>
 			<Input
-				name="passwordRepeat"
+				name="secondPassword"
 				label="Repeat Password"
-				handleChange={handlePass}
+				handleChange={handlePasswordChange}
 				type={showPassword ? "text" : "password"}
 				handleShowPassword={() => setShowPassword(!showPassword)}
 			/>

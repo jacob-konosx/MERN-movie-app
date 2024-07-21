@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { addReview, getUserInfoAndSetToReview } from "../../../actions/movie";
 import { Badge } from "@mantine/core";
 import { Avatar, Button, Divider, Grid, Paper, TextField } from "@mui/material";
+import { timeAgo } from "../../../lib/timeago";
 import AlertMessage from "../../alertMessage/AlertMessage";
 
 import "./Review.css";
-import { timeAgo } from "../../../lib/timeago";
 
 const Review = ({ movieId }) => {
 	const dispatch = useDispatch();
@@ -18,25 +18,23 @@ const Review = ({ movieId }) => {
 	);
 	const user = useSelector((state) => state.root.userReducer?.profile);
 
-	const handleReviewSubmit = () => {
-		if (reviewText.length >= 1) {
+	const isValidReview = reviewText.length > 0;
+
+	const submitReview = () => {
+		if (isValidReview) {
 			dispatch(
-				addReview(
-					movieId,
-					{
-						uid: user._id,
-						text: reviewText,
-					},
-					{
-						movieId,
-					}
-				)
+				addReview(movieId, {
+					uid: user._id,
+					text: reviewText,
+				})
 			);
 		}
 	};
+
 	return (
 		<div className="reviews">
 			<h1>Reviews</h1>
+
 			{user ? (
 				<>
 					{!user.reviewList.some((e) => e.movieId === movieId) ? (
@@ -66,7 +64,8 @@ const Review = ({ movieId }) => {
 									<Button
 										variant="outlined"
 										color="primary"
-										onClick={handleReviewSubmit}
+										onClick={submitReview}
+										disabled={!isValidReview}
 									>
 										Add review
 									</Button>
@@ -109,7 +108,7 @@ const Review = ({ movieId }) => {
 				/>
 			)}
 
-			{reviews && reviews.length >= 1 ? (
+			{reviews && reviews.length > 0 ? (
 				<div className="movieReviews">
 					<Paper className="reviewPaper">
 						{reviews.map((review) => {

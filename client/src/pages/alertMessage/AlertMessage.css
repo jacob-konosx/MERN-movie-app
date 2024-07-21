@@ -1,6 +1,10 @@
 .alertButton {
 	margin-top: 1rem;
 }
+.soloPage{
+	margin-top: 20%;
+
+}
 @media only screen and (max-width: 768px) {
 	.alertButton {
 		margin: 1.5rem 0;

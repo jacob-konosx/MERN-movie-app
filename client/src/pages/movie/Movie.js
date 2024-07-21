@@ -5,10 +5,9 @@ import { getMovie } from "../../actions/movie";
 import Review from "./Review/Review";
 import AlertMessage from "../alertMessage/AlertMessage";
 import BadgeCard from "../../components/movieCard/MovieCard";
+import Loader from "../../components/loader/Loader";
 
 import "./Movie.css";
-import { CLEAR_ERROR } from "../../constants/actionTypes";
-import Loader from "../../components/loader/Loader";
 
 const Movie = () => {
 	const { id } = useParams();
@@ -20,47 +19,39 @@ const Movie = () => {
 	);
 
 	useEffect(() => {
-		dispatch({ type: CLEAR_ERROR });
 		dispatch(getMovie(id));
 	}, [id, dispatch]);
 
 	if (getMovieError === 404) {
 		return (
-			<div>
-				<AlertMessage
-					alert={{
-						text: "Movie Not Found",
-						description:
-							"The movie ID you have entered does not correspond to an existing movie.",
-					}}
-					button={{
-						text: "Take me to the homepage",
-						path: "",
-					}}
-				/>
-			</div>
+			<AlertMessage
+				source="soloPage"
+				alert={{
+					text: "Movie Not Found",
+					description:
+						"The movie ID you have entered does not correspond to an existing movie.",
+				}}
+				button={{
+					text: "Take me to the homepage",
+					path: "",
+				}}
+			/>
 		);
 	}
 
-	if (!movie) {
+	if (!movie || movie._id !== id) {
 		return <Loader />;
 	}
 
 	return (
 		<div className="singleMovie">
-			{movie._id === id ? (
-				<>
-					<BadgeCard
-						props={{
-							mode: "big",
-							...movie,
-						}}
-					/>
-					<Review movieId={movie._id} />
-				</>
-			) : (
-				<Loader />
-			)}
+			<BadgeCard
+				props={{
+					mode: "big",
+					...movie,
+				}}
+			/>
+			<Review movieId={movie._id} />
 		</div>
 	);
 };

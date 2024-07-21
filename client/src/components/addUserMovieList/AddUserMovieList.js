@@ -2,11 +2,11 @@ import { ActionIcon, Group, NumberInput, Select, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Minus, Plus } from "tabler-icons-react";
-import { updateMovieList } from "../../actions/movie";
-import { SET_USER_MOVIE_FORM_FIELD } from "../../constants/actionTypes";
+import { SET_USER_MOVIE_FORM_SEARCH } from "../../constants/actionTypes";
 import MovieSearchField from "../movieSearchField/MovieSearchField";
 
-import "./UserMovieListForm.css";
+import "./AddUserMovieList.css";
+import { addMoviesList } from "../../actions/user";
 
 const defaultForm = {
 	title: null,
@@ -15,48 +15,37 @@ const defaultForm = {
 	rating: 0,
 };
 
-const UserMovieListForm = ({ moviesList }) => {
+const AddUserMovieList = () => {
 	const dispatch = useDispatch();
 
 	const [activeForm, setActiveForm] = useState(false);
-	const [movieCompletionStatus, setMovieCompletionStatus] = useState(null);
-	const [form, setForm] = useState(defaultForm);
-	const [isFormValid, setIsFormValid] = useState(false);
+	const [movieForm, setMovieForm] = useState(defaultForm);
 
 	const userMovieFormSearch = useSelector(
 		(state) => state.root.userFormReducer.userMovieFormSearch
 	);
 
+	const isFormValid =
+		movieForm.status && movieForm.title && movieForm.id && movieForm.rating;
+
 	useEffect(() => {
 		if (userMovieFormSearch) {
-			setForm((form) => {
-				return {
-					...form,
-					title: userMovieFormSearch.title,
-					id: userMovieFormSearch.id,
-				};
-			});
+			setMovieForm((form) => ({
+				...form,
+				title: userMovieFormSearch.title,
+				id: userMovieFormSearch.id,
+			}));
 		} else {
-			setForm(defaultForm);
+			setMovieForm(defaultForm);
 		}
 	}, [userMovieFormSearch]);
 
-	useEffect(() => {
-		if (movieCompletionStatus && form.title && form.id && form.rating) {
-			setIsFormValid(true);
-		} else {
-			setIsFormValid(false);
-		}
-	}, [form, movieCompletionStatus]);
-
-	const handleFormSubmit = async () => {
+	const handleAddMovie = async (e) => {
+		e.preventDefault();
 		if (isFormValid) {
-			const newMovieList = [
-				...moviesList,
-				{ ...form, status: movieCompletionStatus },
-			];
-			dispatch(updateMovieList(newMovieList));
-			setForm(defaultForm);
+			dispatch(addMoviesList(movieForm));
+
+			setMovieForm(defaultForm);
 			setActiveForm(false);
 		}
 	};
@@ -81,7 +70,7 @@ const UserMovieListForm = ({ moviesList }) => {
 
 			{activeForm && (
 				<div className="addMovieForm">
-					{!form.title ? (
+					{!movieForm.title ? (
 						<MovieSearchField option={"userMovieList"} />
 					) : (
 						<Text>
@@ -90,22 +79,21 @@ const UserMovieListForm = ({ moviesList }) => {
 								className="formTitle"
 								onClick={() => {
 									dispatch({
-										type: SET_USER_MOVIE_FORM_FIELD,
+										type: SET_USER_MOVIE_FORM_SEARCH,
 										payload: {
-											field: "userMovieFormSearch",
 											data: null,
 										},
 									});
 								}}
 							>
-								{form.title}
+								{movieForm.title}
 							</span>
 						</Text>
 					)}
 
 					<NumberInput
 						onChange={(val) =>
-							setForm((m) => ({ ...m, rating: val }))
+							setMovieForm((m) => ({ ...m, rating: val }))
 						}
 						name="rating"
 						required={true}
@@ -114,7 +102,7 @@ const UserMovieListForm = ({ moviesList }) => {
 						max={10}
 						step={0.1}
 						precision={1}
-						value={form.rating}
+						value={movieForm.rating}
 					/>
 
 					<Select
@@ -125,7 +113,9 @@ const UserMovieListForm = ({ moviesList }) => {
 							{ value: "Plan to Watch", label: "Plan to Watch" },
 							{ value: "Completed", label: "Completed" },
 						]}
-						onChange={setMovieCompletionStatus}
+						onChange={(val) =>
+							setMovieForm((m) => ({ ...m, status: val }))
+						}
 					/>
 
 					<div className="movieFormButton">
@@ -133,7 +123,7 @@ const UserMovieListForm = ({ moviesList }) => {
 							<ActionIcon
 								color="blue"
 								variant="outline"
-								onClick={() => handleFormSubmit()}
+								onClick={handleAddMovie}
 							>
 								<Plus size={20} />
 							</ActionIcon>
@@ -143,8 +133,7 @@ const UserMovieListForm = ({ moviesList }) => {
 								variant="outline"
 								onClick={() => {
 									setActiveForm(false);
-									setForm(defaultForm);
-									setMovieCompletionStatus(null);
+									setMovieForm(defaultForm);
 								}}
 							>
 								<Minus size={20} />
@@ -157,4 +146,4 @@ const UserMovieListForm = ({ moviesList }) => {
 	);
 };
 
-export default UserMovieListForm;
+export default AddUserMovieList;

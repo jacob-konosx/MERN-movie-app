@@ -130,7 +130,7 @@ export const deleteReview = async (req, res) => {
 export const updateReview = async (req, res) => {
 	const movieId = req.params.id;
 	const userId = req.userId;
-	const reviewText = req.body.reviewText;
+	const reviewText = req.body;
 
 	try {
 		const response = await MovieModel.findByIdAndUpdate(
@@ -140,6 +140,7 @@ export const updateReview = async (req, res) => {
 			},
 			{ arrayFilters: [{ "elem.uid": userId }] }
 		);
+
 		if (!response) {
 			return res
 				.status(403)

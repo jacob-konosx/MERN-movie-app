@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	Badge,
 	Table,
@@ -6,8 +6,6 @@ import {
 	Text,
 	ActionIcon,
 	ScrollArea,
-	NumberInput,
-	Select,
 } from "@mantine/core";
 import {
 	ArrowDown,
@@ -18,15 +16,15 @@ import {
 	X,
 } from "tabler-icons-react";
 import { useDispatch } from "react-redux";
-import { updateMovieList } from "../../actions/movie";
 import { deleteReview } from "../../actions/movie";
 import { Link } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert";
-import UserMovieListForm from "../userMovieListForm/UserMovieListForm";
+import MovieEditForm from "./MovieEditForm";
+import AddUserMovieList from "../addUserMovieList/AddUserMovieList";
 import AlertMessage from "../../pages/alertMessage/AlertMessage";
 
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "./UserMovieList.css";
+import { deleteMoviesList } from "../../actions/user";
 
 const movieColors = {
 	completed: "green",
@@ -38,131 +36,36 @@ const UserMovieList = ({ user }) => {
 
 	const dispatch = useDispatch();
 
-	const [editForm, setEditForm] = useState({
-		isActive: false,
-	});
+	const [editingMovie, setEditingMovie] = useState(null);
+	const [isEditFormActive, setIsEditFormActive] = useState(false);
 	const [sort, setSort] = useState({
 		type: null,
 		mode: null,
 	});
-	const [sortedMoviesList, setSortedMoviesList] = useState(moviesList);
 
-	useEffect(() => {
-		const sortedMovieList = [...moviesList].sort((a, b) =>
-			sort.mode === "ascending"
-				? a[sort.type] > b[sort.type]
+	const sortedMoviesList = useMemo(
+		() =>
+			[...moviesList].sort((a, b) =>
+				sort.mode === "ascending"
+					? a[sort.type] > b[sort.type]
+						? 1
+						: -1
+					: a[sort.type] < b[sort.type]
 					? 1
 					: -1
-				: a[sort.type] < b[sort.type]
-				? 1
-				: -1
-		);
-		setSortedMoviesList(sortedMovieList);
-	}, [sort, dispatch, moviesList]);
+			),
+		[sort, moviesList]
+	);
 
-	const deleteMovieHandler = (movieId) => {
-		const deletedList = sortedMoviesList.filter((m) => m.id !== movieId);
-		dispatch(updateMovieList(deletedList));
-		dispatch(deleteReview(movieId));
+	const handleDeleteMovie = (movieId) => {
+		dispatch(deleteMoviesList(movieId));
+
+		if (reviewList.some((m) => m.movieId === movieId)) {
+			dispatch(deleteReview(movieId));
+		}
 	};
 
-	const EditForm = () => {
-		const [status, setStatus] = useState();
-		const [rating, setRating] = useState();
-
-		const confirmReview = () => {
-			confirmAlert({
-				title: "Confirm to update",
-				message:
-					'You are trying to update the status of a movie you have reviewed. Reviews can only exist for "Completed" movies. In doing this update the review will also be deleted. Continue with the update?',
-				buttons: [
-					{
-						label: "Yes",
-						onClick: () => {
-							dispatch(deleteReview(editForm.id));
-							updateList();
-						},
-					},
-					{
-						label: "No",
-						onClick: () => {
-							setEditForm({
-								isActive: false,
-							});
-						},
-					},
-				],
-			});
-		};
-
-		const handleEditSubmit = () => {
-			if (
-				reviewList.some((m) => m.movieId === editForm.id) &&
-				status === "Plan to Watch"
-			) {
-				confirmReview();
-				return;
-			}
-			updateList();
-		};
-
-		const updateList = () => {
-			const finalRating = rating || editForm.rating;
-			const finalStatus = status || editForm.status;
-			const finalForm = { ...editForm, rating: finalRating };
-			delete finalForm?.isActive;
-			const oldMovies = sortedMoviesList.filter(
-				(m) => m.id !== editForm.id
-			);
-			dispatch(
-				updateMovieList([
-					...oldMovies,
-					{ ...finalForm, status: finalStatus },
-				])
-			);
-			setEditForm({ isActive: false });
-		};
-
-		return (
-			<div className="editForm">
-				<h2>
-					Update {editForm.title}
-				</h2>
-				<NumberInput
-					name="rating"
-					required={true}
-					label="Rating"
-					min={1}
-					max={10}
-					step={0.1}
-					precision={1}
-					value={rating || editForm.rating}
-					onChange={(val) => setRating(val)}
-				/>
-				<Select
-					required={true}
-					value={status || editForm.status}
-					label="Movie Status"
-					placeholder="Choose movie status"
-					data={[
-						{ value: "Plan to Watch", label: "Plan to Watch" },
-						{ value: "Completed", label: "Completed" },
-					]}
-					onChange={setStatus}
-				/>
-				<ActionIcon
-					className="editButton"
-					variant="outline"
-					color="green"
-					onClick={handleEditSubmit}
-				>
-					<Pencil size={16} />
-				</ActionIcon>
-			</div>
-		);
-	};
-
-	const rows = sortedMoviesList.map((movie) => (
+	const movies = sortedMoviesList.map((movie) => (
 		<tr key={movie.id}>
 			<td>
 				{reviewList.some((m) => m.movieId === movie.id) && (
@@ -195,35 +98,32 @@ const UserMovieList = ({ user }) => {
 
 			<td>
 				<Group spacing={0} position="right">
-					{editForm.isActive === false && (
+					{isEditFormActive === false && (
 						<ActionIcon
 							color="blue"
-							onClick={() =>
-								setEditForm({
-									isActive: !editForm.isActive,
-									...movie,
-								})
-							}
+							onClick={() => {
+								setIsEditFormActive(true);
+								setEditingMovie(movie);
+							}}
 						>
 							<Pencil size={16} />
 						</ActionIcon>
 					)}
 
-					{editForm.isActive === true && editForm.id === movie.id && (
+					{isEditFormActive && editingMovie.id === movie.id && (
 						<ActionIcon
 							color="red"
-							onClick={() =>
-								setEditForm({
-									isActive: false,
-								})
-							}
+							onClick={() => {
+								setIsEditFormActive(false);
+								setEditingMovie(null);
+							}}
 						>
 							<X size={16} />
 						</ActionIcon>
 					)}
 					<ActionIcon
 						color="red"
-						onClick={() => deleteMovieHandler(movie.id)}
+						onClick={() => handleDeleteMovie(movie.id)}
 					>
 						<Trash size={16} />
 					</ActionIcon>
@@ -264,13 +164,22 @@ const UserMovieList = ({ user }) => {
 
 	return (
 		<div className="movieList">
-			{editForm.isActive && <EditForm />}
+			{isEditFormActive && (
+				<MovieEditForm
+					props={{
+						setIsEditFormActive,
+						editingMovie,
+						reviewList,
+						sortedMoviesList,
+					}}
+				/>
+			)}
 
-			<UserMovieListForm moviesList={moviesList} />
+			<AddUserMovieList />
 
 			<ScrollArea className="movieListArea">
 				<Table>
-					{rows.length > 0 ? (
+					{movies.length > 0 ? (
 						<>
 							<thead align="center">
 								<tr>
@@ -297,7 +206,7 @@ const UserMovieList = ({ user }) => {
 									<th />
 								</tr>
 							</thead>
-							<tbody>{rows}</tbody>
+							<tbody>{movies}</tbody>
 						</>
 					) : (
 						<AlertMessage

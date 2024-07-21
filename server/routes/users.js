@@ -1,9 +1,10 @@
 import express from "express";
 import auth from "../middleware/auth.js";
 import {
+	addMoviesList,
 	signin,
 	signup,
-	updateMovieList,
+	updateMoviesList,
 	getInfo,
 	addReview,
 	deleteReview,
@@ -11,6 +12,7 @@ import {
 	logout,
 	update,
 	changePassword,
+	deleteMoviesList,
 } from "../controllers/userController.js";
 import requireValidObjectId from "../middleware/requireValidObjectId.js";
 
@@ -22,7 +24,10 @@ router.post("/signin", signin);
 router.post("/signup", signup);
 
 // Protected routes
-router.post("/updateMovieList/", auth, updateMovieList);
+router.post("/addMoviesList/", auth, addMoviesList);
+router.post("/updateMoviesList/", auth, updateMoviesList);
+router.post("/deleteMoviesList/:id", auth, deleteMoviesList);
+
 router.post("/addReviewList/", auth, addReview);
 router.post("/deleteReview/", auth, deleteReview);
 router.post("/token/", refreshAccessToken);

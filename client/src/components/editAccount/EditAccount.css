@@ -4,7 +4,7 @@
 	width: 30%;
 }
 .editAccountInput {
-	margin-bottom: 1rem !important;
+	margin: 0.5rem 0px !important;
 }
 @media only screen and (max-width: 768px) {
 	.editAccount {

@@ -130,23 +130,29 @@ export const signup = async (req, res) => {
 	}
 };
 
-export const updateMovieList = async (req, res) => {
+export const updateMoviesList = async (req, res) => {
 	const userId = req.userId;
-	const moviesList = req.body;
+	const movie = req.body;
 
 	try {
-		const result = await UserModel.findByIdAndUpdate(userId, {
-			moviesList: moviesList,
-		});
-		if (!result) {
+		const response = await UserModel.findByIdAndUpdate(
+			userId,
+			{
+				$set: { "moviesList.$[elem]": movie },
+			},
+			{ arrayFilters: [{ "elem.id": movie.id }], new: true }
+		);
+
+		if (!response) {
 			return res
 				.status(403)
-				.json({ message: "Couldn't update movie list" });
+				.json({ message: "Couldn't update movie from movie list" });
 		}
-		return res.json(result["moviesList"]);
+
+		return res.json(response["moviesList"]);
 	} catch (error) {
 		return res.status(409).json({
-			message: "Couldn't update movie list",
+			message: "Couldn't update movie from movie list",
 			error: error.message,
 		});
 	}
@@ -258,14 +264,14 @@ export const changePassword = async (req, res) => {
 	try {
 		const newHashedPassword = await bcrypt.hash(newPassword, 12);
 
-		const result = await UserModel.findByIdAndUpdate(
+		const response = await UserModel.findByIdAndUpdate(
 			userId,
 			{
 				$set: { password: newHashedPassword },
 			},
 			{ new: true }
 		);
-		if (!result) {
+		if (!response) {
 			return res
 				.status(403)
 				.json({ message: "Couldn't change user password" });
@@ -298,5 +304,61 @@ export const calculateMovieAverage = async (id) => {
 		return Math.round(avg * 10) / 10;
 	} catch (error) {
 		console.log(error);
+	}
+};
+
+export const addMoviesList = async (req, res) => {
+	const userId = req.userId;
+	const newMoviesListEntry = req.body;
+
+	try {
+		const response = await UserModel.findByIdAndUpdate(
+			userId,
+			{
+				$push: { moviesList: newMoviesListEntry },
+			},
+			{ new: true }
+		);
+
+		if (!response) {
+			return res
+				.status(403)
+				.json({ message: "Couldn't add to movie list" });
+		}
+
+		return res.json(response["moviesList"]);
+	} catch (error) {
+		return res.status(409).json({
+			message: "Couldn't add to movie list",
+			error: error.message,
+		});
+	}
+};
+
+export const deleteMoviesList = async (req, res) => {
+	const movieId = req.params.id;
+	const userId = req.userId;
+
+	try {
+		const response = await UserModel.findByIdAndUpdate(
+			userId,
+			{
+				$pull: { moviesList: { id: movieId } },
+			},
+			{ new: true }
+		);
+
+		if (!response) {
+			return res
+				.status(403)
+				.json({ message: "Couldn't delete movie review" });
+		}
+
+		return res.json(response["moviesList"]);
+	} catch (error) {
+		return res.status(409).json({
+			message: "Couldn't delete movie review",
+			error,
+		});
 	}
 };
