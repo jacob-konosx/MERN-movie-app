@@ -127,11 +127,10 @@ export const getMoviesById = (reviewList) => async (dispatch) => {
 			const { data } = await api.getMovie(rev.movieId);
 			movies.push(data);
 		}
-		return movies;
-		// dispatch({
-		// 	type: SET_MOVIE_FIELD,
-		// 	payload: { field: "reviewedMovies", data: movies },
-		// });
+		dispatch({
+			type: SET_MOVIE_FIELD,
+			payload: { field: "reviewedMovies", data: movies },
+		});
 	} catch (error) {
 		console.log(error);
 		dispatch({
