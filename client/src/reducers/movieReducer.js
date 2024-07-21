@@ -4,7 +4,7 @@ import {
 	SET_MOVIE_FIELD,
 } from "../constants/actionTypes";
 
-const movieReducer = (state = { movies: null }, action) => {
+const movieReducer = (state = { movies: null, reviewedMovies: [] }, action) => {
 	switch (action.type) {
 		case SET_MOVIE_REVIEW_USER_INFO:
 			const reviewList = state.singleMovie.reviews.map((review) => {
