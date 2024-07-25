@@ -1,5 +1,5 @@
 import { ActionIcon, Group, NumberInput, Select, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Minus, Plus } from "tabler-icons-react";
 import { SET_USER_MOVIE_FORM_SEARCH } from "../../constants/actionTypes";
@@ -25,28 +25,26 @@ const AddUserMovieList = ({ moviesList }) => {
 		(state) => state.root.userFormReducer.userMovieFormSearch
 	);
 
-	const isFormValid =
-		movieForm.status && movieForm.title && movieForm.id && movieForm.rating;
-
-	useEffect(() => {
+	const movieFormSearch = useMemo(() => {
 		if (
 			userMovieFormSearch &&
 			!moviesList.some((m) => m.id === userMovieFormSearch.id)
 		) {
-			setMovieForm((form) => ({
-				...form,
+			return {
 				title: userMovieFormSearch.title,
 				id: userMovieFormSearch.id,
-			}));
+			};
 		} else {
-			setMovieForm(defaultForm);
+			return null;
 		}
-	}, [userMovieFormSearch, moviesList]);
+	}, [moviesList, userMovieFormSearch]);
+
+	const isFormValid = movieForm.status && movieFormSearch && movieForm.rating;
 
 	const handleAddMovie = async (e) => {
 		e.preventDefault();
 		if (isFormValid) {
-			dispatch(addMoviesList(movieForm));
+			dispatch(addMoviesList({ ...movieForm, ...movieFormSearch }));
 
 			setMovieForm(defaultForm);
 			setActiveForm(false);
@@ -73,7 +71,7 @@ const AddUserMovieList = ({ moviesList }) => {
 
 			{activeForm && (
 				<div className="addMovieForm">
-					{!movieForm.title ? (
+					{!movieFormSearch ? (
 						<MovieSearchField option={"userMovieList"} />
 					) : (
 						<Text>
@@ -89,7 +87,7 @@ const AddUserMovieList = ({ moviesList }) => {
 									});
 								}}
 							>
-								{movieForm.title}
+								{movieFormSearch.title}
 							</span>
 						</Text>
 					)}
